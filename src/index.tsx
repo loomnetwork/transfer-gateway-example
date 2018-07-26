@@ -1,6 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Hello from './components/Hello'
+import Main from './components/Main'
+import Card from './components/Card'
 
-ReactDOM.render(<Hello />, document.getElementById('root'))
+const Index = () => {
+  return (
+    <Main>
+      <Card cardTitle="Great Golen" cardDescription="Powerfull Golen" />
+    </Main>
+  )
+}
+
+ReactDOM.render(<Index />, document.getElementById('root'))
