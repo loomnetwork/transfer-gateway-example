@@ -1,9 +1,3 @@
-# gitignore
-
-node_modules
-.DS_Store
-
-# Only apps should have lockfiles
-package-lock.json
-/.env.test
-/yarn-error.log
+crypto_cards_address
+game_token_address
+gateway_address

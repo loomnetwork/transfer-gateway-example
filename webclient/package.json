@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "start": "webpack-dev-server --hot --content-base ./dist",
+    "ganache-cli": "ganache-cli -p 8545 -v -m \"trade nothing tag piece anger smoke clay reveal burst behave dose brave\""
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/preset-react": "^7.0.0-beta.55",
+    "@babel/runtime": "^7.0.0-beta.46",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.0-beta.2",
+    "ganache-cli": "^6.1.6",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router-dom": "^4.3.1",
+    "regenerator-runtime": "^0.11.1",
+    "request-promise": "^4.2.2",
+    "web3": "^1.0.0-beta.34",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
