@@ -3,7 +3,7 @@ const { readFileSync } = require('fs')
 const CryptoCardsDappChain = artifacts.require('CryptoCardsDappChain')
 
 module.exports = (deployer, network, accounts) => {
-  const gatewayAddress = readFileSync('../gateway_address', 'utf-8')
+  const gatewayAddress = '0xb9fA0896573A89cF4065c43563C069b3B3C15c37'
   const cryptoCardsAddress = readFileSync('../crypto_cards_address', 'utf-8')
 
   deployer.deploy(CryptoCardsDappChain, gatewayAddress)

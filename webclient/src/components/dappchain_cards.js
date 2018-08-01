@@ -16,19 +16,21 @@ export default class DAppChainCards extends React.Component {
     let cardIds = []
 
     if (balance > 0) {
-      cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account)
+      cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account)
     }
+
+    console.log(cardIds)
 
     this.setState({ account, cardIds })
   }
 
   async withdrawToMainnet(cardId) {
-    await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
+    await this.props.dcCardManager.depositCardOnGateway(this.state.account, cardId)
   }
 
   render() {
     const cards = this.state.cardIds.map((cardId, idx) => {
-      const cardDef = this.props.ethCardManager.getCardWithId(cardId)
+      const cardDef = this.props.dcCardManager.getCardWithId(cardId)
       return (
         <Card
           title={cardDef.title}

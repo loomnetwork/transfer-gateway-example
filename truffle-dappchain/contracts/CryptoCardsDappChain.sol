@@ -16,29 +16,32 @@ contract CryptoCardsDappChain is ERC721Token {
   /**
     * @dev Constructor function
     */
-  constructor(address _gateway) ERC721Token("SampleERC721Token", "SDT") public {
+  constructor(address _gateway) ERC721Token("CryptoCardsDappChain", "CRC") public {
     gateway = _gateway;
   }
 
   // Called by the gateway contract to mint tokens that have been deposited to the Mainnet gateway.
   function mint(uint256 _uid) public {
     require(msg.sender == gateway);
-    tokensOwned[gateway].push(_uid);
     _mint(gateway, _uid);
+  }
+
+  function safeTransferFrom(
+    address _from,
+    address _to,
+    uint256 _tokenId,
+    bytes _data
+  )
+    public
+  {
+    tokensOwned[_to].push(_tokenId);
+    // solium-disable-next-line arg-overflow
+    super.safeTransferFrom(_from, _to, _tokenId, _data);
   }
 
   function tokensOf(address user) external view returns(uint256[]) {
     require(user != address(0x0), "Invalid address passed");
-    uint256[] memory ids = new uint256[](tokensOwned[user].length);
-    uint256 counter = 0;
-
-    for (uint256 i = 0; i < allTokens.length; i++) {
-      if (tokensOwned[user][i] == i+1) {
-        ids[counter] = i+1;
-        counter++;
-      }
-    }
-
+    uint256[] memory ids = tokensOwned[user];
     return ids;
   }
 }

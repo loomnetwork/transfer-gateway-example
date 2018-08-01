@@ -19,6 +19,7 @@ export default class EthCards extends React.Component {
 
     if (balance > 0) {
       cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account)
+      console.log('cards', cardIds)
     }
 
     this.setState({ account, cardIds })
@@ -27,12 +28,13 @@ export default class EthCards extends React.Component {
   async sendToDAppChain(cardId) {
     await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
     const balance = await this.props.ethCardManager.getBalanceOfUserAsync(this.state.account)
-    console.log(this.state.account, balance)
+    console.log(this.state.account, balance, cardId)
   }
 
   render() {
     const cards = this.state.cardIds.map((cardId, idx) => {
       const cardDef = this.props.ethCardManager.getCardWithId(cardId)
+      console.log('cardId', cardId)
       return (
         <Card
           title={cardDef.title}

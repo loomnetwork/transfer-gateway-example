@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import CardList from './cardList'
+import CardList from './card_list'
 
 export default class EthCardManager {
   static async createAsync() {
@@ -30,6 +30,8 @@ export default class EthCardManager {
   }
 
   async depositCardOnGateway(address, cardId) {
-    return await this.contract.methods.depositToGateway(cardId).send({ from: address })
+    return await this.contract.methods
+      .depositToGateway(cardId)
+      .send({ from: address, gas: '189362' })
   }
 }

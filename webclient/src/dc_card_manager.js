@@ -1,18 +1,8 @@
 import Web3 from 'web3'
 
-const {
-  NonceTxMiddleware,
-  SignedTxMiddleware,
-  Client,
-  Address,
-  LocalAddress,
-  CryptoUtils,
-  AddressMapper,
-  Web3Signer,
-  LoomProvider
-} = require('loom-js')
+const { Client, LocalAddress, CryptoUtils, LoomProvider } = require('loom-js')
 
-import CardList from './cardList'
+import CardList from './card_list'
 
 export default class DAppChainCardManager {
   static async createAsync() {

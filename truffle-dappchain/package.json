@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "compile": "truffle compile",
+    "compile": "rm -rf build; truffle compile",
     "deploy": "truffle migrate --reset --network loom_dapp_chain",
     "ganache-cli": "ganache-cli -p 8545 --gasLimit 50000000 -e 100000 -m \"gravity top burden flip student usage spell purchase hundred improve check genre\""
   },
@@ -8,6 +8,7 @@
     "ganache-cli": "^6.1.6",
     "openzeppelin-solidity": "1.10.0",
     "truffle": "^4.1.13",
+    "truffle-flattener": "^1.2.5",
     "truffle-hdwallet-provider": "^0.0.6",
     "truffle-privatekey-provider": "^0.1.0"
   }

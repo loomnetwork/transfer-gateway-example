@@ -25,16 +25,7 @@ contract CryptoCards is ERC721Token("CryptoCards", "CCC"), Ownable {
 
   function tokensOf(address user) external view returns(uint256[]) {
     require(user != address(0x0), "Invalid address passed");
-    uint256[] memory ids = new uint256[](tokensOwned[user].length);
-    uint256 counter = 0;
-
-    for (uint256 i = 0; i < allTokens.length; i++) {
-      if (tokensOwned[user][i] == i+1) {
-        ids[counter] = i+1;
-        counter++;
-      }
-    }
-
+    uint256[] memory ids = tokensOwned[user];
     return ids;
   }
 
