@@ -16,5 +16,5 @@ TransferGateway:
   DAppChainWriteURI: "http://localhost:46658/rpc"
   DAppChainEventsURI: "ws://localhost:46658/queryws"
   # These control how often the Oracle will poll the blockchains for events.
-  DAppChainPollInterval: 1 # seconds
-  MainnetPollInterval: 1 # seconds
+  DAppChainPollInterval: 10 # seconds
+  MainnetPollInterval: 10 # seconds

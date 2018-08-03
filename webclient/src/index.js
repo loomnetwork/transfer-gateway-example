@@ -10,11 +10,13 @@ import EthAccountManager from './eth_account_manager'
 import EthCardManager from './eth_card_manager'
 import DAppChainAccountManager from './dc_account_manager'
 import DAppChainCardManager from './dc_card_manager'
+import GatewayManager from './gateway_manager'
 ;(async () => {
   const ethCardManager = await EthCardManager.createAsync()
   const ethAccountManager = await EthAccountManager.createAsync()
   const dcAccountManager = await DAppChainAccountManager.createAsync()
   const dcCardManager = await DAppChainCardManager.createAsync()
+  const gatewayManager = await GatewayManager.createAsync()
 
   const BuildMain = () => (
     <Main
@@ -49,6 +51,7 @@ import DAppChainCardManager from './dc_card_manager'
       ethCardManager={ethCardManager}
       dcAccountManager={dcAccountManager}
       dcCardManager={dcCardManager}
+      gatewayManager={gatewayManager}
     />
   )
 

@@ -4,6 +4,7 @@ const gatewayAddress = readFileSync('../gateway_address', 'utf-8')
 const cryptoCardsAddress = readFileSync('../crypto_cards_address', 'utf-8')
 const cryptoCardsJSON = require('../truffle-ethereum/build/contracts/CryptoCards.json')
 const dcCryptoCardsJSON = require('../truffle-dappchain/build/contracts/CryptoCardsDappChain.json')
+const gatewayJSON = require('../truffle-ethereum/build/contracts/Gateway.json')
 
 module.exports = {
   context: __dirname + '/src',
@@ -30,7 +31,8 @@ module.exports = {
       GATEWAY_ADDRESS: JSON.stringify(gatewayAddress),
       CRYPTO_CARDS_ADDRESS: JSON.stringify(cryptoCardsAddress),
       CRYPTO_CARDS_JSON: JSON.stringify(cryptoCardsJSON),
-      DC_CRYPTO_CARDS_JSON: JSON.stringify(dcCryptoCardsJSON)
+      DC_CRYPTO_CARDS_JSON: JSON.stringify(dcCryptoCardsJSON),
+      GATEWAY_JSON: JSON.stringify(gatewayJSON)
     })
   ],
   optimization: {

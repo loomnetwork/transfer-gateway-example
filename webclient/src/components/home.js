@@ -22,7 +22,7 @@ export default class Home extends React.Component {
   }
 
   async sign() {
-    await this.props.dcAccountManager.sign(this.state.account)
+    await this.props.dcAccountManager.signAsync(this.state.account)
     await this.updateMapping()
   }
 

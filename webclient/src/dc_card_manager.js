@@ -1,6 +1,16 @@
 import Web3 from 'web3'
+import BN from 'bn.js'
 
-const { Client, LocalAddress, CryptoUtils, LoomProvider } = require('loom-js')
+const {
+  NonceTxMiddleware,
+  SignedTxMiddleware,
+  Client,
+  LocalAddress,
+  Address,
+  CryptoUtils,
+  LoomProvider,
+  TransferGateway
+} = require('loom-js')
 
 import CardList from './card_list'
 
@@ -18,6 +28,12 @@ export default class DAppChainCardManager {
       'ws://127.0.0.1:9999/queryws'
     )
 
+    // required middleware
+    client.txMiddleware = [
+      new NonceTxMiddleware(publicKey, client),
+      new SignedTxMiddleware(privateKey)
+    ]
+
     const from = LocalAddress.fromPublicKey(publicKey).toString()
     const web3 = new Web3(new LoomProvider(client, privateKey))
 
@@ -34,11 +50,18 @@ export default class DAppChainCardManager {
       { from }
     )
 
-    return new DAppChainCardManager(contract)
+    const transferGateway = await TransferGateway.createAsync(
+      client,
+      new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
+    )
+
+    return new DAppChainCardManager(client, contract, transferGateway)
   }
 
-  constructor(contract) {
-    this.contract = contract
+  constructor(client, contract, transferGateway) {
+    this._client = client
+    this._contract = contract
+    this._transferGateway = transferGateway
   }
 
   getCardWithId(cardId) {
@@ -46,14 +69,29 @@ export default class DAppChainCardManager {
   }
 
   async getBalanceOfUserAsync(address) {
-    return await this.contract.methods.balanceOf(address).call({ from: address })
+    return await this._contract.methods.balanceOf(address).call({ from: address })
   }
 
   async getTokensCardsOfUserAsync(address) {
-    return await this.contract.methods.tokensOf(address).call({ from: address })
+    return await this._contract.methods.tokensOf(address).call({ from: address })
   }
 
-  async depositCardOnGateway(address, cardId) {
-    return await this.contract.methods.depositToGateway(cardId).send({ from: address })
+  async approveAsync(address, cardId) {
+    return await this._contract.methods
+      .approve('0xb9fA0896573A89cF4065c43563C069b3B3C15c37'.toUpperCase(), cardId)
+      .send({ from: address })
+  }
+
+  async withdrawCardAsync(cardId) {
+    return await this._transferGateway.withdrawERC721Async(
+      new BN(cardId),
+      new Address(this._client.chainId, LocalAddress.fromHexString(this._contract.options.address))
+    )
+  }
+
+  async withdrawalReceiptAsync(address) {
+    return await this._transferGateway.withdrawalReceiptAsync(
+      new Address(this._client.chainId, LocalAddress.fromHexString(address))
+    )
   }
 }

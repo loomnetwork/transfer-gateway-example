@@ -58,7 +58,7 @@ export default class DAppChainAccountManager {
     }
   }
 
-  async sign(ethAddress) {
+  async signAsync(ethAddress) {
     const from = new Address('eth', LocalAddress.fromHexString(ethAddress))
     const to = new Address(this.client.chainId, LocalAddress.fromPublicKey(this.publicKey))
 
