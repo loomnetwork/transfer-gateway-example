@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from './card'
 import { bytesToHex } from '../../node_modules/loom-js/dist/crypto-utils'
+import { bytesToHexAddr } from '../../node_modules/loom-js/dist/crypto-utils'
 
 export default class DAppChainCards extends React.Component {
   constructor(props) {
@@ -17,24 +18,26 @@ export default class DAppChainCards extends React.Component {
 
     let cardIds = []
 
-    if (balance > 0) {
-      cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account)
-    }
+    // if (balance > 0) {
+    cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account)
+    // }
 
     this.setState({ account, cardIds, ethAccount })
   }
 
   async withdrawToMainnet(cardId) {
-    await this.props.dcCardManager.approveAsync(this.state.account, cardId)
-    await this.props.dcCardManager.withdrawCardAsync(cardId)
+    // await this.props.dcCardManager.approveAsync(this.state.account, cardId)
+    // await this.props.dcCardManager.withdrawCardAsync(cardId)
     const data = await this.props.dcCardManager.withdrawalReceiptAsync(this.state.account)
 
     const tokenOwner = data.tokenOwner.local.toString()
-    const signature = `0x${bytesToHex(data.oracleSignature)}`
+    const signature = bytesToHexAddr(data.oracleSignature).toLowerCase()
     const contractAddress = data.tokenOwner.local.toString()
 
+    console.log(tokenOwner)
+    console.log(signature)
+
     await this.props.gatewayManager.withdrawCardAsync(
-      // console.log(
       tokenOwner,
       cardId,
       signature,

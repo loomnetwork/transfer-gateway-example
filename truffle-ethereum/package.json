@@ -2,7 +2,7 @@
   "scripts": {
     "compile": "truffle compile",
     "deploy": "rm -rf build; truffle migrate --reset --network development;",
-    "ganache-cli": "ganache-cli -p 8545 -m \"gravity top burden flip student usage spell purchase hundred improve check genre\""
+    "ganache-cli": "ganache-cli -p 8545 -m gravity top burden flip student usage spell purchase hundred improve check genre"
   },
   "dependencies": {
     "ganache-cli": "^6.1.6",

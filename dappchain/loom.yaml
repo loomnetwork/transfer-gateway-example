@@ -9,7 +9,7 @@ TransferGateway:
   #       often times out while the tests are waiting for the Oracle to do something. So better to
   #       use the HTTP endpoint for testing.
   EthereumURI: "http://127.0.0.1:8545"
-  MainnetContractHexAddress: "0xb10d635e267854bf8ab628a5cf9c8b1da1d49cc8"
+  MainnetContractHexAddress: "0xf5cad0db6415a71a5bc67403c87b56b629b4ddaa"
   MainnetPrivateKeyPath: "oracle_eth_priv.key"
   DAppChainPrivateKeyPath: "oracle_priv.key"
   DAppChainReadURI: "http://localhost:46658/query"
