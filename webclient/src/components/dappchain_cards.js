@@ -26,8 +26,8 @@ export default class DAppChainCards extends React.Component {
   }
 
   async withdrawToMainnet(cardId) {
-    // await this.props.dcCardManager.approveAsync(this.state.account, cardId)
-    // await this.props.dcCardManager.withdrawCardAsync(cardId)
+    await this.props.dcCardManager.approveAsync(this.state.account, cardId)
+    await this.props.dcCardManager.withdrawCardAsync(cardId)
     const data = await this.props.dcCardManager.withdrawalReceiptAsync(this.state.account)
 
     const tokenOwner = data.tokenOwner.local.toString()
@@ -41,7 +41,7 @@ export default class DAppChainCards extends React.Component {
       tokenOwner,
       cardId,
       signature,
-      '0xd03d2ef03f6fb5a646edd24945fabd0366f4d25e'
+      '0x9e51aeeeca736cd81d27e025465834b8ec08628a'
     )
     // )
   }

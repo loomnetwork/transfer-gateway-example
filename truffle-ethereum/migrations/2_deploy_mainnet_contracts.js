@@ -4,18 +4,24 @@ const CryptoCards = artifacts.require('CryptoCards')
 const Gateway = artifacts.require('Gateway')
 
 module.exports = (deployer, network, accounts) => {
-  const [owner, user] = accounts
-  deployer.deploy(Gateway, [accounts[9]], 3, 4).then(async () => {
+  const [_, user] = accounts
+  const validator = accounts[9]
+  deployer.deploy(Gateway, [validator], 3, 4).then(async () => {
     const gatewayInstance = await Gateway.deployed()
-    writeFileSync('../gateway_address', gatewayInstance.address)
+
     console.log(`Gateway deployed at address: ${gatewayInstance.address}`)
 
-    await deployer.deploy(CryptoCards, gatewayInstance.address)
+    const cryptoCardsContract = await deployer.deploy(CryptoCards, gatewayInstance.address)
     const cryptoCardsInstance = await CryptoCards.deployed()
-    writeFileSync('../crypto_cards_address', cryptoCardsInstance.address)
-    console.log(`CryptoCards deployed at address: ${cryptoCardsInstance.address}`)
 
-    await gatewayInstance.toggleToken(cryptoCardsInstance.address, { from: accounts[9] })
+    console.log(`CryptoCards deployed at address: ${cryptoCardsInstance.address}`)
+    console.log(`CryptoCards transaction at hash: ${cryptoCardsContract.transactionHash}`)
+
+    await gatewayInstance.toggleToken(cryptoCardsInstance.address, { from: validator })
     await cryptoCardsInstance.register(user)
+
+    writeFileSync('../gateway_address', gatewayInstance.address)
+    writeFileSync('../crypto_cards_address', cryptoCardsInstance.address)
+    writeFileSync('../crypto_cards_tx_hash', cryptoCardsContract.transactionHash)
   })
 }

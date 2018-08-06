@@ -52,7 +52,7 @@ export default class DAppChainAccountManager {
   async getAddressMappingAsync(ethAddress) {
     try {
       const from = new Address('eth', LocalAddress.fromHexString(ethAddress))
-      return await this.addressMapper.getContractMappingAsync(from)
+      return await this.addressMapper.getMappingAsync(from)
     } catch (_) {
       return null
     }
