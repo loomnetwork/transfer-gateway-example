@@ -6,7 +6,8 @@ export default class EthCards extends React.Component {
     super(props)
     this.state = {
       account: '0x',
-      cardIds: []
+      cardIds: [],
+      mapping: null
     }
   }
 
@@ -18,6 +19,7 @@ export default class EthCards extends React.Component {
   async updateUI() {
     const account = await this.props.ethAccountManager.getCurrentAccountAsync()
     const balance = await this.props.ethCardManager.getBalanceOfUserAsync(account)
+    const mapping = await this.props.dcAccountManager.getAddressMappingAsync(account)
 
     let cardIds = []
 
@@ -25,7 +27,7 @@ export default class EthCards extends React.Component {
       cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account, balance)
     }
 
-    this.setState({ account, cardIds })
+    this.setState({ account, cardIds, mapping })
   }
 
   async sendToDAppChain(cardId) {
@@ -48,11 +50,19 @@ export default class EthCards extends React.Component {
       )
     })
 
+    const view = !this.state.mapping ? (
+      <p>Please sign your user first</p>
+    ) : cards.length > 0 ? (
+      cards
+    ) : (
+      <p>No cards deposited on Ethereum Network yet</p>
+    )
+
     return (
       <div>
         <h2>Ethereum Network Available Cards</h2>
         <div className="container">
-          <div>{cards}</div>
+          <div>{view}</div>
         </div>
       </div>
     )

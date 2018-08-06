@@ -18,6 +18,7 @@ export default class DAppChainCards extends React.Component {
     const ethAccount = await this.props.ethAccountManager.getCurrentAccountAsync()
     const account = this.props.dcAccountManager.getCurrentAccount()
     const balance = await this.props.dcCardManager.getBalanceOfUserAsync(account)
+    const mapping = await this.props.dcAccountManager.getAddressMappingAsync(ethAccount)
 
     let cardIds = []
 
@@ -25,7 +26,7 @@ export default class DAppChainCards extends React.Component {
       cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account, balance)
     }
 
-    this.setState({ account, cardIds, ethAccount })
+    this.setState({ account, cardIds, ethAccount, mapping })
   }
 
   async withdrawToMainnet(cardId) {
@@ -60,11 +61,19 @@ export default class DAppChainCards extends React.Component {
       )
     })
 
+    const view = !this.state.mapping ? (
+      <p>Please sign your user first</p>
+    ) : cards.length > 0 ? (
+      cards
+    ) : (
+      <p>No cards deposited on DAppChain yet</p>
+    )
+
     return (
       <div>
         <h2>DAppChain Available Cards</h2>
         <div className="container">
-          <div>{cards}</div>
+          <div>{view}</div>
         </div>
       </div>
     )
