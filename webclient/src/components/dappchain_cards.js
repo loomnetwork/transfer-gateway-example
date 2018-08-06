@@ -10,17 +10,20 @@ export default class DAppChainCards extends React.Component {
   }
 
   async componentWillMount() {
+    // TODO: Add an event to reload UI
+    await this.updateUI()
+  }
+
+  async updateUI() {
     const ethAccount = await this.props.ethAccountManager.getCurrentAccountAsync()
     const account = this.props.dcAccountManager.getCurrentAccount()
     const balance = await this.props.dcCardManager.getBalanceOfUserAsync(account)
 
-    console.log(account, balance)
-
     let cardIds = []
 
-    // if (balance > 0) {
-    cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account)
-    // }
+    if (balance > 0) {
+      cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account, balance)
+    }
 
     this.setState({ account, cardIds, ethAccount })
   }
@@ -31,19 +34,16 @@ export default class DAppChainCards extends React.Component {
     const data = await this.props.dcCardManager.withdrawalReceiptAsync(this.state.account)
 
     const tokenOwner = data.tokenOwner.local.toString()
-    const signature = bytesToHexAddr(data.oracleSignature).toLowerCase()
-    const contractAddress = data.tokenOwner.local.toString()
+    const signature = bytesToHexAddr(data.oracleSignature)
 
-    console.log(tokenOwner)
-    console.log(signature)
+    console.log('oracle signature', signature)
 
     await this.props.gatewayManager.withdrawCardAsync(
       tokenOwner,
       cardId,
       signature,
-      '0x9e51aeeeca736cd81d27e025465834b8ec08628a'
+      this.props.ethCardManager.getContractAddress()
     )
-    // )
   }
 
   render() {

@@ -72,8 +72,24 @@ export default class DAppChainCardManager {
     return await this._contract.methods.balanceOf(address).call({ from: address })
   }
 
-  async getTokensCardsOfUserAsync(address) {
-    return await this._contract.methods.tokensOf(address).call({ from: address })
+  async getTokensCardsOfUserAsync(address, balance) {
+    const total = await this._contract.methods.totalSupply().call()
+    let ids = []
+    for (let i = 0; i < total; i++) {
+      if (i >= balance) {
+        break
+      }
+
+      const cardId = await this._contract.methods
+        .tokenOfOwnerByIndex(address, i)
+        .call({ from: address })
+
+      if (cardId !== 0) {
+        ids.push(cardId)
+      }
+    }
+
+    return ids
   }
 
   async approveAsync(address, cardId) {

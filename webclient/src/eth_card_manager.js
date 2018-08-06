@@ -14,23 +14,41 @@ export default class EthCardManager {
   }
 
   constructor(contract) {
-    this.contract = contract
+    this._contract = contract
   }
 
   getCardWithId(cardId) {
     return CardList[cardId]
   }
 
-  async getBalanceOfUserAsync(address) {
-    return await this.contract.methods.balanceOf(address).call({ from: address })
+  getContractAddress() {
+    return this._contract.options.address
   }
 
-  async getTokensCardsOfUserAsync(address) {
-    return await this.contract.methods.tokensOf(address).call({ from: address })
+  async getBalanceOfUserAsync(address) {
+    return await this._contract.methods.balanceOf(address).call({ from: address })
+  }
+
+  async getTokensCardsOfUserAsync(address, balance) {
+    const total = await this._contract.methods.totalSupply().call()
+    let ids = []
+    for (let i = 0; i < total; i++) {
+      if (i >= balance) {
+        break
+      }
+      const cardId = await this._contract.methods
+        .tokenOfOwnerByIndex(address, i)
+        .call({ from: address })
+      if (cardId !== 0) {
+        ids.push(cardId)
+      }
+    }
+
+    return ids
   }
 
   async depositCardOnGateway(address, cardId) {
-    return await this.contract.methods
+    return await this._contract.methods
       .depositToGateway(cardId)
       .send({ from: address, gas: '189362' })
   }

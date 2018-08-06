@@ -11,15 +11,18 @@ export default class EthCards extends React.Component {
   }
 
   async componentWillMount() {
+    // TODO: Add an event to reload UI
+    await this.updateUI()
+  }
+
+  async updateUI() {
     const account = await this.props.ethAccountManager.getCurrentAccountAsync()
     const balance = await this.props.ethCardManager.getBalanceOfUserAsync(account)
-    console.log(account, balance)
 
     let cardIds = []
 
     if (balance > 0) {
-      cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account)
-      console.log('cards', cardIds)
+      cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account, balance)
     }
 
     this.setState({ account, cardIds })
@@ -27,14 +30,13 @@ export default class EthCards extends React.Component {
 
   async sendToDAppChain(cardId) {
     await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
-    const balance = await this.props.ethCardManager.getBalanceOfUserAsync(this.state.account)
-    console.log(this.state.account, balance, cardId)
+    await this.updateUI()
   }
 
   render() {
     const cards = this.state.cardIds.map((cardId, idx) => {
       const cardDef = this.props.ethCardManager.getCardWithId(cardId)
-      console.log('cardId', cardId)
+
       return (
         <Card
           title={cardDef.title}
