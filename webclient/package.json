@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "scripts/server.sh",
+    "serve": "scripts/server.sh",
+    "start": "webpack-dev-server --hot --content-base ./dist",
     "ganache-cli": "ganache-cli -p 8545 -v -m \"trade nothing tag piece anger smoke clay reveal burst behave dose brave\""
   },
   "dependencies": {

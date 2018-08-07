@@ -8,8 +8,7 @@ const {
   LocalAddress,
   Address,
   CryptoUtils,
-  LoomProvider,
-  TransferGateway
+  LoomProvider
 } = require('loom-js')
 
 import CardList from './card_list'
@@ -50,18 +49,16 @@ export default class DAppChainCardManager {
       { from }
     )
 
-    const transferGateway = await TransferGateway.createAsync(
-      client,
-      new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
-    )
-
-    return new DAppChainCardManager(client, contract, transferGateway)
+    return new DAppChainCardManager(client, contract)
   }
 
-  constructor(client, contract, transferGateway) {
+  constructor(client, contract) {
     this._client = client
     this._contract = contract
-    this._transferGateway = transferGateway
+  }
+
+  getContractAddress() {
+    return this._contract.options.address
   }
 
   getCardWithId(cardId) {
@@ -96,18 +93,5 @@ export default class DAppChainCardManager {
     return await this._contract.methods
       .approve('0xb9fA0896573A89cF4065c43563C069b3B3C15c37'.toUpperCase(), cardId)
       .send({ from: address })
-  }
-
-  async withdrawCardAsync(cardId) {
-    return await this._transferGateway.withdrawERC721Async(
-      new BN(cardId),
-      new Address(this._client.chainId, LocalAddress.fromHexString(this._contract.options.address))
-    )
-  }
-
-  async withdrawalReceiptAsync(address) {
-    return await this._transferGateway.withdrawalReceiptAsync(
-      new Address(this._client.chainId, LocalAddress.fromHexString(address))
-    )
   }
 }

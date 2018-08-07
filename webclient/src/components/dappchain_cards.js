@@ -1,7 +1,7 @@
 import React from 'react'
+import BN from 'bn.js'
 import Card from './card'
-import { bytesToHex } from '../../node_modules/loom-js/dist/crypto-utils'
-import { bytesToHexAddr } from '../../node_modules/loom-js/dist/crypto-utils'
+import { TransferGateway, CryptoUtils } from 'loom-js'
 
 export default class DAppChainCards extends React.Component {
   constructor(props) {
@@ -10,7 +10,6 @@ export default class DAppChainCards extends React.Component {
   }
 
   async componentWillMount() {
-    // TODO: Add an event to reload UI
     await this.updateUI()
   }
 
@@ -31,15 +30,15 @@ export default class DAppChainCards extends React.Component {
 
   async withdrawToMainnet(cardId) {
     await this.props.dcCardManager.approveAsync(this.state.account, cardId)
-    await this.props.dcCardManager.withdrawCardAsync(cardId)
-    const data = await this.props.dcCardManager.withdrawalReceiptAsync(this.state.account)
-
+    await this.props.dcGatewayManager.withdrawCardAsync(
+      cardId,
+      this.props.dcCardManager.getContractAddress()
+    )
+    const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
     const tokenOwner = data.tokenOwner.local.toString()
-    const signature = bytesToHexAddr(data.oracleSignature)
+    const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
 
-    console.log('oracle signature', signature)
-
-    await this.props.gatewayManager.withdrawCardAsync(
+    await this.props.ethGatewayManager.withdrawCardAsync(
       tokenOwner,
       cardId,
       signature,

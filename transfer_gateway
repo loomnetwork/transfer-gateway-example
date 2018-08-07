@@ -60,6 +60,7 @@ function start_oracle {
   echo "Start Oracle"
   cd dappchain
   ./oracle > /dev/null 2>&1 &
+  $oracle_pid=$!
   echo $oracle_pid > oracle.pid
   cd ..
 }
@@ -89,7 +90,7 @@ function run_mapping {
 function run_webdapp {
   echo "Running DApp"
   cd webclient
-  yarn start > /dev/null 2>&1 &
+  yarn serve > /dev/null 2>&1 &
   cd ..
 }
 
