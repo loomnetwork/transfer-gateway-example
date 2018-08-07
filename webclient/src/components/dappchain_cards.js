@@ -45,6 +45,8 @@ export default class DAppChainCards extends React.Component {
       signature,
       this.props.ethCardManager.getContractAddress()
     )
+
+    alert('Wait 10 seconds to card be available on Ethereum Network')
   }
 
   render() {

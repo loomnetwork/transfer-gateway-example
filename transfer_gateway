@@ -1,5 +1,20 @@
 #!/bin/bash
 
+function setup {
+  echo "Installing ..."
+  cd webclient
+  yarn
+  cd ../truffle-dappchain
+  yarn
+  cd ../truffle-ethereum
+  yarn
+  cd ../transfer-gateway-scripts
+  yarn
+  cd ../dappchain
+  cp genesis.example.json genesis.json
+  cd ..
+}
+
 function start_and_deploy_truffle_ethereum {
   echo "Start and Deploy Truffle Ethereum"
   cd truffle-ethereum
@@ -80,6 +95,9 @@ function stop_webdapp {
 }
 
 case "$1" in
+setup)
+  setup
+  ;;
 start)
   start_and_deploy_truffle_ethereum
   sleep 5
@@ -99,7 +117,7 @@ stop)
   stop_webdapp
   ;;
 *)
-   echo "Usage: $0 {start|stop}"
+   echo "Usage: $0 {setup|start|stop}"
 esac
 
 exit 0

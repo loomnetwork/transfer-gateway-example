@@ -39,6 +39,10 @@
             "name": "gateway",
             "location": "gateway:0.1.0",
             "init": {
+                "owner": {
+                    "chain_id": "default",
+                    "local": "c/IFoEFkm4+D3wdqLmFU9F3t3Sk="
+                },
                 "oracles": [
                     {
                         "chain_id": "default",
