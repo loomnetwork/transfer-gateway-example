@@ -34,7 +34,12 @@ export default class Main extends React.Component {
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink to="/eth_cards" activeClassName="active" className="nav-link">
-                Cards on Ethereum
+                Owned Cards
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/gateway_cards" activeClassName="active" className="nav-link">
+                Cards on Gateway
               </NavLink>
             </li>
             <li className="nav-item">

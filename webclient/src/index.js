@@ -6,6 +6,7 @@ import Main from './components/main'
 import Home from './components/home'
 import EthCards from './components/eth_cards'
 import DAppChainCards from './components/dappchain_cards'
+import GatewayCards from './components/gateway_cards'
 import EthAccountManager from './eth_account_manager'
 import EthCardManager from './eth_card_manager'
 import DAppChainAccountManager from './dc_account_manager'
@@ -47,13 +48,24 @@ import DAppChainGatewayManager from './dc_gateway_manager'
     />
   )
 
+  const BuildGatewayCards = () => (
+    <GatewayCards
+      ethAccountManager={ethAccountManager}
+      ethGatewayManager={ethGatewayManager}
+      ethCardManager={ethCardManager}
+      dcAccountManager={dcAccountManager}
+      dcCardManager={dcCardManager}
+      dcGatewayManager={dcGatewayManager}
+    />
+  )
+
   const BuildDAppChainCards = () => (
     <DAppChainCards
       ethAccountManager={ethAccountManager}
       ethCardManager={ethCardManager}
+      ethGatewayManager={ethGatewayManager}
       dcAccountManager={dcAccountManager}
       dcCardManager={dcCardManager}
-      ethGatewayManager={ethGatewayManager}
       dcGatewayManager={dcGatewayManager}
     />
   )
@@ -69,6 +81,7 @@ import DAppChainGatewayManager from './dc_gateway_manager'
           <div className="container">
             <Route exact path="/" component={BuildHome} />
             <Route path="/eth_cards" component={BuildEthCards} />
+            <Route path="/gateway_cards" component={BuildGatewayCards} />
             <Route path="/dappchain_cards" component={BuildDAppChainCards} />
           </div>
         </main>

@@ -43,8 +43,14 @@ export default class DAppChainGatewayManager {
     this._client = client
 
     this._transferGateway.on(TransferGateway.EVENT_TOKEN_WITHDRAWAL, event => {
-      console.log('event', event)
+      if (this._onTokenWithdrawal) {
+        this._onTokenWithdrawal(event)
+      }
     })
+  }
+
+  onTokenWithdrawal(fn) {
+    this._onTokenWithdrawal = fn
   }
 
   async withdrawCardAsync(cardId, contractAddress) {

@@ -10,6 +10,10 @@ export default class DAppChainCards extends React.Component {
   }
 
   async componentWillMount() {
+    this.props.dcGatewayManager.onTokenWithdrawal(async event => {
+      alert(`Card id ${event.value.toNumber()} ready for withdraw, check Cards On Gateway`)
+    })
+
     await this.updateUI()
   }
 
@@ -28,24 +32,34 @@ export default class DAppChainCards extends React.Component {
     this.setState({ account, cardIds, ethAccount, mapping })
   }
 
-  async withdrawToMainnet(cardId) {
+  async allowToWithdraw(cardId) {
     await this.props.dcCardManager.approveAsync(this.state.account, cardId)
-    await this.props.dcGatewayManager.withdrawCardAsync(
-      cardId,
-      this.props.dcCardManager.getContractAddress()
-    )
-    const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
-    const tokenOwner = data.tokenOwner.local.toString()
-    const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
 
-    await this.props.ethGatewayManager.withdrawCardAsync(
-      tokenOwner,
-      cardId,
-      signature,
-      this.props.ethCardManager.getContractAddress()
-    )
+    try {
+      await this.props.dcGatewayManager.withdrawCardAsync(
+        cardId,
+        this.props.dcCardManager.getContractAddress()
+      )
+    } catch (err) {
+      if (err.message.indexOf('pending') > -1) {
+        alert('Pending withdraw exists, check Cards On Gateway')
+      } else {
+        console.error(err)
+      }
+    }
 
-    alert('Wait 10 seconds to card be available on Ethereum Network')
+    // const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
+    // const tokenOwner = data.tokenOwner.local.toString()
+    // const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
+
+    // await this.props.ethGatewayManager.withdrawCardAsync(
+    //   tokenOwner,
+    //   cardId,
+    //   signature,
+    //   this.props.ethCardManager.getContractAddress()
+    // )
+
+    // alert('Wait 10 seconds to card be available on Ethereum Network')
   }
 
   render() {
@@ -56,8 +70,8 @@ export default class DAppChainCards extends React.Component {
           title={cardDef.title}
           description={cardDef.description}
           key={idx}
-          action="Withdraw"
-          handleOnClick={() => this.withdrawToMainnet(cardId)}
+          action="Allow Withdraw"
+          handleOnClick={() => this.allowToWithdraw(cardId)}
         />
       )
     })

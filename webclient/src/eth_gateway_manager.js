@@ -16,6 +16,12 @@ export default class EthGatewayManager {
     this.contract = contract
   }
 
+  async isTokensCardOfUserAsync(address, cardId, gatewayContract) {
+    return await this._contract.methods
+      .getNFT(address, cardId, gatewayContract)
+      .call({ from: address })
+  }
+
   async withdrawCardAsync(address, cardId, sig, contractAddress) {
     return await this.contract.methods
       .withdrawERC721(cardId, sig, contractAddress)

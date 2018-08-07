@@ -61,7 +61,7 @@ export default class EthCards extends React.Component {
 
     return (
       <div>
-        <h2>Ethereum Network Available Cards</h2>
+        <h2>Ethereum Network Owned Cards</h2>
         <div className="container">
           <div>{view}</div>
         </div>
