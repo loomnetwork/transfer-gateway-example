@@ -1,7 +1,5 @@
 import React from 'react'
-import BN from 'bn.js'
 import Card from './card'
-import { TransferGateway, CryptoUtils } from 'loom-js'
 
 export default class DAppChainCards extends React.Component {
   constructor(props) {
@@ -47,19 +45,6 @@ export default class DAppChainCards extends React.Component {
         console.error(err)
       }
     }
-
-    // const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
-    // const tokenOwner = data.tokenOwner.local.toString()
-    // const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
-
-    // await this.props.ethGatewayManager.withdrawCardAsync(
-    //   tokenOwner,
-    //   cardId,
-    //   signature,
-    //   this.props.ethCardManager.getContractAddress()
-    // )
-
-    // alert('Wait 10 seconds to card be available on Ethereum Network')
   }
 
   render() {

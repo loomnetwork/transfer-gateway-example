@@ -34,11 +34,8 @@ export default class EthCards extends React.Component {
 
   async withdrawFromGateway(cardId) {
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
-
     const tokenOwner = data.tokenOwner.local.toString()
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
-
-    // console.log(tokenOwner, cardId, signature, this.props.ethCardManager.getContractAddress())
 
     try {
       await this.props.ethGatewayManager.withdrawCardAsync(
