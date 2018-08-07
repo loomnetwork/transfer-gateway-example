@@ -3,14 +3,21 @@
 function setup {
   echo "Installing ..."
   cd webclient
+  echo "Install Webclient"
   yarn
   cd ../truffle-dappchain
+  echo "Install DappChain"
   yarn
   cd ../truffle-ethereum
+  echo "Install Truffle Ethereum"
   yarn
   cd ../transfer-gateway-scripts
+  echo "Install Transfer Gateway Scripts"
   yarn
   cd ../dappchain
+  echo "Install DappChain"
+  loom init -f
+  sleep 5
   cp genesis.example.json genesis.json
   cd ..
 }
