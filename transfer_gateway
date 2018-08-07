@@ -1,0 +1,105 @@
+#!/bin/bash
+
+function start_and_deploy_truffle_ethereum {
+  echo "Start and Deploy Truffle Ethereum"
+  cd truffle-ethereum
+  yarn deploy > /dev/null 2>&1 &
+  sleep 1
+  yarn ganache-cli:dev 2>&1 &
+  cd ..
+}
+
+function stop_truffle_ethereum {
+  echo "Stop Truffle Ethereum"
+  cd truffle-ethereum
+  pid=$(cat ganache.pid)
+  kill -9 $pid
+  cd ..
+}
+
+function start_dappchain {
+  echo "Start DAppChain"
+  cd dappchain
+  loom reset; loom run > /dev/null 2>&1 &
+  loom_pid=$!
+  echo $loom_pid > loom.pid
+  cd ..
+}
+
+function stop_dappchain {
+  echo "Stop DAppChain"
+  cd dappchain
+  pid=$(cat loom.pid)
+  kill -9 $pid
+  cd ..
+}
+
+function start_oracle {
+  echo "Start Oracle"
+  cd dappchain
+  ./oracle > /dev/null 2>&1 &
+  echo $oracle_pid > oracle.pid
+  cd ..
+}
+
+function stop_oracle {
+  echo "Stop Oracle"
+  cd dappchain
+  pid=$(cat oracle.pid)
+  kill -9 $pid
+  cd ..
+}
+
+function deploy_truffle_dappchain {
+  echo "Start Truffle DAppChain"
+  cd truffle-dappchain
+  yarn deploy > /dev/null 2>&1 &
+  cd ..
+}
+
+function run_mapping {
+  echo "Running mapping"
+  cd transfer-gateway-scripts
+  node index.js > /dev/null 2>&1 &
+  cd ..
+}
+
+function run_webdapp {
+  echo "Running DApp"
+  cd webclient
+  yarn start > /dev/null 2>&1 &
+  cd ..
+}
+
+function stop_webdapp {
+  echo "Stop DApp"
+  cd webclient
+  pid=$(cat webclient.pid)
+  kill -9 $pid
+  cd ..
+}
+
+case "$1" in
+start)
+  start_and_deploy_truffle_ethereum
+  sleep 5
+  start_dappchain
+  deploy_truffle_dappchain
+  sleep 10
+  start_oracle
+  sleep 10
+  run_mapping
+  sleep 5
+  run_webdapp
+  ;;
+stop)
+  stop_truffle_ethereum
+  stop_oracle
+  stop_dappchain
+  stop_webdapp
+  ;;
+*)
+   echo "Usage: $0 {start|stop}"
+esac
+
+exit 0

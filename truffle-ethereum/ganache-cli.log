@@ -1,0 +1,233 @@
+yarn run v1.7.0
+warning package.json: No license field
+$ ganache-cli -p 8545 -m gravity top burden flip student usage spell purchase hundred improve check genre
+Ganache CLI v6.1.6 (ganache-core: 2.1.5)
+
+Available Accounts
+==================
+(0) 0x7292694902bcaf4e1620629e7198cdcb3f572a24 (~100 ETH)
+(1) 0x5194b63f10691e46635b27925100cfc0a5ceca62 (~100 ETH)
+(2) 0x5ece25d5a9f2f82066fc97ec3b9d162599b0d826 (~100 ETH)
+(3) 0x50bce46ff7f6b92e4d383e4ada3ecba9e86d1292 (~100 ETH)
+(4) 0x90a3d2aff8c3c60614d40b034fec77b465ad92d5 (~100 ETH)
+(5) 0x76bb74f88378e16c796963996bc7b505fe883415 (~100 ETH)
+(6) 0x8e02fccfb4351e02a7d5b403fb4050bb317b1ce8 (~100 ETH)
+(7) 0x6ae1c0890e9cf295fe164ede614ab684175e68c0 (~100 ETH)
+(8) 0xa9894187e013d71c9ac91e31cb168d73e99563f9 (~100 ETH)
+(9) 0xc2c9febb5c11e87a987ba142d4705cb4075bd157 (~100 ETH)
+
+Private Keys
+==================
+(0) 0x7920ca01d3d1ac463dfd55b5ddfdcbb64ae31830f31be045ce2d51a305516a37
+(1) 0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2
+(2) 0x2f615ea53711e0d91390e97cdd5ce97357e345e441aa95d255094164f44c8652
+(3) 0x7d52c3f6477e1507d54a826833169ad169a56e02ffc49a1801218a7d87ca50bd
+(4) 0x6aecd44fcb79d4b68f1ee2b2c706f8e9a0cd06b0de4729fe98cfed8886315256
+(5) 0x686e245584fdf696abd739c0e66ac6e01fc4c68babee20c7124566e118b2a634
+(6) 0x9fd4ab25e1699bb252f4d5c4510a135db34b3adca8baa03194ad5cd6faa13a1d
+(7) 0xe8445efa4e3349c3c74fd6689553f93b55aca723115fb777e1e6f4db2a0a82ca
+(8) 0x56901d80abc6953d1dc01de2f077b75260f49a3304f665b57ed13514a7e2a2bc
+(9) 0xedc63d0e14b29aaa26c7585e962f93abb59bd7d8b01b585e073dc03d052a000b
+
+HD Wallet
+==================
+Mnemonic:      gravity
+Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+Gas Price
+==================
+20000000000
+
+Gas Limit
+==================
+6721975
+
+Listening on 127.0.0.1:8545
+eth_getBlockByNumber
+net_version
+eth_accounts
+eth_accounts
+net_version
+net_version
+eth_sendTransaction
+
+  Transaction: 0x240043887d902805697b17cc3dc0133dac8ab8420a59c112f588b6a2b1c19d09
+  Contract created: 0x80d738db2ee26b96ee682bf387d3138e72962dd2
+  Gas usage: 277462
+  Block Number: 1
+  Block Time: Mon Aug 06 2018 22:44:15 GMT-0300 (Brasilia Standard Time)
+
+eth_newBlockFilter
+eth_getFilterChanges
+eth_getTransactionReceipt
+eth_getCode
+eth_uninstallFilter
+eth_sendTransaction
+
+  Transaction: 0x6c49f497e168be896903e8ddae65387154601bd734ac6eea42e75a3c61dfb595
+  Gas usage: 42008
+  Block Number: 2
+  Block Time: Mon Aug 06 2018 22:44:15 GMT-0300 (Brasilia Standard Time)
+
+eth_getTransactionReceipt
+eth_accounts
+net_version
+net_version
+eth_sendTransaction
+
+  Transaction: 0x987ca17db9247a0bb89ac3353d28396b0ecd2d98ffac8573c67690dcc0f99597
+  Contract created: 0xf5cad0db6415a71a5bc67403c87b56b629b4ddaa
+  Gas usage: 3543900
+  Block Number: 3
+  Block Time: Mon Aug 06 2018 22:44:15 GMT-0300 (Brasilia Standard Time)
+
+eth_newBlockFilter
+eth_getFilterChanges
+eth_getTransactionReceipt
+eth_getCode
+eth_uninstallFilter
+net_version
+net_version
+eth_sendTransaction
+
+  Transaction: 0x40056fd105359d69ae1c20b8f98951c22587d2b92c75171c22684b48441dbc12
+  Contract created: 0x9e51aeeeca736cd81d27e025465834b8ec08628a
+  Gas usage: 2456044
+  Block Number: 4
+  Block Time: Mon Aug 06 2018 22:44:15 GMT-0300 (Brasilia Standard Time)
+
+eth_newBlockFilter
+eth_getFilterChanges
+eth_getTransactionReceipt
+eth_getCode
+eth_uninstallFilter
+eth_sendTransaction
+
+  Transaction: 0xa2c6dfbdff22c32318a40b7ca6be4ef371a16f27d58c9473ed13db85850076dc
+  Gas usage: 44229
+  Block Number: 5
+  Block Time: Mon Aug 06 2018 22:44:16 GMT-0300 (Brasilia Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x20175683270fd179df12243093ba9e5039b0df0527379af4c7864a878bda4792
+  Gas usage: 638242
+  Block Number: 6
+  Block Time: Mon Aug 06 2018 22:44:16 GMT-0300 (Brasilia Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x65ca3afe858fc02853b7eb565c4d616d9f0c42d61562b8e68e95464dced706d8
+  Gas usage: 27008
+  Block Number: 7
+  Block Time: Mon Aug 06 2018 22:44:16 GMT-0300 (Brasilia Standard Time)
+
+eth_getTransactionReceipt
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+eth_getBlockByNumber
+error Command failed with signal "SIGTERM".
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
