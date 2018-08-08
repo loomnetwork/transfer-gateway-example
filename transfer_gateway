@@ -1,5 +1,10 @@
 #!/bin/bash
 
+ganache_port=8545
+dapp_port=8080
+dappchain_port_1=46657
+dappchain_port_2=46658
+
 function check_file_exists {
   if [ -f $1 ]; then
     echo 1
@@ -10,6 +15,14 @@ function check_file_exists {
 
 function check_directory_exists {
   if [ -d $1 ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+function check_port {
+  if (nc -z localhost $1); then
     echo 1
   else
     echo 0
@@ -184,6 +197,21 @@ status)
   [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
   ;;
 start)
+  if [ $(check_port $ganache_port) != 0 ]; then
+    echo "Ganache port $ganache_port is already in use"
+    exit -1
+  fi
+
+  if [ $(check_port $dapp_port) != 0 ]; then
+    echo "Dapp port $dapp_port is already in use"
+    exit -1
+  fi
+
+  if [ $(check_port $dappchain_port_1) != 0 ] || [ $(check_port $dappchain_port_2) != 0 ]; then
+    echo "Some port from DAppChain already in use [$dappchain_port_1 or $dappchain_port_2]"
+    exit -1
+  fi
+
   start_and_deploy_truffle_ethereum
   start_dappchain
   start_oracle
