@@ -7,12 +7,12 @@ export default class EthCards extends React.Component {
     this.state = {
       account: '0x',
       cardIds: [],
-      mapping: null
+      mapping: null,
+      sending: false
     }
   }
 
   async componentWillMount() {
-    // TODO: Add an event to reload UI
     await this.updateUI()
   }
 
@@ -31,9 +31,16 @@ export default class EthCards extends React.Component {
   }
 
   async sendToDAppChain(cardId) {
-    await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
+    this.setState({ sending: true })
+    try {
+      await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
+      alert('The Card will be available on DappChain, check DAppChain Cards')
+    } catch (err) {
+      console.log('Transaction failed or denied by user')
+    }
+
+    this.setState({ sending: false })
     await this.updateUI()
-    alert('The Card will be available on DappChain, check DAppChain Cards')
   }
 
   render() {
@@ -47,6 +54,7 @@ export default class EthCards extends React.Component {
           key={idx}
           action="Send to DAppChain"
           handleOnClick={() => this.sendToDAppChain(cardId)}
+          disabled={this.state.sending}
         />
       )
     })

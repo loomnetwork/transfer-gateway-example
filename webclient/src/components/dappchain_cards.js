@@ -4,7 +4,13 @@ import Card from './card'
 export default class DAppChainCards extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { account: '0x', ethAccount: '0x', cardIds: [] }
+
+    this.state = {
+      account: '0x',
+      ethAccount: '0x',
+      cardIds: [],
+      allowing: false
+    }
   }
 
   async componentWillMount() {
@@ -31,6 +37,7 @@ export default class DAppChainCards extends React.Component {
   }
 
   async allowToWithdraw(cardId) {
+    this.setState({ allowing: true })
     await this.props.dcCardManager.approveAsync(this.state.account, cardId)
 
     try {
@@ -45,6 +52,8 @@ export default class DAppChainCards extends React.Component {
         console.error(err)
       }
     }
+    this.setState({ allowing: false })
+    await this.updateUI()
   }
 
   render() {
@@ -56,6 +65,7 @@ export default class DAppChainCards extends React.Component {
           description={cardDef.description}
           key={idx}
           action="Allow Withdraw"
+          disabled={this.state.allowing}
           handleOnClick={() => this.allowToWithdraw(cardId)}
         />
       )

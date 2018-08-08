@@ -9,12 +9,12 @@ export default class EthCards extends React.Component {
       ethAccount: '0x',
       account: '0x',
       cardIds: [],
-      mapping: null
+      mapping: null,
+      withdrawing: false
     }
   }
 
   async componentWillMount() {
-    // TODO: Add an event to reload UI
     await this.updateUI()
   }
 
@@ -33,6 +33,7 @@ export default class EthCards extends React.Component {
   }
 
   async withdrawFromGateway(cardId) {
+    this.setState({ withdrawing: true })
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
     const tokenOwner = data.tokenOwner.local.toString()
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
@@ -49,6 +50,9 @@ export default class EthCards extends React.Component {
     } catch (err) {
       console.error(err)
     }
+
+    this.setState({ withdrawing: true })
+    await this.updateUI()
   }
 
   render() {
@@ -60,6 +64,7 @@ export default class EthCards extends React.Component {
           title={cardDef.title}
           description={cardDef.description}
           key={idx}
+          disabled={this.state.withdrawing}
           action="Withdraw from gateway"
           handleOnClick={() => this.withdrawFromGateway(cardId)}
         />

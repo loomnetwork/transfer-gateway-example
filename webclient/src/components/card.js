@@ -8,6 +8,7 @@ export default class Card extends React.Component {
           <h5 className="card-title">{this.props.title}</h5>
           <p className="card-text">{this.props.description}</p>
           <button
+            disabled={this.props.disabled}
             type="button"
             className="btn btn-primary"
             onClick={() => this.props.handleOnClick()}>
