@@ -68,7 +68,7 @@ contract Gateway is ERC20Receiver, ERC721Receiver, ValidatorManagerContract {
 
   function withdrawERC721(uint256 uid, bytes sig, address contractAddress)
     external
-    // isVerifiedByValidator(uid, contractAddress, sig)
+    isVerifiedByValidator(uid, contractAddress, sig)
   {
     require(balances[msg.sender].erc721[contractAddress][uid], "Does not own token");
     ERC721(contractAddress).safeTransferFrom(address(this),  msg.sender, uid);

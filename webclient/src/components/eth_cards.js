@@ -33,7 +33,7 @@ export default class EthCards extends React.Component {
   async sendToDAppChain(cardId) {
     await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
     await this.updateUI()
-    alert('Wait 10 seconds to card be available on DappChain')
+    alert('The Card will be available on DappChain, check DAppChain Cards')
   }
 
   render() {
