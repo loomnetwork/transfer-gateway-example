@@ -1,5 +1,21 @@
 #!/bin/bash
 
+function check_file_exists {
+  if [ -f $1 ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+function check_directory_exists {
+  if [ -d $1 ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
 function setup {
   echo "Installing ..."
   cd webclient
@@ -23,109 +39,166 @@ function setup {
 }
 
 function start_and_deploy_truffle_ethereum {
-  echo "Start and Deploy Truffle Ethereum"
-  cd truffle-ethereum
-  yarn deploy > /dev/null 2>&1 &
-  sleep 1
-  yarn ganache-cli:dev 2>&1 &
-  cd ..
+  if [ $(check_file_exists truffle-ethereum/ganache.pid) = 0 ]; then
+    echo "Start and Deploy Truffle Ethereum"
+    cd truffle-ethereum
+    yarn ganache-cli:dev > /dev/null 2>&1
+    sleep 5
+    yarn deploy > /dev/null 2>&1
+    cd ..
+  else
+    echo "Truffle Ethereum is deployed and running"
+  fi
 }
 
 function stop_truffle_ethereum {
-  echo "Stop Truffle Ethereum"
-  cd truffle-ethereum
-  pid=$(cat ganache.pid)
-  kill -9 $pid
-  cd ..
+  if [ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]; then
+    echo "Stop Truffle Ethereum"
+    cd truffle-ethereum
+    pid=$(cat ganache.pid)
+    kill -9 $pid
+    rm ganache.pid
+    cd ..
+  else
+    echo "Truffle Ethereum not running"
+  fi
 }
 
 function start_dappchain {
-  echo "Start DAppChain"
-  cd dappchain
-  loom reset; loom run > /dev/null 2>&1 &
-  loom_pid=$!
-  echo $loom_pid > loom.pid
-  cd ..
+  if [ $(check_file_exists dappchain/loom.pid) = 0 ]; then
+    echo "Start DAppChain"
+    cd dappchain
+    loom reset; loom run > /dev/null 2>&1 &
+    loom_pid=$!
+    echo $loom_pid > loom.pid
+    sleep 5
+    cd ..
+  else
+    echo "DAppChain is running"
+  fi
 }
 
 function stop_dappchain {
-  echo "Stop DAppChain"
-  cd dappchain
-  pid=$(cat loom.pid)
-  kill -9 $pid
-  cd ..
+  if [ $(check_file_exists dappchain/loom.pid) = 1 ]; then
+    echo "Stop DAppChain"
+    cd dappchain
+    pid=$(cat loom.pid)
+    kill -9 $pid
+    rm loom.pid
+    cd ..
+  else
+    echo "DAppChain not running"
+  fi
 }
 
 function start_oracle {
-  echo "Start Oracle"
-  cd dappchain
-  ./oracle > /dev/null 2>&1 &
-  oracle_pid=$!
-  echo $oracle_pid > oracle.pid
-  cd ..
+  if [ $(check_file_exists dappchain/oracle.pid) = 0 ]; then
+    echo "Start Oracle"
+    cd dappchain
+    ./oracle > /dev/null 2>&1 &
+    oracle_pid=$!
+    echo $oracle_pid > oracle.pid
+    sleep 5
+    cd ..
+  else
+    echo "Oracle is running"
+  fi
 }
 
 function stop_oracle {
-  echo "Stop Oracle"
-  cd dappchain
-  pid=$(cat oracle.pid)
-  kill -9 $pid
-  cd ..
+  if [ $(check_file_exists dappchain/oracle.pid) = 1 ]; then
+    echo "Stop Oracle"
+    cd dappchain
+    pid=$(cat oracle.pid)
+    kill -9 $pid
+    rm oracle.pid
+    cd ..
+  else
+    echo "Oracle not running"
+  fi
 }
 
 function deploy_truffle_dappchain {
-  echo "Start Truffle DAppChain"
-  cd truffle-dappchain
-  yarn deploy > /dev/null 2>&1 &
-  cd ..
+  if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
+    echo "Start Truffle DAppChain"
+    cd truffle-dappchain
+    yarn deploy > /dev/null 2>&1 &
+    cd ..
+    sleep 5
+  else
+    echo "Truffle DAppChain is deployed"
+  fi
 }
 
 function run_mapping {
-  echo "Running mapping"
-  cd transfer-gateway-scripts
-  node index.js > /dev/null 2>&1 &
-  cd ..
+  if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
+    echo "Running mapping"
+    cd transfer-gateway-scripts
+    node index.js > /dev/null 2>&1 &
+    sleep 5
+    cd ..
+  else
+    echo "Mapping already ran"
+  fi
 }
 
 function run_webdapp {
-  echo "Running DApp"
-  cd webclient
-  yarn serve > /dev/null 2>&1 &
-  cd ..
+  if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
+    echo "Running DApp"
+    cd webclient
+    yarn serve > /dev/null 2>&1 &
+    cd ..
+  else
+    echo "Dapp is running"
+  fi
 }
 
 function stop_webdapp {
-  echo "Stop DApp"
-  cd webclient
-  pid=$(cat webclient.pid)
-  kill -9 $pid
-  cd ..
+  if [ $(check_file_exists webclient/webclient.pid) = 1 ]; then
+    echo "Stop DApp"
+    cd webclient
+    pid=$(cat webclient.pid)
+    kill -9 $pid
+    rm webclient.pid
+    cd ..
+  else
+    echo "DApp not running"
+  fi
 }
 
 case "$1" in
 setup)
-  setup
+  if [ $(check_directory_exists truffle-ethereum/node_modules) = 1 ] &&
+     [ $(check_directory_exists truffle-dappchain/node_modules) = 1 ] &&
+     [ $(check_directory_exists webclient/node_modules) = 1 ] &&
+     [ $(check_directory_exists transfer-gateway-scripts/node_modules) = 1 ]; then
+    echo "Setup already made"
+  else
+    setup
+  fi
+  ;;
+status)
+  [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
+  [[ $(check_file_exists dappchain/oracle.pid) = 1 ]] && echo "Oracle running" || echo "Oracle stopped"
+  [[ $(check_file_exists dappchain/loom.pid) = 1 ]] && echo "Loomchain running" || echo "Loomchain stopped"
+  [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
   ;;
 start)
   start_and_deploy_truffle_ethereum
-  sleep 5
   start_dappchain
-  deploy_truffle_dappchain
-  sleep 10
   start_oracle
-  sleep 10
+  deploy_truffle_dappchain
   run_mapping
-  sleep 5
   run_webdapp
   ;;
 stop)
-  stop_truffle_ethereum
+  stop_webdapp
   stop_oracle
   stop_dappchain
-  stop_webdapp
+  stop_truffle_ethereum
   ;;
 *)
-   echo "Usage: $0 {setup|start|stop}"
+   echo "Usage: $0 {setup|start|status|stop}"
 esac
 
 exit 0
