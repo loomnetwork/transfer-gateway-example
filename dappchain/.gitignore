@@ -4,3 +4,4 @@ chaindata
 oracle.log
 oracle.pid
 loom.pid
+loom

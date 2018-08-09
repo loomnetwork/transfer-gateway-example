@@ -14,6 +14,7 @@
     "babel-loader": "^8.0.0-beta.2",
     "bn.js": "^4.11.8",
     "ganache-cli": "^6.1.6",
+    "loom-js": "^1.17.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.3.1",

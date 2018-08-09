@@ -4,6 +4,18 @@ ganache_port=8545
 dapp_port=8080
 dappchain_port_1=46657
 dappchain_port_2=46658
+build_number=367
+
+platform='unknown'
+unamestr=`uname`
+if [[ "$unamestr" == 'Linux' ]]; then
+  platform='linux'
+elif [[ "$unamestr" == 'Darwin' ]]; then
+  platform='osx'
+else
+  echo "Platform not supported on this script yet"
+  exit -1
+fi
 
 function check_file_exists {
   if [ -f $1 ]; then
@@ -29,6 +41,17 @@ function check_port {
   fi
 }
 
+function is_setup_alredy {
+  if [ $(check_directory_exists truffle-ethereum/node_modules) = 1 ] &&
+     [ $(check_directory_exists truffle-dappchain/node_modules) = 1 ] &&
+     [ $(check_directory_exists webclient/node_modules) = 1 ] &&
+     [ $(check_directory_exists transfer-gateway-scripts/node_modules) = 1 ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
 function setup {
   echo "Installing ..."
   cd webclient
@@ -45,7 +68,9 @@ function setup {
   yarn
   cd ../dappchain
   echo "Install DappChain"
-  loom init -f
+  wget "https://private.delegatecall.com/loom/$platform/build-$build_number/loom"
+  chmod +x loom
+  ./loom init -f
   sleep 5
   cp genesis.example.json genesis.json
   cd ..
@@ -81,7 +106,7 @@ function start_dappchain {
   if [ $(check_file_exists dappchain/loom.pid) = 0 ]; then
     echo "Start DAppChain"
     cd dappchain
-    loom reset; loom run > /dev/null 2>&1 &
+    ./loom reset; ./loom run
     loom_pid=$!
     echo $loom_pid > loom.pid
     sleep 5
@@ -101,33 +126,6 @@ function stop_dappchain {
     cd ..
   else
     echo "DAppChain not running"
-  fi
-}
-
-function start_oracle {
-  if [ $(check_file_exists dappchain/oracle.pid) = 0 ]; then
-    echo "Start Oracle"
-    cd dappchain
-    ./oracle > /dev/null 2>&1 &
-    oracle_pid=$!
-    echo $oracle_pid > oracle.pid
-    sleep 5
-    cd ..
-  else
-    echo "Oracle is running"
-  fi
-}
-
-function stop_oracle {
-  if [ $(check_file_exists dappchain/oracle.pid) = 1 ]; then
-    echo "Stop Oracle"
-    cd dappchain
-    pid=$(cat oracle.pid)
-    kill -9 $pid
-    rm oracle.pid
-    cd ..
-  else
-    echo "Oracle not running"
   fi
 }
 
@@ -192,11 +190,15 @@ setup)
   ;;
 status)
   [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
-  [[ $(check_file_exists dappchain/oracle.pid) = 1 ]] && echo "Oracle running" || echo "Oracle stopped"
   [[ $(check_file_exists dappchain/loom.pid) = 1 ]] && echo "Loomchain running" || echo "Loomchain stopped"
   [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
   ;;
 start)
+  if [ $(is_setup_alredy) = 0 ]; then
+    echo "Use the setup command first"
+    exit -1
+  fi
+
   if [ $(check_port $ganache_port) != 0 ]; then
     echo "Ganache port $ganache_port is already in use"
     exit -1
@@ -214,19 +216,39 @@ start)
 
   start_and_deploy_truffle_ethereum
   start_dappchain
-  start_oracle
   deploy_truffle_dappchain
   run_mapping
   run_webdapp
   ;;
 stop)
   stop_webdapp
-  stop_oracle
   stop_dappchain
   stop_truffle_ethereum
   ;;
+cleanup)
+  echo "Cleaning DAppChain"
+  rm -rf dappchain/loom
+  rm -rf dappchain/genesis.json
+  rm -rf dappchain/app.db
+  rm -rf dappchain/chaindata
+  rm -rf dappchain/loom.pid
+
+  echo "Cleaning Transfer Gateway Scripts"
+  rm -rf transfer-gateway-scripts/node_modules
+
+  echo "Cleaning Truffle DAppChain"
+  rm -rf truffle-dappchain/node_modules
+  rm -rf truffle-dappchain/build
+
+  echo "Cleaning Truffle Ethereum"
+  rm -rf truffle-ethereum/node_modules
+  rm -rf truffle-ethereum/build
+
+  echo "Cleaning DApp"
+  rm -rf webclient/node_modules
+  ;;
 *)
-   echo "Usage: $0 {setup|start|status|stop}"
+   echo "Usage: $0 {setup|start|status|stop|cleanup}"
 esac
 
 exit 0
