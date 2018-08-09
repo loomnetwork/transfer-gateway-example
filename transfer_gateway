@@ -1,11 +1,13 @@
 #!/bin/bash
 
+# Ports used
 ganache_port=8545
 dapp_port=8080
 dappchain_port_1=46657
 dappchain_port_2=46658
 build_number=367
 
+# Check available platforms
 platform='unknown'
 unamestr=`uname`
 if [[ "$unamestr" == 'Linux' ]]; then
@@ -52,6 +54,7 @@ function is_setup_alredy {
   fi
 }
 
+# Setup function does the first work of download node_packages and loom binary
 function setup {
   echo "Installing ..."
   cd webclient
@@ -141,6 +144,7 @@ function deploy_truffle_dappchain {
   fi
 }
 
+# Mapping is necessary to "mirroring" the token on mainnet and dappchain
 function run_mapping {
   if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
     echo "Running mapping"
@@ -153,7 +157,7 @@ function run_mapping {
   fi
 }
 
-function run_webdapp {
+function start_webapp {
   if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
     echo "Running DApp"
     cd webclient
@@ -179,14 +183,12 @@ function stop_webdapp {
 
 case "$1" in
 setup)
-  if [ $(check_directory_exists truffle-ethereum/node_modules) = 1 ] &&
-     [ $(check_directory_exists truffle-dappchain/node_modules) = 1 ] &&
-     [ $(check_directory_exists webclient/node_modules) = 1 ] &&
-     [ $(check_directory_exists transfer-gateway-scripts/node_modules) = 1 ]; then
-    echo "Setup already made"
-  else
-    setup
+  if [ $(is_setup_alredy) = 1 ]; then
+    echo "Setup already ran"
+    exit -1
   fi
+
+  setup
   ;;
 status)
   [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
@@ -218,7 +220,7 @@ start)
   start_dappchain
   deploy_truffle_dappchain
   run_mapping
-  run_webdapp
+  start_webapp
   ;;
 stop)
   stop_webdapp

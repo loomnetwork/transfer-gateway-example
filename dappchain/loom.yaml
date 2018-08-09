@@ -1,13 +1,9 @@
 ChainID: "default"
 GatewayContractEnabled: true
-GatewayOracleEnabled: false
+GatewayOracleEnabled: true
 LoomLogLevel: "debug"
 BlockchainLogLevel: "error"
 TransferGateway:
-  # NOTE: Ganache seems to drop websocket connections after a few seconds of inactivity, when
-  #       running the tests with the Oracle running out of process the Ganache websocket connection
-  #       often times out while the tests are waiting for the Oracle to do something. So better to
-  #       use the HTTP endpoint for testing.
   EthereumURI: "http://127.0.0.1:8545"
   MainnetContractHexAddress: "0xf5cad0db6415a71a5bc67403c87b56b629b4ddaa"
   MainnetPrivateKeyPath: "oracle_eth_priv.key"
@@ -15,6 +11,5 @@ TransferGateway:
   DAppChainReadURI: "http://localhost:46658/query"
   DAppChainWriteURI: "http://localhost:46658/rpc"
   DAppChainEventsURI: "ws://localhost:46658/queryws"
-  # These control how often the Oracle will poll the blockchains for events.
   DAppChainPollInterval: 1 # seconds
   MainnetPollInterval: 1 # seconds
