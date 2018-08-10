@@ -128,6 +128,7 @@ And finally the `genesis.json`, with `AddressMapper` plugin a new plugin that wi
 
 ```json
 {
+    [
         {
             "vm": "plugin",
             "format": "plugin",
