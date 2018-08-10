@@ -57,7 +57,7 @@ After execute `./transfer_gateway start` and starts the necessary services, you 
 
 ### MetaMask
 
-This example requires `MetaMask` to be installed, also configured with an imported account, the imported ccount should be `0x5194b63f10691e46635b27925100cfc0a5ceca62`, which has the private key `0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2` (those keys are just used here we don't use anywhere else).
+This example requires `MetaMask` to be installed and configured to use the `Private Network` on `localhost:8545`, also the imported account should be `0x5194b63f10691e46635b27925100cfc0a5ceca62`, which has the private key `0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2` (those keys are just used here we don't use anywhere else).
 
 How to config.
 
