@@ -50,6 +50,6 @@ export default class EthCardManager {
   async depositCardOnGateway(address, cardId) {
     return await this._contract.methods
       .depositToGateway(cardId)
-      .send({ from: address, gas: '189362' })
+      .send({ from: address, gas: '219362' })
   }
 }
