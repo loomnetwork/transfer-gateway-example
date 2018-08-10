@@ -199,7 +199,7 @@ setup)
   fi
 
   setup
-  
+
   ;;
 status)
   [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
@@ -240,15 +240,25 @@ start)
   start_webapp
 
   echo
-  echo "-------------------------------------------------------------"
-  echo "Services initialized and ready, check http:\/\/localhost:8080"
-  echo "-------------------------------------------------------------"
+  echo "-----------------------------------------------------------"
+  echo "Services initialized and ready, check http://localhost:8080"
+  echo "-----------------------------------------------------------"
 
   ;;
 stop)
+  echo "-----------------"
+  echo "Stopping services"
+  echo "-----------------"
+  echo
+
   stop_webdapp
   stop_dappchain
   stop_truffle_ethereum
+
+  echo
+  echo "----------------"
+  echo "Services stopped"
+  echo "----------------"
 
   ;;
 restart)
