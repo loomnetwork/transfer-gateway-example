@@ -3,6 +3,10 @@
 Example of how to use Transfer Gateway from Loom DAppChain to transfer assets (ERC721 tokens) to
 Ethereum network and to transfer assets (ERC721 tokens) to DAppChain.
 
+## Interface in action
+
+![](https://uc93063baa261a64b48cbf0e575d.previews.dropboxusercontent.com/p/orig/AALmkbwdJEDsdwYEK1E1DX1zKiDhg9HN-n8zY9oZ-mOlUFSCYJZ37ltmBo1utinYg3XtPZ4g0zvIpaefNdy2VRRIm9Y3x6aXfHeCdg6ggC-2SDk2N5gysLh_qzC9mPuHPxZPCJY31YBU4kckfR4MsF5ZfY9lM_tm6NcJgppJiTRs6ItSlsNUs7MAJDkm5lfLlj5rdZv4rQTtOe4hqhtvB4im/p.gif?size=2048x1536&size_mode=3)
+
 ## Quick Start
 
 ### Requirements
@@ -205,9 +209,6 @@ The `Home` page which will require your `MetaMask` signature to map your Ethereu
 
 Next areas are `Owned Cards` which are the cards owned by your user (yeah we just gave 5 cards to you 😉), `Cards On DAppChain` cards that are deposited on `Gateway` and properly mirrored on `DAppChain` and the `Cards On Gateway` which are the cards that you and only you owns waiting to be withdrawal to your ownership again.
 
-## Interface in action
-
-![](https://uc93063baa261a64b48cbf0e575d.previews.dropboxusercontent.com/p/orig/AALmkbwdJEDsdwYEK1E1DX1zKiDhg9HN-n8zY9oZ-mOlUFSCYJZ37ltmBo1utinYg3XtPZ4g0zvIpaefNdy2VRRIm9Y3x6aXfHeCdg6ggC-2SDk2N5gysLh_qzC9mPuHPxZPCJY31YBU4kckfR4MsF5ZfY9lM_tm6NcJgppJiTRs6ItSlsNUs7MAJDkm5lfLlj5rdZv4rQTtOe4hqhtvB4im/p.gif?size=2048x1536&size_mode=3)
 
 Loom Network
 ----
