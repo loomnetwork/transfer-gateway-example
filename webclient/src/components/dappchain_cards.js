@@ -16,6 +16,7 @@ export default class DAppChainCards extends React.Component {
   async componentWillMount() {
     this.props.dcGatewayManager.onTokenWithdrawal(async event => {
       alert(`Card id ${event.value.toNumber()} ready for withdraw, check Cards On Gateway`)
+      await this.updateUI()
     })
 
     await this.updateUI()
@@ -45,6 +46,8 @@ export default class DAppChainCards extends React.Component {
         cardId,
         this.props.dcCardManager.getContractAddress()
       )
+
+      alert('Processing allowance')
     } catch (err) {
       if (err.message.indexOf('pending') > -1) {
         alert('Pending withdraw exists, check Cards On Gateway')
@@ -52,7 +55,9 @@ export default class DAppChainCards extends React.Component {
         console.error(err)
       }
     }
+
     this.setState({ allowing: false })
+
     await this.updateUI()
   }
 
