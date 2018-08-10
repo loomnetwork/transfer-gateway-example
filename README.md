@@ -61,7 +61,7 @@ This example requires `MetaMask` to be installed, also configured with an import
 
 How to config.
 
-![](https://ucf5e67fdbb26b3814bcddf8f733.previews.dropboxusercontent.com/p/orig/AAJgqkVm5whDUvh_CwIN2D9krxEJM6gUAjZ7wNCqr5_QdWfV0rBxTtGRzD2PEWdtjfCRJ3qy-3rwKyv5uqYHoiwExG7IPUVmwm5CMC8FT-K9yxLWRlKC1B07-Me1soSG6LSNC5Uiio_Ns5AdvioOaLBsDAbhFnNjfHv73H6spYYdSkS3Gr3QNoFWbb4sLf9oGpTJO-LuljSt7evC86qz9rmT/p.gif?size=512x384&size_mode=1)
+![](https://uc14a790b5fa4a863c373a745f0b.previews.dropboxusercontent.com/p/orig/AAIGK_yW12n0_0QPeyDhhFl_smFxZ_ECbT7Ex-_V5z1wsN7_DayWUmzwZ0WkH3QgCY_Y42Prs13NE5I1X5qCMT2DdUg65mzx0vbHiSzeqXAciV6ox6Jl2V3pjvW4A-QBiHVlTDhBkXLpVNA0_qMmlnrpTKv8fzu3A2BGSP_Ukhw8d3CFIiCAOT-d90QpikIFSefQY1WSstNhGhaiqbD6KiyD/p.gif?size=2048x1536&size_mode=3)
 
 > After the second restart of the example it's possible that a transaction to DAppChain will fail an error like "rpc error with payload {…nonce. account has nonce of: 0 tx has nonce of: 5", it's because of the MetaMask nonce counter that needed to reset. Go to MetaMask -> Settings -> Reset Account, it should restart the nonce counter on MetaMask
 
