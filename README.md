@@ -115,7 +115,6 @@ And finally the `genesis.json`
 
 ```json
 {
-    ...
         // The AddressMapper is a new plugin that will be responsible for "map" addresses from Ethereum and DAppChain
         {
             "vm": "plugin",
@@ -196,3 +195,13 @@ The web interface will be available on `http://localhost:8080`, just open the br
 The `Home` page which will require your `MetaMask` signature to map your Ethereum network address with DAppChain address (no one other than you can create that link).
 
 Next areas are `Owned Cards` which are the cards owned by your user (yeah we just gave 5 cards to you 😉), `Cards On DAppChain` cards that are deposited on `Gateway` and properly mirrored on `DAppChain` and the `Cards On Gateway` which are the cards that you and only you owns waiting to be withdrawal to your ownership again.
+
+Loom Network
+----
+[https://loomx.io](https://loomx.io)
+
+
+License
+----
+
+BSD 3-Clause License
