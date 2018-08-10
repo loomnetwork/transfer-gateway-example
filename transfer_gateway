@@ -228,6 +228,10 @@ stop)
   stop_dappchain
   stop_truffle_ethereum
   ;;
+restart)
+  $0 stop
+  $0 start
+  ;;
 cleanup)
   echo "Cleaning DAppChain"
   rm -rf dappchain/loom
@@ -251,7 +255,7 @@ cleanup)
   rm -rf webclient/node_modules
   ;;
 *)
-   echo "Usage: $0 {setup|start|status|stop|cleanup}"
+   echo "Usage: $0 {setup|start|status|stop|restart|cleanup}"
 esac
 
 exit 0
