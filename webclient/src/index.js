@@ -16,7 +16,10 @@ import DAppChainGatewayManager from './dc_managers/dc_gateway_manager'
 ;(async () => {
   console.log('Loading ...')
   const t = setTimeout(
-    () => console.log('If this takes too long, please try to reset MetaMask cache'),
+    () =>
+      console.log(
+        '\n\n----> If this takes too long to start, please try to reset MetaMask cache :)'
+      ),
     5000
   )
 

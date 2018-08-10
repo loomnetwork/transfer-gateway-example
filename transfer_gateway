@@ -57,11 +57,6 @@ function is_setup_already {
 
 # Setup function does the first work of download node_packages and loom binary
 function setup {
-  echo "------------------------------------------------------------------------------------------"
-  echo "Installing necessary packages, this can take up to 3 minutes (depending on internet speed)"
-  echo "------------------------------------------------------------------------------------------"
-  echo
-
   cd webclient
   echo "Install Webclient"
   yarn
@@ -82,11 +77,6 @@ function setup {
   sleep 5
   cp genesis.example.json genesis.json
   cd ..
-
-  echo
-  echo "-------------------------------------"
-  echo "Done, packages installed with success"
-  echo "-------------------------------------"
 }
 
 function start_and_deploy_truffle_ethereum {
@@ -156,15 +146,10 @@ function deploy_truffle_dappchain {
 
 # Mapping is necessary to "mirroring" the token on mainnet and dappchain
 function run_mapping {
-  if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
-    echo "Running mapping"
-    cd transfer-gateway-scripts
-    node index.js > /dev/null 2>&1 &
-    sleep 10
-    cd ..
-  else
-    echo "Mapping already ran"
-  fi
+  echo "Running mapping"
+  cd transfer-gateway-scripts
+  node index.js > /dev/null 2>&1 &
+  cd ..
 }
 
 function start_webapp {
@@ -172,6 +157,7 @@ function start_webapp {
     echo "Running DApp"
     cd webclient
     yarn serve > /dev/null 2>&1 &
+    sleep 5
     cd ..
   else
     echo "Dapp is running"
@@ -193,6 +179,11 @@ function stop_webdapp {
 
 case "$1" in
 setup)
+  echo "------------------------------------------------------------------------------------------"
+  echo "Installing necessary packages, this can take up to 3 minutes (depending on internet speed)"
+  echo "------------------------------------------------------------------------------------------"
+  echo
+
   if [ $(is_setup_already) = 1 ]; then
     echo "Setup already ran"
     exit -1
@@ -200,11 +191,23 @@ setup)
 
   setup
 
+  echo
+  echo "-------------------------------------"
+  echo "Done, packages installed with success"
+  echo "-------------------------------------"
+
   ;;
 status)
+  echo "-----------------"
+  echo "Services statuses"
+  echo "-----------------"
+  echo
+
   [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
   [[ $(check_file_exists dappchain/loom.pid) = 1 ]] && echo "Loomchain running" || echo "Loomchain stopped"
   [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
+
+  echo
 
   ;;
 start)
@@ -214,30 +217,34 @@ start)
   echo
 
   if [ $(is_setup_already) = 0 ]; then
-    echo "Use the setup command first"
+    echo "Please use the setup command first: ./transfer_gateway setup"
+    echo
     exit -1
   fi
 
   if [ $(check_port $ganache_port) != 0 ]; then
     echo "Ganache port $ganache_port is already in use"
+    echo
     exit -1
   fi
 
   if [ $(check_port $dapp_port) != 0 ]; then
     echo "Dapp port $dapp_port is already in use"
+    echo
     exit -1
   fi
 
   if [ $(check_port $dappchain_port_1) != 0 ] || [ $(check_port $dappchain_port_2) != 0 ]; then
     echo "Some port from DAppChain already in use [$dappchain_port_1 or $dappchain_port_2]"
+    echo
     exit -1
   fi
 
   start_and_deploy_truffle_ethereum
   start_dappchain
   deploy_truffle_dappchain
-  run_mapping
   start_webapp
+  run_mapping
 
   echo
   echo "-----------------------------------------------------------"
@@ -267,6 +274,11 @@ restart)
 
   ;;
 cleanup)
+  echo "-----------------------------------------"
+  echo "Cleaning packages and binaries downloaded"
+  echo "-----------------------------------------"
+  echo
+
   echo "Cleaning DAppChain"
   rm -rf dappchain/loom
   rm -rf dappchain/genesis.json
@@ -287,6 +299,11 @@ cleanup)
 
   echo "Cleaning DApp"
   rm -rf webclient/node_modules
+
+  echo
+  echo "-----"
+  echo "Clear"
+  echo "-----"
 
   ;;
 *)
