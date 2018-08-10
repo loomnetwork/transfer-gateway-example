@@ -113,7 +113,7 @@ function start_dappchain {
     ./loom reset; ./loom run > /dev/null 2>&1 &
     loom_pid=$!
     echo $loom_pid > loom.pid
-    sleep 5
+    sleep 10
     cd ..
   else
     echo "DAppChain is running"
@@ -151,7 +151,7 @@ function run_mapping {
     echo "Running mapping"
     cd transfer-gateway-scripts
     node index.js > /dev/null 2>&1 &
-    sleep 5
+    sleep 10
     cd ..
   else
     echo "Mapping already ran"

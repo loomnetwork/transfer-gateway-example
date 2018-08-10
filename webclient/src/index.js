@@ -14,12 +14,20 @@ import DAppChainAccountManager from './dc_managers/dc_account_manager'
 import DAppChainCardManager from './dc_managers/dc_card_manager'
 import DAppChainGatewayManager from './dc_managers/dc_gateway_manager'
 ;(async () => {
+  console.log('Loading ...')
+  const t = setTimeout(
+    () => console.log('If this takes too long, please try to reset MetaMask cache'),
+    5000
+  )
+
   const ethCardManager = await EthCardManager.createAsync()
   const ethAccountManager = await EthAccountManager.createAsync()
   const dcAccountManager = await DAppChainAccountManager.createAsync()
   const dcCardManager = await DAppChainCardManager.createAsync()
   const ethGatewayManager = await EthGatewayManager.createAsync()
   const dcGatewayManager = await DAppChainGatewayManager.createAsync()
+
+  clearTimeout(t)
 
   const BuildMain = () => (
     <Main
