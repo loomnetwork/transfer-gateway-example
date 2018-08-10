@@ -5,16 +5,44 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      account: '0x'
+      account: '0x',
+      mapping: null
     }
   }
 
   async componentWillMount() {
     const account = await this.props.ethAccountManager.getCurrentAccountAsync()
-    this.setState({ account })
+    const mapping = !!(await this.props.dcAccountManager.getAddressMappingAsync(account))
+    this.setState({ account, mapping })
   }
 
   render() {
+    const navLinks = (
+      <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
+          <NavLink to="/eth_cards" activeClassName="active" className="nav-link">
+            Owned Cards
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/gateway_cards" activeClassName="active" className="nav-link">
+            Cards on Gateway
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/dappchain_cards" activeClassName="active" className="nav-link">
+            Cards on DappChain
+          </NavLink>
+        </li>
+      </ul>
+    )
+
+    const accountButton = (
+      <button className="btn btn-outline-success my-2 my-sm-0" type="button">
+        {this.state.account}
+      </button>
+    )
+
     return (
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <NavLink to="/" className="navbar-brand">
@@ -31,27 +59,9 @@ export default class Main extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <NavLink to="/eth_cards" activeClassName="active" className="nav-link">
-                Owned Cards
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/gateway_cards" activeClassName="active" className="nav-link">
-                Cards on Gateway
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/dappchain_cards" activeClassName="active" className="nav-link">
-                Cards on DappChain
-              </NavLink>
-            </li>
-          </ul>
-          <form className="form-inline mt-2 mt-md-0">
-            <button className="btn btn-outline-success my-2 my-sm-0" type="button">
-              {this.state.account}
-            </button>
+          {this.state.account && this.state.mapping ? navLinks : ''}
+          <form className="form-inline mt-2 mt-md-0 text-right">
+            {this.state.account && this.state.mapping ? accountButton : ''}
           </form>
         </div>
       </nav>

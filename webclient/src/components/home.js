@@ -24,21 +24,30 @@ export default class Home extends React.Component {
   async sign() {
     await this.props.dcAccountManager.signAsync(this.state.account)
     await this.updateMapping()
+    location.reload()
   }
 
   render() {
     const signView = (
       <div>
         <p>
-          By signing the contract you are confirming that your Ethereum account ({
-            this.state.account
-          }) on MetaMask is related with account on DappChain ({this.state.dcAccount})
+          By signing the contract you are confirming that your Ethereum account (
+          {this.state.account}) on MetaMask is related with account on DappChain (
+          {this.state.dcAccount})
         </p>
         <button className="btn btn-primary" onClick={() => this.sign()}>
           Click to Sign
         </button>
       </div>
     )
+
+    if (!this.state.account) {
+      return (
+        <div>
+          <p>No MetaMask detected, please check if installed and active</p>
+        </div>
+      )
+    }
 
     const signedView = <div>Thanks for sign</div>
 

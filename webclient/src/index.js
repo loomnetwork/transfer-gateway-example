@@ -7,12 +7,12 @@ import Home from './components/home'
 import EthCards from './components/eth_cards'
 import DAppChainCards from './components/dappchain_cards'
 import GatewayCards from './components/gateway_cards'
-import EthAccountManager from './eth_account_manager'
-import EthCardManager from './eth_card_manager'
-import DAppChainAccountManager from './dc_account_manager'
-import DAppChainCardManager from './dc_card_manager'
-import EthGatewayManager from './eth_gateway_manager'
-import DAppChainGatewayManager from './dc_gateway_manager'
+import EthAccountManager from './eth_managers/eth_account_manager'
+import EthCardManager from './eth_managers/eth_card_manager'
+import EthGatewayManager from './eth_managers/eth_gateway_manager'
+import DAppChainAccountManager from './dc_managers/dc_account_manager'
+import DAppChainCardManager from './dc_managers/dc_card_manager'
+import DAppChainGatewayManager from './dc_managers/dc_gateway_manager'
 ;(async () => {
   const ethCardManager = await EthCardManager.createAsync()
   const ethAccountManager = await EthAccountManager.createAsync()
