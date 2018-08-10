@@ -211,7 +211,7 @@ Next areas are `Owned Cards` which are the cards owned by your user (yeah we jus
 
 ## Interface in action
 
-![](https://uca820e89317643b59c089b38edf.previews.dropboxusercontent.com/p/orig/AAJbH2akqlgXm9Fr_RjPfp9i2rsjlPEQm5JYEtLPmqeJnlg56K1vk3g7U01Cd0IX_TJRcO86NKB5zp3McDHFaAeiN0EchOj4CN3u-1HNlgO6PoqxzoQuUtYzrazngdVqRuOGYJcQifMm4XOfeKIvVOvRCGxgfEu32MSy6Nh155GT7Xtyh7hEKqSfccaUbI9MyAoiCtAMaruGq8t8bopmVbL6/p.gif?size=2048x1536&size_mode=3)
+![](https://uc93063baa261a64b48cbf0e575d.previews.dropboxusercontent.com/p/orig/AALmkbwdJEDsdwYEK1E1DX1zKiDhg9HN-n8zY9oZ-mOlUFSCYJZ37ltmBo1utinYg3XtPZ4g0zvIpaefNdy2VRRIm9Y3x6aXfHeCdg6ggC-2SDk2N5gysLh_qzC9mPuHPxZPCJY31YBU4kckfR4MsF5ZfY9lM_tm6NcJgppJiTRs6ItSlsNUs7MAJDkm5lfLlj5rdZv4rQTtOe4hqhtvB4im/p.gif?size=2048x1536&size_mode=3)
 
 Loom Network
 ----
