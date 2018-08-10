@@ -23,8 +23,8 @@ TransferGateway:
   # Websocket URI that should be used to subscribe to DAppChain events (only used for tests atm).
   DAppChainEventsURI: "ws://localhost:46658/queryws"
   # These control how often the Oracle will poll the blockchains for events.
-  DAppChainPollInterval: 1 # seconds
-  MainnetPollInterval: 1 # seconds
+  DAppChainPollInterval: 10 # seconds
+  MainnetPollInterval: 10 # seconds
   OracleLogLevel: "debug"
   OracleLogDestination: "file://oracle.log"
   # Number of seconds to wait before starting the Oracle.

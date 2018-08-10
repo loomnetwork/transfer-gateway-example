@@ -51,7 +51,20 @@ Clone this repository
 ./transfer_gateway cleanup
 ```
 
+### Web Browser
+
 After execute `./transfer_gateway start` and starts the necessary services, you can access the web interface on `localhost:8080`
+
+### MetaMask
+
+This example requires `MetaMask` to be installed, also configured with an imported account, the imported ccount should be `0x5194b63f10691e46635b27925100cfc0a5ceca62`, which has the private key `0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2` (those keys are just used here we don't use anywhere else).
+
+How to config.
+
+![](https://ucf5e67fdbb26b3814bcddf8f733.previews.dropboxusercontent.com/p/orig/AAJgqkVm5whDUvh_CwIN2D9krxEJM6gUAjZ7wNCqr5_QdWfV0rBxTtGRzD2PEWdtjfCRJ3qy-3rwKyv5uqYHoiwExG7IPUVmwm5CMC8FT-K9yxLWRlKC1B07-Me1soSG6LSNC5Uiio_Ns5AdvioOaLBsDAbhFnNjfHv73H6spYYdSkS3Gr3QNoFWbb4sLf9oGpTJO-LuljSt7evC86qz9rmT/p.gif?size=512x384&size_mode=1)
+
+> After the second restart of the example it's possible that a transaction to DAppChain will fail an error like "rpc error with payload {…nonce. account has nonce of: 0 tx has nonce of: 5", it's because of the MetaMask nonce counter that needed to reset. Go to MetaMask -> Settings -> Reset Account, it should restart the nonce counter on MetaMask
+
 
 ## Example "in a nutshell"
 
