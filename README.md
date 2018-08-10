@@ -124,11 +124,10 @@ TransferGateway:
   OracleReconnectInterval: 5
 ```
 
-And finally the `genesis.json`
+And finally the `genesis.json`, with `AddressMapper` plugin a new plugin that will be responsible for "map" addresses from Ethereum and DAppChain and `Gateway` is the plugin that manages transfers from between Ethereum and DAppChain, all transfer are secure and signed. This plugin also manages the Oracles, which are responsible for pool information from Ethereum network and sign withdraws from DAppChain to Ethereum network.
 
 ```json
 {
-        // The AddressMapper is a new plugin that will be responsible for "map" addresses from Ethereum and DAppChain
         {
             "vm": "plugin",
             "format": "plugin",
@@ -136,10 +135,6 @@ And finally the `genesis.json`
             "location": "addressmapper:0.1.0",
             "init": null
         },
-
-        // Gateway is the plugin that manages transfers from between Ethereum and DAppChain, all transfer are secure and signed
-
-        // That plugin also manages the Oracles, which are responsible for pool information from Ethereum network and sign withdraws from DAppChain to Ethereum network
         {
             "vm": "plugin",
             "format": "plugin",
