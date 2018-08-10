@@ -57,28 +57,36 @@ function is_setup_already {
 
 # Setup function does the first work of download node_packages and loom binary
 function setup {
-  echo "Installing necessary packages, this can take up to 3 minutes (depending on internet speed) ..."
+  echo "------------------------------------------------------------------------------------------"
+  echo "Installing necessary packages, this can take up to 3 minutes (depending on internet speed)"
+  echo "------------------------------------------------------------------------------------------"
+  echo
+
   cd webclient
-  echo "Install Webclient (node_packages)"
+  echo "Install Webclient"
   yarn
   cd ../truffle-dappchain
-  echo "Install DappChain (node_packages)"
+  echo "Install DappChain"
   yarn
   cd ../truffle-ethereum
-  echo "Install Truffle Ethereum (node_packages)"
+  echo "Install Truffle Ethereum"
   yarn
   cd ../transfer-gateway-scripts
-  echo "Install Transfer Gateway Scripts (node_packages)"
+  echo "Install Transfer Gateway Scripts"
   yarn
   cd ../dappchain
-  echo "Install DappChain (loomchain binary)"
+  echo "Install DappChain"
   wget "https://private.delegatecall.com/loom/$platform/build-$build_number/loom"
   chmod +x loom
   ./loom init -f
   sleep 5
   cp genesis.example.json genesis.json
   cd ..
+
+  echo
+  echo "-------------------------------------"
   echo "Done, packages installed with success"
+  echo "-------------------------------------"
 }
 
 function start_and_deploy_truffle_ethereum {
@@ -191,13 +199,16 @@ setup)
   fi
 
   setup
+  
   ;;
 status)
   [[ $(check_file_exists truffle-ethereum/ganache.pid) = 1 ]] && echo "Ganache running" || echo "Ganache stopped"
   [[ $(check_file_exists dappchain/loom.pid) = 1 ]] && echo "Loomchain running" || echo "Loomchain stopped"
   [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
+
   ;;
 start)
+  echo "-------------------------------------------------------------------"
   echo "Initializing background services, it can take take (40 seconds) ..."
   echo "-------------------------------------------------------------------"
   echo
@@ -231,15 +242,19 @@ start)
   echo
   echo "-------------------------------------------------------------"
   echo "Services initialized and ready, check http:\/\/localhost:8080"
+  echo "-------------------------------------------------------------"
+
   ;;
 stop)
   stop_webdapp
   stop_dappchain
   stop_truffle_ethereum
+
   ;;
 restart)
   $0 stop
   $0 start
+
   ;;
 cleanup)
   echo "Cleaning DAppChain"
@@ -262,6 +277,7 @@ cleanup)
 
   echo "Cleaning DApp"
   rm -rf webclient/node_modules
+
   ;;
 *)
    echo "Usage: $0 {setup|start|status|stop|restart|cleanup}"
