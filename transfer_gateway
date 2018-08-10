@@ -5,7 +5,7 @@ ganache_port=8545
 dapp_port=8080
 dappchain_port_1=46657
 dappchain_port_2=46658
-build_number=367
+build_number=371
 
 # Check available platforms
 platform='unknown'
@@ -43,9 +43,10 @@ function check_port {
   fi
 }
 
-function is_setup_alredy {
+function is_setup_already {
   if [ $(check_directory_exists truffle-ethereum/node_modules) = 1 ] &&
      [ $(check_directory_exists truffle-dappchain/node_modules) = 1 ] &&
+     [ $(check_file_exists dappchain/loom) = 1 ] &&
      [ $(check_directory_exists webclient/node_modules) = 1 ] &&
      [ $(check_directory_exists transfer-gateway-scripts/node_modules) = 1 ]; then
     echo 1
@@ -183,7 +184,7 @@ function stop_webdapp {
 
 case "$1" in
 setup)
-  if [ $(is_setup_alredy) = 1 ]; then
+  if [ $(is_setup_already) = 1 ]; then
     echo "Setup already ran"
     exit -1
   fi
@@ -196,7 +197,7 @@ status)
   [[ $(check_file_exists webclient/webclient.pid) = 1 ]] && echo "Webclient running" || echo "Webclient stopped"
   ;;
 start)
-  if [ $(is_setup_alredy) = 0 ]; then
+  if [ $(is_setup_already) = 0 ]; then
     echo "Use the setup command first"
     exit -1
   fi

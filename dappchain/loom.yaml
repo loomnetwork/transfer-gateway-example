@@ -4,6 +4,7 @@ LogDestination: "file://loom2.log"
 LoomLogLevel: "debug"
 ContractLogLevel: "debug"
 BlockchainLogLevel: "error"
+RPCListenAddress: "tcp://127.0.0.1:46657"
 TransferGateway:
   # Enables the Transfer Gateway Go contract, must be the same on all nodes.
   ContractEnabled: true
