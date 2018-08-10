@@ -8,7 +8,7 @@ const {
 
 const cryptoCardsAddress = readFileSync('../crypto_cards_address', 'utf-8')
 const cryptoCardsDAppChainAddress = readFileSync('../crypto_cards_dappchain_address', 'utf-8')
-const cryptoCardsTx = readFileSync('../crypto_cards_transaction', 'utf-8')
+const cryptoCardsTx = readFileSync('../crypto_cards_tx_hash', 'utf-8')
 
 ;(async () => {
   const privateKey = CryptoUtils.B64ToUint8Array(readFileSync('../dappchain/private_key', 'utf-8'))
