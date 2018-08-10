@@ -53,15 +53,15 @@ Clone this repository
 
 After execute `./transfer_gateway start` and starts the necessary services, you can access the web interface on `localhost:8080`
 
-## Inside Example
+## Example "in a nutshell"
 
 The `cards-gateway-example` directory is divided by five sub directories, each directory has important role:
 
 ```bash
 ├── dappchain
-├── transfer-gateway-scripts
-├── truffle-dappchain
 ├── truffle-ethereum
+├── truffle-dappchain
+├── transfer-gateway-scripts
 └── webclient
 ```
 
@@ -148,6 +148,51 @@ And finally the `genesis.json`
         }
     ]
 }
-
 ```
 
+### 📁 truffle-ethereum
+
+This directory contains the contracts that will be deployed on the Ethereum network, the `Gateway` and `CryptoCards` the ERC721 token representation on the Ethereum network.
+
+The act of depositing `CryptoCards` on `Gateway` is the one of the main features on this ERC721 token, let's look on the function.
+
+```sol
+function depositToGateway(uint tokenId) public {
+  safeTransferFrom(msg.sender, gateway, tokenId);
+}
+```
+
+This function once called along with the `tokenId` will also call the `safeTransferFrom` which will call the function `onERC721Received` on contract `Gateway` which will register the owner of the token.
+
+Another important function is the `withdrawERC721` on `Gateway`, called once the user wants to withdraw the token from `DAppChain` and get back the fully ownership of the token.
+
+> The withdraw process only happen with a secure sign guaranteed by the validators of the network, no one unless the owner of the token can withdraw from DAppChain
+
+### 📁 truffle-dappchain
+
+This directory contains the representation of the `CryptoCards` from `truffle-ethereum` on the `DAppChain`, is a exact "mirroring" of the ERC721 tokens from Ethereum network, but now living inside the `Loom DAppChain`.
+
+When the user deposits his/her tokens `CryptoCards` on the Ethereum network into the contract `Gateway` the `TransferGateway` will pool that information and `mint` a representation (mirror).
+
+On the `CryptoCardsDAppChain` contract there's a `mint` only available for the authorized `TransferGateway`
+
+```sol
+function mint(uint256 _uid) public {
+  require(msg.sender == gateway);
+  _mint(gateway, _uid);
+}
+```
+
+### 📁 transfer-gateway-scripts
+
+Containing only one script `index.js` which will be responsible for map the `CryptoCards` on Ethereum network and the `CryptoCardsDAppChain` on Loom DAppChain. This is an very important step to make everything work together, without this the `TransferGateway` will not know which ERC721 asset should be mirrored on DAppChain
+
+### 📁 webclient
+
+Finally the web interface, which will require `MetaMask` to be installed on a compatible browser (Chrome / Firefox).
+
+The web interface will be available on `http://localhost:8080`, just open the browser on this address and the interface will be presented. The interface has four areas.
+
+The `Home` page which will require your `MetaMask` signature to map your Ethereum network address with DAppChain address (no one other than you can create that link).
+
+Next areas are `Owned Cards` which are the cards owned by your user (yeah we just gave 5 cards to you 😉), `Cards On DAppChain` cards that are deposited on `Gateway` and properly mirrored on `DAppChain` and the `Cards On Gateway` which are the cards that you and only you owns waiting to be withdrawal to your ownership again.
