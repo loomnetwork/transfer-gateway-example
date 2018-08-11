@@ -1,6 +1,6 @@
 # Cards Gateway Example
 
-This project is built using the `loom-js` Transfer Gateway API, and demonstrates how to transfer
+This project is built using the [loom-js][] Transfer Gateway API, and demonstrates how to transfer
 ERC721 tokens between Ethereum and Loom DAppChains via a browser frontend built with React.
 
 ## Interface in action
@@ -83,7 +83,7 @@ You can force MetaMask to reset the nonce by [reseting the imported account](htt
 
 ## Example "in a nutshell"
 
-The `cards-gateway-example` directory is divided by five sub directories, each directory has important role:
+The `cards-gateway-example` directory contains five sub directories:
 
 ```bash
 ├── dappchain
@@ -93,57 +93,81 @@ The `cards-gateway-example` directory is divided by five sub directories, each d
 └── webclient
 ```
 
+In the following sections we'll explain what's in each of these directories.
+
 ### 📁 dappchain
 
-This directory contains the `loom` binary (after setup), also a `genesis.example.json` and some private and public keys.
+This directory contains the `loom` binary (after setup), DAppChain config files, and some key pairs.
 
-> Those keys are pre created in order to make the sample easier to start, also they are already used on configurations.
+> The keys have been generated specifically for this example, don't reuse them anywhere else.
+> If you wish to use this project as a starting point for your own please don't forget to replace
+> all the keys with your own.
 
-Continuing, let's take a loom o file `loom.yaml`, this file is not new, but it has new parameters, so let's take a look:
+Let's take a closer look at `loom.yaml`, this is a configuration file that can be used to configure
+both the DAppChain node and the Transfer Gateway Oracle. You can find documentation on the various
+settings in this config file in the [Loom SDK docs](https://loomx.io/developers/docs/en/loom-yaml.html),
+but we'll highlight some of the settings here that are relevant to this example.
 
 #### loom.yaml
 
 ```yaml
-# This is the new configuration
+# This is a unique identifier for the DAppChain used in this example
+ChainID: "default"
+# This enables the latest version of the contract registry maintained by the DAppChain, which is
+# required in order for the Transfer Gateway to be able verify DAppChain contract ownership.
+# This setting must not be changed after the DAppChain starts for the first time!
+RegistryVersion: 2
+# Transfer Gateway Settings
 TransferGateway:
-  # Important to keep the indentation
-
-  # Enables the Transfer Gateway Go contract, must be the same on all nodes.
+  # Enables the Gateway Go contract (DAppChain Gateway), must be the same on all nodes.
   ContractEnabled: true
-  # Enables the in-process Transfer Gateway Oracle.
+  
+  # Enables the in-process Gateway Oracle.
   OracleEnabled: true
 
-  # Address of the Ethereum node, the node should have the JSON RPC available and running
+  # Address of the Ganache network where the Mainnet Solidity contracts are deployed
+  # (take a look at the truffle-ethereum directory).
   EthereumURI: "http://127.0.0.1:8545"
 
-  # Address of the Gateway deploy on address above (EthereumURI)
+  # Address of the Mainnet Gateway contract deployed to the Ganache network above.
   MainnetContractHexAddress: "0xf5cad0db6415a71a5bc67403c87b56b629b4ddaa"
 
-  # Private key of the Ethereum validator used to sign the valid transfers between Ethereum and DAppChain
+  # Private key that will be used by the Gateway Oracle to sign pending withdrawals.
   MainnetPrivateKeyPath: "oracle_eth_priv.key"
 
-  # Private key of the Oracle
+  # Private key that will be used by the Gateway Oracle to send txs to the DAppChain Gateway.
   DAppChainPrivateKeyPath: "oracle_priv.key"
 
-  # Address of DAppChain consulted by the Oracle
+  # Address of DAppChain node the Gateway Oracle should interact with.
   DAppChainReadURI: "http://localhost:46658/query"
   DAppChainWriteURI: "http://localhost:46658/rpc"
 
-  # These control how often the Oracle will poll the blockchains for events.
+  # These control how frequently the Gateway Oracle will poll the DAppChain and Ganache.
   DAppChainPollInterval: 1 # seconds
   MainnetPollInterval: 1 # seconds
 
-  # Number of seconds to wait before starting the Oracle.
+  # Number of seconds to wait before starting the Gateway Oracle, this allows the DAppChain node
+  # to spin up before the Gateway Oracle tries to connect to it.
   OracleStartupDelay: 5
-  # Number of seconds to wait between reconnection attempts.
+  
+  # Number of seconds the Gateway Oracle should wait between reconnection attempts if it encounters
+  # a network error of some kind.
   OracleReconnectInterval: 5
 ```
 
-And finally the `genesis.json`, with `AddressMapper` plugin a new plugin that will be responsible for "map" addresses from Ethereum and DAppChain and `Gateway` is the plugin that manages transfers from between Ethereum and DAppChain, all transfer are secure and signed. This plugin also manages the Oracles, which are responsible for pool information from Ethereum network and sign withdraws from DAppChain to Ethereum network.
+Now let's take a look at the `genesis.json` file (or `genesis.example.json` if you haven't setup the
+example yet), this file specifies which Go contracts should be deployed to the DAppChain when the
+DAppChain starts up for the first time. You can read more about the `coin` and `dpos` contracts in the
+[Built-in Contracts docs][], but these two contracts are not relevant to this particular example.
+The two contracts we're interested in are the built-in `addressmapper`, and `gateway` contracts.
 
-```json
+The Address Mapper contract is responsible for mapping owned DAppChain accounts to Mainnet accounts,
+and vice versa, you can read more about its purpose in the [Transfer Gateway docs][]. While the
+Gateway contract is responsible for contract mapping, and token transfers to and from the DAppChain.
+
+```javascript
 {
-    [
+    "contracts": [
         {
             "vm": "plugin",
             "format": "plugin",
@@ -157,10 +181,14 @@ And finally the `genesis.json`, with `AddressMapper` plugin a new plugin that wi
             "name": "gateway",
             "location": "gateway:0.1.0",
             "init": {
+                // Address of the Gateway Owner, only the owner can change the set of Gateway
+                // Oracles the contract is allowed to interact with.
                 "owner": {
                     "chain_id": "default",
                     "local": "c/IFoEFkm4+D3wdqLmFU9F3t3Sk="
                 },
+                // Initial set of Gateway Oracles that the contract will be allowed to interact with,
+                // identified by their address.
                 "oracles": [
                     {
                         "chain_id": "default",
@@ -231,4 +259,7 @@ License
 
 BSD 3-Clause License
 
+[loom-js]: https://github.com/loomnetwork/loom-js
 [MetaMask]: https://metamask.io/
+[Built-in Contracts docs]: https://loomx.io/developers/docs/en/builtin.html
+[Transfer Gateway docs]: https://loomx.io/developers/docs/en/transfer-gateway.html
