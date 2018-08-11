@@ -258,13 +258,20 @@ ERC721 tokens from either contract. You can read more about contract mapping in 
 
 ### 📁 webclient
 
-Finally the web interface, which will require `MetaMask` to be installed on a compatible browser (Chrome / Firefox).
+This directory contain the web frontend, which requires `MetaMask` to be installed in a compatible
+browser (Chrome / Firefox). The web frontend can be reached at `http://localhost:8080` after running
+the `./transfer_gateway start`.
 
-The web interface will be available on `http://localhost:8080`, just open the browser on this address and the interface will be presented. The interface has four areas.
-
-The `Home` page which will require your `MetaMask` signature to map your Ethereum network address with DAppChain address (no one other than you can create that link).
-
-Next areas are `Owned Cards` which are the cards owned by your user (yeah we just gave 5 cards to you 😉), `Cards On DAppChain` cards that are deposited on `Gateway` and properly mirrored on `DAppChain` and the `Cards On Gateway` which are the cards that you and only you owns waiting to be withdrawal to your ownership again.
+The frontend consists of four pages:
+- `Home` - where you must map your Mainnet account to a DAppChain account by signing a message via
+          `MetaMask` with your Mainnet account. This must be done before attempting to transfer
+           any cards.
+- `Owned Cards` - where you can see the cards currently owned by you on Mainnet (yeah we just
+                      gave 5 cards to you 😉).
+- `Cards on Gateway` - where you can see the cards in the Mainnet Gateway that are waiting to be
+                      withdrawn by you to your Mainnet account.
+- `Cards on DAppChain` - where you can see the cards that have been transfered to the DAppChain from
+                        your Mainnet account.
 
 
 Loom Network
