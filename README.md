@@ -1,7 +1,7 @@
 # Cards Gateway Example
 
-Example of how to use Transfer Gateway from Loom DAppChain to transfer assets (ERC721 tokens) to
-Ethereum network and to transfer assets (ERC721 tokens) to DAppChain.
+This project is built using the `loom-js` Transfer Gateway API, and demonstrates how to transfer
+ERC721 tokens between Ethereum and Loom DAppChains via a browser frontend built with React.
 
 ## Interface in action
 
@@ -13,61 +13,75 @@ Ethereum network and to transfer assets (ERC721 tokens) to DAppChain.
 
 * node >= 8
 * wget (used to download Loom DAppChain binary)
-* nc (used to check available ports before run loom, ganache or webpack)
-
-> wget and nc can be found on command `transfer_gateway` which is a shell script
-> to help put all necessary services together
+* nc (used to check required ports aren't in use)
+* [MetaMask][] browser extension
 
 ### Install
 
-Clone this repository
+After cloning this repository install all the necessary dependencies use the `transfer_gateway`
+shell script to automatically download & install all the required dependencies:
 
 ```bash
-# Install necessary packages node_packages and loom binary
 ./transfer_gateway setup
 ```
 
 ### Running
 
+After everything has been installed use the `transfer_gateway` script to spin up all the required
+services:
+
 ```bash
-# Start services ganache, loom and web interface and mapping configuration
 ./transfer_gateway start
 ```
 
 ### Stop
 
+When you're done playing around with the example you should stop all the running services using:
+
 ```bash
-# Stop all services (loom, ganache and webserver)
 ./transfer_gateway stop
 ```
 
 ### Status
 
+To check which services are currently running:
+
 ```bash
-# Check status of services
 ./transfer_gateway status
 ```
 
 ### Cleanup
 
+If you want to start with a clean slate you can remove all the `node_modules` directories, and the
+loom binary by running:
+
 ```bash
-# Remove downloaded packages node_modules and loom binary
 ./transfer_gateway cleanup
 ```
 
 ### Web Browser
 
-After execute `./transfer_gateway start` and starts the necessary services, you can access the web interface on `localhost:8080`
+After `./transfer_gateway start` and starts the necessary services you can access the web frontend
+at `localhost:8080`.
 
 ### MetaMask
 
-This example requires `MetaMask` to be installed and configured to use the `Private Network` on `localhost:8545`, also the imported account should be `0x5194b63f10691e46635b27925100cfc0a5ceca62`, which has the private key `0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2` (those keys are just used here we don't use anywhere else).
+This example requires [MetaMask][] to be installed, you must also set MetaMask to use the
+`Private Network` at `localhost:8545`, and then import the Ganache generated private key `0xbb63b692f9d8f21f0b978b596dc2b8611899f053d68aec6c1c20d1df4f5b6ee2` (which corresponds to the 
+`0x5194b63f10691e46635b27925100cfc0a5ceca62` account in Ganache).
 
 How to config.
 
 ![](https://uc14a790b5fa4a863c373a745f0b.previews.dropboxusercontent.com/p/orig/AAIGK_yW12n0_0QPeyDhhFl_smFxZ_ECbT7Ex-_V5z1wsN7_DayWUmzwZ0WkH3QgCY_Y42Prs13NE5I1X5qCMT2DdUg65mzx0vbHiSzeqXAciV6ox6Jl2V3pjvW4A-QBiHVlTDhBkXLpVNA0_qMmlnrpTKv8fzu3A2BGSP_Ukhw8d3CFIiCAOT-d90QpikIFSefQY1WSstNhGhaiqbD6KiyD/p.gif?size=2048x1536&size_mode=3)
 
-> After the second restart of the example it's possible that a transaction to DAppChain will fail an error like "rpc error with payload {…nonce. account has nonce of: 0 tx has nonce of: 5", it's because of the MetaMask nonce counter that needed to reset. Go to MetaMask -> Settings -> Reset Account, it should restart the nonce counter on MetaMask
+### MetaMask Troubleshooting
+
+If you stop the example and start it up again you may encounter a MetaMask error like this:
+> "rpc error with payload {…nonce. account has nonce of: 0 tx has nonce of: 5"
+
+This happens because MetaMask keeps track of the last nonce that was used to send a transaction with
+a particular account, and when all the chains are reset the nonce needs to be reset back to zero.
+You can force MetaMask to reset the nonce by [reseting the imported account](https://consensys.zendesk.com/hc/en-us/articles/360004177531-Resetting-an-Account-New-UI-).
 
 
 ## Example "in a nutshell"
@@ -219,3 +233,5 @@ License
 ----
 
 BSD 3-Clause License
+
+[MetaMask]: https://metamask.io/
