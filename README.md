@@ -161,9 +161,7 @@ DAppChain starts up for the first time. You can read more about the `coin` and `
 [Built-in Contracts docs][], but these two contracts are not relevant to this particular example.
 The two contracts we're interested in are the built-in `addressmapper`, and `gateway` contracts.
 
-The Address Mapper contract is responsible for mapping owned DAppChain accounts to Mainnet accounts,
-and vice versa, you can read more about its purpose in the [Transfer Gateway docs][]. While the
-Gateway contract is responsible for contract mapping, and token transfers to and from the DAppChain.
+#### genesis.json
 
 ```javascript
 {
@@ -200,6 +198,13 @@ Gateway contract is responsible for contract mapping, and token transfers to and
     ]
 }
 ```
+
+The Address Mapper contract is responsible for mapping owned DAppChain accounts to Mainnet accounts,
+and vice versa, you can read more about its purpose in the [Transfer Gateway docs][].
+
+The Gateway contract is responsible for contract mapping, and token transfers to and from the
+DAppChain. It relies on the Gateway Oracle (though there may be more than one) to transfer relevant
+data between the DAppChain and Mainnet.
 
 ### 📁 truffle-ethereum
 
