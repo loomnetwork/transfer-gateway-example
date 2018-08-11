@@ -213,21 +213,23 @@ data between the DAppChain and Mainnet.
 
 ### 📁 truffle-ethereum
 
-This directory contains the contracts that will be deployed on the Ethereum network, the `Gateway` and `CryptoCards` the ERC721 token representation on the Ethereum network.
+This directory contains the contracts that are deployed to Mainnet, primarily the `Gateway` contract
+(Mainnet Gateway), and the `CryptoCards` ERC721 token contract.
 
-The act of depositing `CryptoCards` on `Gateway` is the one of the main features on this ERC721 token, let's look on the function.
+The `CryptoCards` ERC721 contract implements a convenient function for depositing tokens into the
+`Gateway` contract:
 
-```sol
+```solidity
 function depositToGateway(uint tokenId) public {
   safeTransferFrom(msg.sender, gateway, tokenId);
 }
 ```
 
-This function once called along with the `tokenId` will also call the `safeTransferFrom` which will call the function `onERC721Received` on contract `Gateway` which will register the owner of the token.
+The `Gateway` contract implements the `withdrawERC721` function, which should be called by a user
+who wishes to withdraw a token from the Mainnet Gateway back to their own Mainnet account.
 
-Another important function is the `withdrawERC721` on `Gateway`, called once the user wants to withdraw the token from `DAppChain` and get back the fully ownership of the token.
-
-> The withdraw process only happen with a secure sign guaranteed by the validators of the network, no one unless the owner of the token can withdraw from DAppChain
+> NOTE: The Mainnet Gateway will only allow a user to withdraw a token if they can provide proof
+> that it's no longer in circulation on the DAppChain, you can read more about it in the [Transfer Gateway docs][].
 
 ### 📁 truffle-dappchain
 
