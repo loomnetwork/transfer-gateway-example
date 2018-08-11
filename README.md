@@ -95,6 +95,11 @@ The `cards-gateway-example` directory contains five sub directories:
 
 In the following sections we'll explain what's in each of these directories.
 
+> NOTE: In this doc we use the term Mainnet to refer to an Ethereum-like network, as a matter of
+> convenience. In this example the only Ethereum network we actually interact with is Ganache, but
+> you could also hook everything up to use the Ethereum Mainnet, or the Rinkeby Testnet by changing
+> a few configuration settings.
+
 ### 📁 dappchain
 
 This directory contains the `loom` binary (after setup), DAppChain config files, and some key pairs.
@@ -226,13 +231,17 @@ Another important function is the `withdrawERC721` on `Gateway`, called once the
 
 ### 📁 truffle-dappchain
 
-This directory contains the representation of the `CryptoCards` from `truffle-ethereum` on the `DAppChain`, is a exact "mirroring" of the ERC721 tokens from Ethereum network, but now living inside the `Loom DAppChain`.
+This directory contains the `CryptoCardsDAppChain` ERC721 contract that's deployed to the DAppChain,
+this contract will keep track of any tokens sent from the `CryptoCards` ERC721 contract on Mainnet
+to the DAppChain via the Transfer Gateway.
 
-When the user deposits his/her tokens `CryptoCards` on the Ethereum network into the contract `Gateway` the `TransferGateway` will pool that information and `mint` a representation (mirror).
+When a user deposits their `CryptoCards` tokens into the Mainnet Gateway contract the DAppChain
+Gateway contract will `mint` the corresponding tokens in the `CryptoCardsDAppChain` contract.
 
-On the `CryptoCardsDAppChain` contract there's a `mint` only available for the authorized `TransferGateway`
+Note that the DAppChain Gateway must be authorized to mint tokens in the `CryptoCardsDAppChain`
+contract, otherwise token transfers from Mainnet to the DAppChain won't work.
 
-```sol
+```solidity
 function mint(uint256 _uid) public {
   require(msg.sender == gateway);
   _mint(gateway, _uid);
@@ -241,7 +250,11 @@ function mint(uint256 _uid) public {
 
 ### 📁 transfer-gateway-scripts
 
-Containing only one script `index.js` which will be responsible for map the `CryptoCards` on Ethereum network and the `CryptoCardsDAppChain` on Loom DAppChain. This is an very important step to make everything work together, without this the `TransferGateway` will not know which ERC721 asset should be mirrored on DAppChain
+This directory contains a single `index.js` script file which is responsible for mapping the
+`CryptoCards` ERC721 contract on Mainnet to the `CryptoCardsDAppChain` ERC721 contract on the
+DAppChain. Without this contract mapping the Transfer Gateway won't know what to do when it receives
+ERC721 tokens from either contract. You can read more about contract mapping in the
+[Transfer Gateway docs][].
 
 ### 📁 webclient
 
