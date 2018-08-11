@@ -184,14 +184,10 @@ The two contracts we're interested in are the built-in `addressmapper`, and `gat
             "name": "gateway",
             "location": "gateway:0.1.0",
             "init": {
-                // Address of the Gateway Owner, only the owner can change the set of Gateway
-                // Oracles the contract is allowed to interact with.
                 "owner": {
                     "chain_id": "default",
                     "local": "c/IFoEFkm4+D3wdqLmFU9F3t3Sk="
                 },
-                // Initial set of Gateway Oracles that the contract will be allowed to interact with,
-                // identified by their address.
                 "oracles": [
                     {
                         "chain_id": "default",
@@ -275,6 +271,11 @@ The frontend consists of four pages:
 - `Cards on DAppChain` - where you can see the cards that have been transfered to the DAppChain from
                         your Mainnet account.
 
+### Troubleshooting
+
+* Sometimes when run `./transfer_gateway start` and a message like `Ganache port 8545 is already in use` appears it's because the service `ganache` is running (obvious), however if you never ran `./transfer_gateway start` then it's because another agent started `ganache` and this example starts it self `ganache` version.
+
+* In order to `stop all` services (used by cards-gateway-example) you should run `./transfer_gateway stop`, however if services like `ganache` or `webpack` didn't halt then you need to stop then by the process id or `pid`.
 
 Loom Network
 ----
