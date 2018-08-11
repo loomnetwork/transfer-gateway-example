@@ -73,12 +73,19 @@ You will also need to [import the private key](https://consensys.zendesk.com/hc/
 
 #### Troubleshooting
 
-If you stop the example and start it up again you may encounter a MetaMask error like this:
+* If you stop the example and start it up again you may encounter a MetaMask error like this:
 > "rpc error with payload {…nonce. account has nonce of: 0 tx has nonce of: 5"
 
-This happens because MetaMask keeps track of the last nonce that was used to send a transaction with
-a particular account, and when all the chains are reset the nonce needs to be reset back to zero.
-You can force MetaMask to reset the nonce by [reseting the imported account](https://consensys.zendesk.com/hc/en-us/articles/360004177531-Resetting-an-Account-New-UI-).
+> This happens because MetaMask keeps track of the last nonce that was used to send a transaction with
+> a particular account, and when all the chains are reset the nonce needs to be reset back to zero.
+> You can force MetaMask to reset the nonce by [reseting the imported account](https://consensys.zendesk.com/hc/en-us/articles/360004177531-Resetting-an-Account-New-UI-).
+
+* Restart the entire service can help to clean cache also `./transfer_gateway restart`, after restart you should clean MetaMask cache.
+
+* Sometimes when run `./transfer_gateway start` and a message like `Ganache port 8545 is already in use` appears it's because the service `ganache` is running (obvious), however if you never ran `./transfer_gateway start` then it's because another agent started `ganache` and this example starts it self `ganache` version.
+
+* In order to `stop all` services (used by cards-gateway-example) you should run `./transfer_gateway stop`, however if services like `ganache` or `webpack` didn't halt then you need to stop then by the process id or `pid`.
+
 
 
 ## Example "in a nutshell"
@@ -271,11 +278,6 @@ The frontend consists of four pages:
 - `Cards on DAppChain` - where you can see the cards that have been transfered to the DAppChain from
                         your Mainnet account.
 
-### Troubleshooting
-
-* Sometimes when run `./transfer_gateway start` and a message like `Ganache port 8545 is already in use` appears it's because the service `ganache` is running (obvious), however if you never ran `./transfer_gateway start` then it's because another agent started `ganache` and this example starts it self `ganache` version.
-
-* In order to `stop all` services (used by cards-gateway-example) you should run `./transfer_gateway stop`, however if services like `ganache` or `webpack` didn't halt then you need to stop then by the process id or `pid`.
 
 Loom Network
 ----
