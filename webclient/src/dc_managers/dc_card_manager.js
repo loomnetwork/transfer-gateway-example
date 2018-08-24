@@ -48,12 +48,13 @@ export default class DAppChainCardManager {
       { from }
     )
 
-    return new DAppChainCardManager(client, contract)
+    return new DAppChainCardManager(client, contract, web3)
   }
 
-  constructor(client, contract) {
+  constructor(client, contract, web3) {
     this._client = client
     this._contract = contract
+    this._web3 = web3
   }
 
   getContractAddress() {
@@ -89,8 +90,8 @@ export default class DAppChainCardManager {
   }
 
   async approveAsync(address, cardId) {
-    return await this._contract.methods
-      .approve('0xb9fA0896573A89cF4065c43563C069b3B3C15c37'.toUpperCase(), cardId)
-      .send({ from: address })
+    const addr = this._web3.utils.toChecksumAddress('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+    const iban = this._web3.eth.Iban.toIban(addr)
+    return await this._contract.methods.approve(iban, cardId).send({ from: address })
   }
 }
