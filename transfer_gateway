@@ -5,7 +5,7 @@ ganache_port=8545
 dapp_port=8080
 dappchain_port_1=46657
 dappchain_port_2=46658
-build_number=404
+build_number=407
 
 # Check available platforms
 platform='unknown'
