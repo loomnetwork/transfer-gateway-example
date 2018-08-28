@@ -1,7 +1,7 @@
 import BN from 'bn.js'
 
 import {
-  TransferGateway,
+  Contracts,
   CryptoUtils,
   Client,
   NonceTxMiddleware,
@@ -30,7 +30,7 @@ export default class DAppChainGatewayManager {
       new SignedTxMiddleware(privateKey)
     ]
 
-    const transferGateway = await TransferGateway.createAsync(
+    const transferGateway = await Contracts.TransferGateway.createAsync(
       client,
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
     )
@@ -42,7 +42,7 @@ export default class DAppChainGatewayManager {
     this._transferGateway = transferGateway
     this._client = client
 
-    this._transferGateway.on(TransferGateway.EVENT_TOKEN_WITHDRAWAL, event => {
+    this._transferGateway.on(Contracts.TransferGateway.EVENT_TOKEN_WITHDRAWAL, event => {
       if (this._onTokenWithdrawal) {
         this._onTokenWithdrawal(event)
       }

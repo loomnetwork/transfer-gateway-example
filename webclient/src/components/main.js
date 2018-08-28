@@ -46,7 +46,7 @@ export default class Main extends React.Component {
     return (
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <NavLink to="/" className="navbar-brand">
-          Cards Gateway
+          Transfer Gateway Example
         </NavLink>
         <button
           className="navbar-toggler"

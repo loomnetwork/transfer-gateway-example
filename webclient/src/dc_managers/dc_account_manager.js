@@ -7,7 +7,7 @@ const {
   Address,
   LocalAddress,
   CryptoUtils,
-  AddressMapper,
+  Contracts,
   Web3Signer
 } = require('loom-js/dist')
 
@@ -35,7 +35,7 @@ export default class DAppChainAccountManager {
       new SignedTxMiddleware(privateKey)
     ]
 
-    const addressMapper = await AddressMapper.createAsync(
+    const addressMapper = await Contracts.AddressMapper.createAsync(
       client,
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
     )
