@@ -28,4 +28,10 @@ export default class EthGatewayManager {
       .withdrawERC721(cardId, sig, contractAddress)
       .send({ from: address, gas: '189362' })
   }
+
+  async withdrawTokenAsync(address, amount, sig, contractAddress) {
+    return await this.contract.methods
+      .withdrawERC20(amount, sig, contractAddress)
+      .send({ from: address, gas: '189362' })
+  }
 }

@@ -60,6 +60,13 @@ export default class DAppChainGatewayManager {
     )
   }
 
+  async withdrawTokenAsync(amount, contractAddress) {
+    return await this._transferGateway.withdrawERC20Async(
+      new BN(amount),
+      new Address(this._client.chainId, LocalAddress.fromHexString(contractAddress))
+    )
+  }
+
   async withdrawalReceiptAsync(address) {
     return await this._transferGateway.withdrawalReceiptAsync(
       new Address(this._client.chainId, LocalAddress.fromHexString(address))

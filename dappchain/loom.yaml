@@ -1,6 +1,6 @@
 ChainID: 'default'
 RegistryVersion: 2
-LogDestination: 'file://loom2.log'
+#LogDestination: 'file://loom2.log'
 LoomLogLevel: 'debug'
 ContractLogLevel: 'debug'
 BlockchainLogLevel: 'error'
