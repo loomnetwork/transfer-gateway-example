@@ -5,7 +5,7 @@ ERC721/ERC20 tokens between Ethereum and Loom DAppChains via a browser frontend 
 
 ## Interface in action
 
-![](https://uc93063baa261a64b48cbf0e575d.previews.dropboxusercontent.com/p/orig/AALmkbwdJEDsdwYEK1E1DX1zKiDhg9HN-n8zY9oZ-mOlUFSCYJZ37ltmBo1utinYg3XtPZ4g0zvIpaefNdy2VRRIm9Y3x6aXfHeCdg6ggC-2SDk2N5gysLh_qzC9mPuHPxZPCJY31YBU4kckfR4MsF5ZfY9lM_tm6NcJgppJiTRs6ItSlsNUs7MAJDkm5lfLlj5rdZv4rQTtOe4hqhtvB4im/p.gif?size=2048x1536&size_mode=3)
+![](https://uc918474b6ac8c65abde978b772b.previews.dropboxusercontent.com/p/orig/AAL0k2DCPTcYG4ns-m2YZy5Nt6LN4PIvLOlo0_Ekb1J1nagXo5Qcs9de97UaysFxEEtlYOyRQbtreLkrr94Y6skhgQ4o8yqmQGpxDpSwfrRdpep0h1CZO5T_DFaofD6PHHgrxKgVOKW5R8mBgabXGHQJIH1aX8tHV7eQURvkk-f6eWkr98MxriwJBPX1ss2HRtVYCjWIoEWVbS-g4YnaRZXe/p.gif?size=2048x1536&size_mode=3)
 
 ## Quick Start
 
