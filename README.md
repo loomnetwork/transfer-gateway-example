@@ -1,7 +1,7 @@
-# Cards Gateway Example
+# Transfer Gateway Example
 
 This project is built using the [loom-js][] Transfer Gateway API, and demonstrates how to transfer
-ERC721 tokens between Ethereum and Loom DAppChains via a browser frontend built with React.
+ERC721/ERC20 tokens between Ethereum and Loom DAppChains via a browser frontend built with React.
 
 ## Interface in action
 
@@ -133,7 +133,7 @@ RegistryVersion: 2
 TransferGateway:
   # Enables the Gateway Go contract (DAppChain Gateway), must be the same on all nodes.
   ContractEnabled: true
-  
+
   # Enables the in-process Gateway Oracle.
   OracleEnabled: true
 
@@ -161,7 +161,7 @@ TransferGateway:
   # Number of seconds to wait before starting the Gateway Oracle, this allows the DAppChain node
   # to spin up before the Gateway Oracle tries to connect to it.
   OracleStartupDelay: 5
-  
+
   # Number of seconds the Gateway Oracle should wait between reconnection attempts if it encounters
   # a network error of some kind.
   OracleReconnectInterval: 5
@@ -217,9 +217,9 @@ data between the DAppChain and Mainnet.
 ### 📁 truffle-ethereum
 
 This directory contains the contracts that are deployed to Mainnet, primarily the `Gateway` contract
-(Mainnet Gateway), and the `CryptoCards` ERC721 token contract.
+(Mainnet Gateway), and the `CryptoCards/GameToken` ERC721/ERC20 token contract.
 
-The `CryptoCards` ERC721 contract implements a convenient function for depositing tokens into the
+The `CryptoCards/GameToken` ERC721/ERC20 contract implements a convenient function for depositing tokens into the
 `Gateway` contract:
 
 ```solidity
@@ -228,7 +228,7 @@ function depositToGateway(uint tokenId) public {
 }
 ```
 
-The `Gateway` contract implements the `withdrawERC721` function, which should be called by a user
+The `Gateway` contract implements the `withdrawERC721` or `withdrawERC20` function, which should be called by a user
 who wishes to withdraw a token from the Mainnet Gateway back to their own Mainnet account.
 
 > NOTE: The Mainnet Gateway will only allow a user to withdraw a token if they can provide proof
@@ -236,14 +236,14 @@ who wishes to withdraw a token from the Mainnet Gateway back to their own Mainne
 
 ### 📁 truffle-dappchain
 
-This directory contains the `CryptoCardsDAppChain` ERC721 contract that's deployed to the DAppChain,
-this contract will keep track of any tokens sent from the `CryptoCards` ERC721 contract on Mainnet
+This directory contains the `CryptoCardsDAppChain/GameTokenDAppChain` ERC721/ERC20 contract that's deployed to the DAppChain,
+this contract will keep track of any tokens sent from the `CryptoCards/GameToken` ERC721/ERC20 contract on Mainnet
 to the DAppChain via the Transfer Gateway.
 
-When a user deposits their `CryptoCards` tokens into the Mainnet Gateway contract the DAppChain
-Gateway contract will `mint` the corresponding tokens in the `CryptoCardsDAppChain` contract.
+When a user deposits their `CryptoCards/GameToken` tokens into the Mainnet Gateway contract the DAppChain
+Gateway contract will `mint` the corresponding tokens in the `CryptoCardsDAppChain/GameTokenDAppChain` contract.
 
-Note that the DAppChain Gateway must be authorized to mint tokens in the `CryptoCardsDAppChain`
+Note that the DAppChain Gateway must be authorized to mint tokens in the `CryptoCardsDAppChain/GameTokenDAppChain`
 contract, otherwise token transfers from Mainnet to the DAppChain won't work.
 
 ```solidity
@@ -256,9 +256,9 @@ function mint(uint256 _uid) public {
 ### 📁 transfer-gateway-scripts
 
 This directory contains a single `index.js` script file which is responsible for mapping the
-`CryptoCards` ERC721 contract on Mainnet to the `CryptoCardsDAppChain` ERC721 contract on the
+`CryptoCards/GameToken` ERC721/ERC20 contract on Mainnet to the `CryptoCardsDAppChain/GameTokenDAppChain` ERC721/ERC20 contract on the
 DAppChain. Without this contract mapping the Transfer Gateway won't know what to do when it receives
-ERC721 tokens from either contract. You can read more about contract mapping in the
+ERC721/ERC20 tokens from either contract. You can read more about contract mapping in the
 [Transfer Gateway docs][].
 
 ### 📁 webclient
