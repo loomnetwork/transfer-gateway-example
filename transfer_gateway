@@ -5,7 +5,7 @@ ganache_port=8545
 dapp_port=8080
 dappchain_port_1=46657
 dappchain_port_2=46658
-build_number=407
+build_number=416
 
 # Check available platforms
 platform='unknown'
@@ -242,7 +242,7 @@ start)
   fi
 
   start_and_deploy_truffle_ethereum
-  start_dappchain
+  # start_dappchain
   deploy_truffle_dappchain
   start_webapp
   run_mapping
@@ -260,7 +260,7 @@ stop)
   echo
 
   stop_webdapp
-  stop_dappchain
+  # stop_dappchain
   stop_truffle_ethereum
 
   echo

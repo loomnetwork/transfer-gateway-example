@@ -25,11 +25,15 @@ export default class EthAccountManager {
   }
 
   constructor(browserWeb3) {
-    this.browserWeb3 = browserWeb3
+    this._browserWeb3 = browserWeb3
   }
 
   async getCurrentAccountAsync() {
-    const account = await this.browserWeb3.eth.getAccounts()
+    const account = await this._browserWeb3.eth.getAccounts()
     return account[0]
+  }
+
+  async getEthAccountBalance(accountAddr) {
+    return await this._browserWeb3.eth.getBalance(accountAddr)
   }
 }

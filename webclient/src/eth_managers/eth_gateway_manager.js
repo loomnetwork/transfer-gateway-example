@@ -9,11 +9,12 @@ export default class EthGatewayManager {
       GATEWAY_JSON.networks[networkId].address
     )
 
-    return new EthGatewayManager(contract)
+    return new EthGatewayManager(contract, browserWeb3)
   }
 
-  constructor(contract) {
-    this.contract = contract
+  constructor(contract, browserWeb3) {
+    this._contract = contract
+    this._browserWeb3 = browserWeb3
   }
 
   async isTokensCardOfUserAsync(address, cardId, gatewayContract) {
@@ -24,14 +25,30 @@ export default class EthGatewayManager {
 
   async withdrawCardAsync(address, cardId, sig, contractAddress) {
     console.log(address, cardId, sig, contractAddress)
-    return await this.contract.methods
+    return await this._contract.methods
       .withdrawERC721(cardId, sig, contractAddress)
       .send({ from: address, gas: '189362' })
   }
 
   async withdrawTokenAsync(address, amount, sig, contractAddress) {
-    return await this.contract.methods
+    return await this._contract.methods
       .withdrawERC20(amount, sig, contractAddress)
       .send({ from: address, gas: '189362' })
+  }
+
+  async withdrawEthAsync(address, amount, sig) {
+    return await this._contract.methods
+      .withdrawETH(amount, sig)
+      .send({ from: address, gas: '489362' })
+  }
+
+  async depositEthOnGateway(from, value) {
+    const to = this._contract.options.address
+    console.log('from, to, value', from, to, value)
+    return await this._browserWeb3.eth.sendTransaction({
+      from,
+      to,
+      value
+    })
   }
 }

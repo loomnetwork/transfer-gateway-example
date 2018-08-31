@@ -6,7 +6,14 @@ export default class EthTokens extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { account: '0x', mapping: null, sending: false, cardIds: [], balance: 0 }
+    this.state = {
+      account: '0x',
+      mapping: null,
+      sending: false,
+      cardIds: [],
+      balance: 0,
+      ethBalance: 0
+    }
   }
 
   async componentWillMount() {
@@ -18,6 +25,7 @@ export default class EthTokens extends React.Component {
     const balance = await this.props.ethTokenManager.getBalanceOfUserAsync(account)
     const cardsBalance = await this.props.ethCardManager.getBalanceOfUserAsync(account)
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(account)
+    const ethBalance = await this.props.ethAccountManager.getEthAccountBalance(account)
 
     let cardIds = []
 
@@ -25,7 +33,7 @@ export default class EthTokens extends React.Component {
       cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account, cardsBalance)
     }
 
-    this.setState({ account, balance, mapping, cardIds })
+    this.setState({ account, balance, mapping, cardIds, ethBalance })
   }
 
   async sendToDAppChainToken(amount) {
@@ -33,7 +41,7 @@ export default class EthTokens extends React.Component {
 
     try {
       await this.props.ethTokenManager.depositTokenOnGateway(this.state.account, amount)
-      alert('The amount will be available on DappChain, check DAppChain ')
+      alert('The amount will be available on DappChain, check DAppChain Account')
     } catch (err) {
       console.log('Transaction failed or denied by user')
     }
@@ -46,7 +54,7 @@ export default class EthTokens extends React.Component {
     this.setState({ sending: true })
     try {
       await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)
-      alert('The Card will be available on DappChain, check DAppChain Cards')
+      alert('The Card will be available on DappChain, check DAppChain Account')
     } catch (err) {
       console.log('Transaction failed or denied by user')
     }
@@ -55,12 +63,38 @@ export default class EthTokens extends React.Component {
     await this.updateUI()
   }
 
+  async sendToDAppChainEth(amount) {
+    this.setState({ sending: true })
+    try {
+      await this.props.ethGatewayManager.depositEthOnGateway(this.state.account, 1e16)
+      alert('The Eth will be available on DappChain, check DAppChain Account')
+    } catch (err) {
+      console.log(err)
+
+      console.log('Transaction failed or denied by user')
+    }
+
+    this.setState({ sending: false })
+    await this.updateUI()
+  }
+
   render() {
-    const wallet = (
+    const tokenWallet = (
       <Wallet
+        title="Game Tokens (ERC20)"
         balance={this.state.balance}
         action="Send to DAppChain"
         handleOnClick={() => this.sendToDAppChainToken(this.state.balance)}
+        disabled={this.state.sending}
+      />
+    )
+
+    const ethWallet = (
+      <Wallet
+        title="Ether"
+        balance={this.state.ethBalance}
+        action="Send to DAppChain"
+        handleOnClick={() => this.sendToDAppChainEth(this.state.ethBalance)}
         disabled={this.state.sending}
       />
     )
@@ -70,7 +104,7 @@ export default class EthTokens extends React.Component {
 
       return (
         <Card
-          title={cardDef.title}
+          title={`${cardDef.title} (ERC721)`}
           description={cardDef.description}
           key={idx}
           action="Send to DAppChain"
@@ -80,10 +114,18 @@ export default class EthTokens extends React.Component {
       )
     })
 
+    const viewEth = !this.state.mapping ? (
+      <p>Please sign your user first</p>
+    ) : this.state.ethBalance > 0 ? (
+      ethWallet
+    ) : (
+      <p>No Ether available</p>
+    )
+
     const viewTokens = !this.state.mapping ? (
       <p>Please sign your user first</p>
     ) : this.state.balance > 0 ? (
-      wallet
+      tokenWallet
     ) : (
       <p>No tokens available</p>
     )
@@ -100,6 +142,7 @@ export default class EthTokens extends React.Component {
       <div>
         <h2>Ethereum Network Owned Tokens</h2>
         <div className="container">
+          <div>{viewEth}</div>
           <div>{viewTokens}</div>
           <div>{viewCards}</div>
         </div>

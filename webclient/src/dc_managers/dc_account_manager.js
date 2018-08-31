@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import BN from 'bn.js'
 
 const {
   NonceTxMiddleware,
@@ -40,23 +41,29 @@ export default class DAppChainAccountManager {
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
     )
 
-    return new DAppChainAccountManager(client, publicKey, addressMapper)
+    const ethCoin = await Contracts.EthCoin.createAsync(
+      client,
+      new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
+    )
+
+    return new DAppChainAccountManager(client, publicKey, addressMapper, ethCoin)
   }
 
-  constructor(client, publicKey, addressMapper) {
-    this.client = client
-    this.publicKey = publicKey
-    this.addressMapper = addressMapper
+  constructor(client, publicKey, addressMapper, ethCoin) {
+    this._client = client
+    this._publicKey = publicKey
+    this._addressMapper = addressMapper
+    this._ethCoin = ethCoin
   }
 
   getCurrentAccount() {
-    return LocalAddress.fromPublicKey(this.publicKey).toString()
+    return LocalAddress.fromPublicKey(this._publicKey).toString()
   }
 
   async getAddressMappingAsync(ethAddress) {
     try {
       const from = new Address('eth', LocalAddress.fromHexString(ethAddress))
-      return await this.addressMapper.getMappingAsync(from)
+      return await this._addressMapper.getMappingAsync(from)
     } catch (_) {
       return null
     }
@@ -64,10 +71,25 @@ export default class DAppChainAccountManager {
 
   async signAsync(ethAddress) {
     const from = new Address('eth', LocalAddress.fromHexString(ethAddress))
-    const to = new Address(this.client.chainId, LocalAddress.fromPublicKey(this.publicKey))
+    const to = new Address(this._client.chainId, LocalAddress.fromPublicKey(this._publicKey))
 
     const web3 = new Web3(window.web3.currentProvider)
     const web3Signer = new Web3Signer(web3, ethAddress)
-    return await this.addressMapper.addIdentityMappingAsync(from, to, web3Signer)
+    return await this._addressMapper.addIdentityMappingAsync(from, to, web3Signer)
+  }
+
+  async approveAsync(amount) {
+    return await this._ethCoin.approveAsync(
+      new Address(
+        this._client.chainId,
+        LocalAddress.fromHexString('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+      ),
+      new BN(amount)
+    )
+  }
+
+  async getEthCoinBalance() {
+    const address = new Address(this._client.chainId, LocalAddress.fromPublicKey(this._publicKey))
+    return await this._ethCoin.getBalanceOfAsync(address)
   }
 }

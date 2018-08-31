@@ -31,7 +31,7 @@ export default class GatewayTokens extends React.Component {
     if (data) {
       switch (data.tokenKind) {
         case 0:
-          throw Error('Not implemented yet')
+          balance = +data.value.toString(10)
           break
         case 1:
           balance = +data.value.toString(10)
@@ -58,6 +58,24 @@ export default class GatewayTokens extends React.Component {
         signature,
         this.props.ethTokenManager.getContractAddress()
       )
+
+      alert('Token withdraw with success, check Owned Tokens')
+    } catch (err) {
+      console.error(err)
+    }
+
+    this.setState({ withdrawing: true })
+    await this.updateUI()
+  }
+
+  async withdrawFromGatewayEth(amount) {
+    this.setState({ withdrawing: true })
+    const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
+    const tokenOwner = data.tokenOwner.local.toString()
+    const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
+
+    try {
+      await this.props.ethAccountManager.withdrawEthAsync(tokenOwner, amount, signature)
 
       alert('Token withdraw with success, check Owned Tokens')
     } catch (err) {
@@ -97,6 +115,16 @@ export default class GatewayTokens extends React.Component {
         balance={this.state.balance}
         action="Withdraw from gateway"
         handleOnClick={() => this.withdrawFromGatewayToken(this.state.balance)}
+        disabled={this.state.sending}
+      />
+    )
+
+    const ethWallet = (
+      <Wallet
+        title="Ether"
+        balance={this.state.balance}
+        action="Withdraw from gateway"
+        handleOnClick={() => this.withdrawFromGatewayEth(this.state.balance)}
         disabled={this.state.sending}
       />
     )

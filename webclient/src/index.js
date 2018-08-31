@@ -59,6 +59,7 @@ import GatewayTokens from './components/gateway_tokens'
 
   const BuildEthTokens = () => (
     <EthTokens
+      ethGatewayManager={ethGatewayManager}
       ethAccountManager={ethAccountManager}
       dcAccountManager={dcAccountManager}
       ethCardManager={ethCardManager}

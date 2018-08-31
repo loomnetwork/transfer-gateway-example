@@ -72,4 +72,14 @@ export default class DAppChainGatewayManager {
       new Address(this._client.chainId, LocalAddress.fromHexString(address))
     )
   }
+
+  async withdrawEthAsync(amount) {
+    return await this._transferGateway.withdrawETHAsync(
+      new BN(amount),
+      new Address(
+        this._client.chainId,
+        LocalAddress.fromHexString('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+      )
+    )
+  }
 }
