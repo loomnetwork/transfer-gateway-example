@@ -15,6 +15,7 @@ export default class Home extends React.Component {
 
   async updateMapping() {
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(this.state.account)
+      console.log("in updateMapping with mapping", mapping);
     if (mapping) {
       console.log('Mapped accounts', mapping.from.toString(), mapping.to.toString())
     }
@@ -22,6 +23,7 @@ export default class Home extends React.Component {
   }
 
   async sign() {
+      console.log("in async sign with state", this.state);
     await this.props.dcAccountManager.signAsync(this.state.account)
     await this.updateMapping()
     location.reload()

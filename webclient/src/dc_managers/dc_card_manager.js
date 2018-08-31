@@ -90,8 +90,24 @@ export default class DAppChainCardManager {
   }
 
   async approveAsync(address, cardId) {
+      // https://web3js.readthedocs.io/en/1.0/web3-utils.html#tochecksumaddress
+      // Will convert an upper or lowercase Ethereum address to a checksum address.
+      // https://delegatecall.com/questions/checksum-vs-nonchecksum-address-b221b7ce-40dd-4d2e-a734-80801f0153f8
+      console.log("in approveAsync with token owner address", address);
+      // this hard-coded value is the gateway_dappchain_address which is hardcoded in their repo
+      // https://github.com/loomnetwork/token-gateway-example/blob/master/gateway_dappchain_address
+      // not sure yet why this is the one we're checksumming but this is where it comes from!
     const addr = this._web3.utils.toChecksumAddress('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+      console.log("gateway_dappchain_address after checksum", addr);
+
+      // interesting! https://www.iban.com/whatis.html (International Bank Account Number)
+      // OK but why...
+      // getting iban form of the gateway_dappchain_address
+      // then transferring this card TO the iban form of the gateway_dappchain_address
     const iban = this._web3.eth.Iban.toIban(addr)
+      console.log("iban form of checksummed gateway_dappchain_address", iban);
+      console.log("this._contract", this._contract);
+
     return await this._contract.methods.approve(iban, cardId).send({ from: address })
   }
 }

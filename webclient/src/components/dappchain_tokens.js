@@ -96,16 +96,20 @@ export default class DAppChainTokens extends React.Component {
   }
 
   async allowToWithdrawCard(cardId) {
+      console.log("in allowToWithdrawCard with cardId", cardId);
     this.setState({ allowing: true })
     await this.props.dcCardManager.approveAsync(this.state.account, cardId)
+      console.log("after approveAsync for cardId", cardId);
 
     try {
       await this.props.dcGatewayManager.withdrawCardAsync(
         cardId,
         this.props.dcCardManager.getContractAddress()
       )
+        console.log("after withdrawCardAsync with cardId", cardId);
 
       alert('Processing allowance')
+        alert("after the first alert");
     } catch (err) {
       if (err.message.indexOf('pending') > -1) {
         alert('Pending withdraw exists, check Cards On Gateway')

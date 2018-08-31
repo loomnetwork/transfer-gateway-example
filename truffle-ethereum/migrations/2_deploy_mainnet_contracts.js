@@ -6,7 +6,7 @@ const Gateway = artifacts.require('Gateway')
 
 module.exports = (deployer, _network, accounts) => {
   const [_, user] = accounts
-  const validator = accounts[9]
+  const validator = accounts[9]  // random
   deployer.deploy(Gateway, [validator], 3, 4).then(async () => {
     const gatewayInstance = await Gateway.deployed()
 
@@ -24,6 +24,7 @@ module.exports = (deployer, _network, accounts) => {
     console.log(`GameToken deployed at address: ${gameTokenInstance.address}`)
     console.log(`GameToken transaction at hash: ${gameTokenContract.transactionHash}`)
 
+      // i don't understand the why here with toggleToken
     await gatewayInstance.toggleToken(cryptoCardsInstance.address, { from: validator })
     await cryptoCardsInstance.register(user)
 

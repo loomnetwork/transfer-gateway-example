@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import CardList from '../card_list'
-
+// gets a list of cards, creates
 export default class EthCardManager {
   static async createAsync() {
     const browserWeb3 = new Web3(window.web3.currentProvider)
