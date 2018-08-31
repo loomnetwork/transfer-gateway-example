@@ -76,8 +76,6 @@ export default class GatewayTokens extends React.Component {
     const tokenOwner = data.tokenOwner.local.toString()
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
 
-    console.log(data, tokenOwner, signature)
-
     try {
       await this.props.ethGatewayManager.withdrawEthAsync(tokenOwner, amount, signature)
 

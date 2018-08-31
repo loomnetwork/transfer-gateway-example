@@ -25,7 +25,6 @@ export default class EthGatewayManager {
   }
 
   async withdrawCardAsync(address, cardId, sig, contractAddress) {
-    console.log(address, cardId, sig, contractAddress)
     return await this._contract.methods
       .withdrawERC721(cardId, sig, contractAddress)
       .send({ from: address, gas: '189362' })
@@ -38,7 +37,6 @@ export default class EthGatewayManager {
   }
 
   async withdrawEthAsync(address, amount, sig) {
-    console.log(this._contract.options.address)
     return await this._contract.methods
       .withdrawETH(amount, sig)
       .send({ from: address, gas: '489362' })
@@ -46,7 +44,6 @@ export default class EthGatewayManager {
 
   async depositEthOnGateway(from, value) {
     const to = this._contract.options.address
-    console.log('from, to, value', from, to, value)
     return await this._browserWeb3.eth.sendTransaction({
       from,
       to,
