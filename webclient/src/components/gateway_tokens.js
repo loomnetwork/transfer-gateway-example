@@ -11,6 +11,7 @@ export default class GatewayTokens extends React.Component {
       account: '0x',
       cardIds: [],
       balance: 0,
+      ethBalance: 0,
       mapping: null,
       withdrawing: false
     }
@@ -26,12 +27,13 @@ export default class GatewayTokens extends React.Component {
     const account = this.props.dcAccountManager.getCurrentAccount()
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(account)
 
+    let ethBalance = 0
     let balance = 0
     let cardIds = []
     if (data) {
       switch (data.tokenKind) {
         case 0:
-          balance = +data.value.toString(10)
+          ethBalance = +data.value.toString(10)
           break
         case 1:
           balance = +data.value.toString(10)
@@ -42,7 +44,7 @@ export default class GatewayTokens extends React.Component {
       }
     }
 
-    this.setState({ account, mapping, balance, cardIds })
+    this.setState({ account, mapping, balance, cardIds, ethBalance })
   }
 
   async withdrawFromGatewayToken(amount) {
@@ -75,7 +77,7 @@ export default class GatewayTokens extends React.Component {
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
 
     try {
-      await this.props.ethAccountManager.withdrawEthAsync(tokenOwner, amount, signature)
+      await this.props.ethGatewayManager.withdrawEthAsync(tokenOwner, amount, signature)
 
       alert('Token withdraw with success, check Owned Tokens')
     } catch (err) {
@@ -112,6 +114,7 @@ export default class GatewayTokens extends React.Component {
   render() {
     const wallet = (
       <Wallet
+        title="Game Token"
         balance={this.state.balance}
         action="Withdraw from gateway"
         handleOnClick={() => this.withdrawFromGatewayToken(this.state.balance)}
@@ -122,9 +125,9 @@ export default class GatewayTokens extends React.Component {
     const ethWallet = (
       <Wallet
         title="Ether"
-        balance={this.state.balance}
+        balance={this.state.ethBalance}
         action="Withdraw from gateway"
-        handleOnClick={() => this.withdrawFromGatewayEth(this.state.balance)}
+        handleOnClick={() => this.withdrawFromGatewayEth(this.state.ethBalance)}
         disabled={this.state.sending}
       />
     )
@@ -143,6 +146,14 @@ export default class GatewayTokens extends React.Component {
         />
       )
     })
+
+    const viewEth = !this.state.mapping ? (
+      <p>Please sign your user first</p>
+    ) : this.state.ethBalance > 0 ? (
+      ethWallet
+    ) : (
+      <p>No Ether available</p>
+    )
 
     const viewTokens = !this.state.mapping ? (
       <p>Please sign your user first</p>
@@ -164,6 +175,7 @@ export default class GatewayTokens extends React.Component {
       <div>
         <h2>Ethereum Network Gateway Tokens</h2>
         <div className="container">
+          <div>{ethWallet}</div>
           <div>{viewTokens}</div>
           <div>{viewCards}</div>
         </div>

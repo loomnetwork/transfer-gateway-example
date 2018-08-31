@@ -19,7 +19,7 @@ export default class DAppChainTokens extends React.Component {
 
   async componentWillMount() {
     this.props.dcGatewayManager.onTokenWithdrawal(async event => {
-      alert(`Token ${event.value.toNumber()} ready for withdraw, check Ethereum Gateway`)
+      alert(`Token ${event.value} ready for withdraw, check Ethereum Gateway`)
       await this.updateUI()
     })
 
