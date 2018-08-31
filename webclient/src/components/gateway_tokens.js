@@ -89,10 +89,13 @@ export default class GatewayTokens extends React.Component {
   }
 
   async withdrawFromGatewayCard(cardId) {
+      // getting a card off the gateway
+      console.log("in withdrawFromGatewayCard", cardId);
     this.setState({ withdrawing: true })
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
     const tokenOwner = data.tokenOwner.local.toString()
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
+      console.log("data", data);
 
     try {
       await this.props.ethGatewayManager.withdrawCardAsync(

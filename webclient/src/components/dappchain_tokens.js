@@ -95,6 +95,8 @@ export default class DAppChainTokens extends React.Component {
     await this.updateUI()
   }
 
+    // I think at the end of this, we've plunked the card
+    // into the gateway contract.  I think.
   async allowToWithdrawCard(cardId) {
       console.log("in allowToWithdrawCard with cardId", cardId);
     this.setState({ allowing: true })

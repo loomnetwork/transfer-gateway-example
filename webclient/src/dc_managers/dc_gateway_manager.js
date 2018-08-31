@@ -30,6 +30,10 @@ export default class DAppChainGatewayManager {
       new SignedTxMiddleware(privateKey)
     ]
 
+      // think TransferGateway is part of the loom-dist
+      // as in Contracts
+      // BOOM
+      // https://github.com/loomnetwork/loom-js/tree/master/src/contracts
     const transferGateway = await Contracts.TransferGateway.createAsync(
       client,
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
@@ -39,6 +43,7 @@ export default class DAppChainGatewayManager {
   }
 
   constructor(transferGateway, client) {
+      // in case I forgot, this is the transferGateway from the loom-js distro
     this._transferGateway = transferGateway
     this._client = client
 
@@ -54,6 +59,10 @@ export default class DAppChainGatewayManager {
   }
 
   async withdrawCardAsync(cardId, contractAddress) {
+      console.log("in withdrawCardAsync with cardId", cardId, " and contractAddress", contractAddress);
+      console.log("this._transferGateway", this._transferGateway);
+      // note this next line is called from the loom library here
+      // https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125
     return await this._transferGateway.withdrawERC721Async(
       new BN(cardId),
       new Address(this._client.chainId, LocalAddress.fromHexString(contractAddress))
@@ -68,6 +77,8 @@ export default class DAppChainGatewayManager {
   }
 
   async withdrawalReceiptAsync(address) {
+      console.log("withdrawalReceiptAsync with address", address);
+      // who is the _transferGateway? it's gotta be another
     return await this._transferGateway.withdrawalReceiptAsync(
       new Address(this._client.chainId, LocalAddress.fromHexString(address))
     )

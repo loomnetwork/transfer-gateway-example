@@ -58,6 +58,7 @@ export default class DAppChainCardManager {
   }
 
   getContractAddress() {
+      console.log("in getContractAddress, this._contract", this._contract);
     return this._contract.options.address
   }
 
@@ -107,7 +108,9 @@ export default class DAppChainCardManager {
     const iban = this._web3.eth.Iban.toIban(addr)
       console.log("iban form of checksummed gateway_dappchain_address", iban);
       console.log("this._contract", this._contract);
+      // TODO return to this code-path and see if I can get deeper
+      // https://ethereum.stackexchange.com/questions/267/why-dont-ethereum-addresses-have-checksums -- seems like the IBAN addresses ... work? 
 
-    return await this._contract.methods.approve(iban, cardId).send({ from: address })
+    return await this._contract.methods.approve(addr, cardId).send({ from: address })
   }
 }
