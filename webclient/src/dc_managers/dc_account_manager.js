@@ -41,7 +41,7 @@ export default class DAppChainAccountManager {
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
     )
 
-    const ethCoin = await Contracts.EthCoin.createAsync(
+    const ethCoin = await Contracts.Coin.createAsync(
       client,
       new Address(client.chainId, LocalAddress.fromPublicKey(publicKey))
     )
