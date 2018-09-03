@@ -167,7 +167,8 @@ export default class GatewayTokens extends React.Component {
                 role="tab"
                 aria-controls="ETH"
                 aria-selected="true">
-                ETH
+                ETH&nbsp;
+                <span className="badge badge-light">{this.state.ethBalance > 0 ? 1 : 0}</span>
               </a>
             </li>
             <li className="nav-item">
@@ -179,7 +180,8 @@ export default class GatewayTokens extends React.Component {
                 role="tab"
                 aria-controls="ERC20"
                 aria-selected="false">
-                ERC20
+                ERC20&nbsp;
+                <span className="badge badge-light">{this.state.balance > 0 ? 1 : 0}</span>
               </a>
             </li>
             <li className="nav-item">
@@ -191,7 +193,10 @@ export default class GatewayTokens extends React.Component {
                 role="tab"
                 aria-controls="ERC721"
                 aria-selected="false">
-                ERC721
+                ERC721&nbsp;
+                <span className="badge badge-light">
+                  {this.state.cardIds.length > 0 ? this.state.cardIds.length : 0}
+                </span>
               </a>
             </li>
           </ul>
