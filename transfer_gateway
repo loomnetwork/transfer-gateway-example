@@ -134,7 +134,7 @@ function stop_dappchain {
 
 function deploy_truffle_dappchain {
   if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
-    echo "Start Truffle DAppChain"
+    echo "Deploy Truffle DAppChain"
     cd truffle-dappchain
     yarn deploy > /dev/null 2>&1 &
     cd ..
@@ -213,7 +213,7 @@ status)
   ;;
 start)
   echo "-------------------------------------------------------------------"
-  echo "Initializing background services, it can take take (40 seconds) ..."
+  echo "Initializing background services, it can take (40 seconds) ..."
   echo "-------------------------------------------------------------------"
   echo
 
@@ -271,6 +271,7 @@ stop)
   ;;
 restart)
   $0 stop
+  sleep 1
   $0 start
 
   ;;

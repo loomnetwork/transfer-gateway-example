@@ -114,39 +114,37 @@ export default class EthTokens extends React.Component {
       )
     })
 
-    const viewEth = !this.state.mapping ? (
-      <p>Please sign your user first</p>
-    ) : this.state.ethBalance > 0 ? (
+    const viewEth = this.state.ethBalance > 0 ? (
       ethWallet
     ) : (
       <p>No Ether available</p>
     )
 
-    const viewTokens = !this.state.mapping ? (
-      <p>Please sign your user first</p>
-    ) : this.state.balance > 0 ? (
+    const viewTokens = this.state.balance > 0 ? (
       tokenWallet
     ) : (
       <p>No tokens available</p>
     )
 
-    const viewCards = !this.state.mapping ? (
-      <p>Please sign your user first</p>
-    ) : cards.length > 0 ? (
+    const viewCards = cards.length > 0 ? (
       cards
     ) : (
       <p>No cards deposited on Ethereum Network yet</p>
     )
 
     return (
-      <div>
-        <h2>Ethereum Network Owned Tokens</h2>
-        <div className="container">
-          <div>{viewEth}</div>
-          <div>{viewTokens}</div>
-          <div>{viewCards}</div>
+      !this.state.mapping ? (
+        <p>Please sign your user first</p>
+      ) : (
+        <div>
+          <h2>Ethereum Network Owned Tokens</h2>
+          <div className="container">
+            <div>{viewEth}</div>
+            <div>{viewTokens}</div>
+            <div>{viewCards}</div>
+          </div>
         </div>
-      </div>
+      )
     )
   }
 }
