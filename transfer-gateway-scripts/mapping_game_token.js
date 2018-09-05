@@ -1,3 +1,5 @@
+// same logic as the mapping_crypto_cards script
+// just diff variables, contracts & addresses
 const { readFileSync } = require('fs')
 const Web3 = require('web3')
 
