@@ -5,6 +5,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 contract CryptoCards is ERC721Token("CryptoCards", "CCC"), Ownable {
+    // is this even used?
   mapping(address => bool) private registered;
   address public gateway;
 
