@@ -148,8 +148,9 @@ function deploy_truffle_dappchain {
 function run_mapping {
   echo "Running mapping"
   cd transfer-gateway-scripts
-  node mapping_crypto_cards.js# > /dev/null 2>&1
-  node mapping_game_token.js #> /dev/null 2>&1
+  node mapping_fake_kitties.js #> /dev/null 2>&1
+  #node mapping_crypto_cards.js# > /dev/null 2>&1
+  #node mapping_game_token.js #> /dev/null 2>&1
   cd ..
 }
 
@@ -246,6 +247,7 @@ start)
   deploy_truffle_dappchain # dappchain is loom
   start_webapp
   run_mapping
+
 
   echo
   echo "-----------------------------------------------------------"
