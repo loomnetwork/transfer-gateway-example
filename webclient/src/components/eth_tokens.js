@@ -114,37 +114,71 @@ export default class EthTokens extends React.Component {
       )
     })
 
-    const viewEth = !this.state.mapping ? (
-      <p>Please sign your user first</p>
-    ) : this.state.ethBalance > 0 ? (
-      ethWallet
-    ) : (
-      <p>No Ether available</p>
-    )
+    const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
+    const viewTokens = this.state.balance > 0 ? tokenWallet : <p>No tokens available</p>
+    const viewCards = cards.length > 0 ? cards : <p>No cards deposited on Ethereum Network yet</p>
 
-    const viewTokens = !this.state.mapping ? (
+    return !this.state.mapping ? (
       <p>Please sign your user first</p>
-    ) : this.state.balance > 0 ? (
-      tokenWallet
     ) : (
-      <p>No tokens available</p>
-    )
-
-    const viewCards = !this.state.mapping ? (
-      <p>Please sign your user first</p>
-    ) : cards.length > 0 ? (
-      cards
-    ) : (
-      <p>No cards deposited on Ethereum Network yet</p>
-    )
-
-    return (
       <div>
         <h2>Ethereum Network Owned Tokens</h2>
         <div className="container">
-          <div>{viewEth}</div>
-          <div>{viewTokens}</div>
-          <div>{viewCards}</div>
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                id="ETH-tab"
+                data-toggle="tab"
+                href="#ETH"
+                role="tab"
+                aria-controls="ETH"
+                aria-selected="true">
+                ETH&nbsp;
+                <span className="badge badge-light">{this.state.ethBalance > 0 ? 1 : 0}</span>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="ERC20-tab"
+                data-toggle="tab"
+                href="#ERC20"
+                role="tab"
+                aria-controls="ERC20"
+                aria-selected="false">
+                ERC20&nbsp;
+                <span className="badge badge-light">{this.state.balance > 0 ? 1 : 0}</span>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="ERC721-tab"
+                data-toggle="tab"
+                href="#ERC721"
+                role="tab"
+                aria-controls="ERC721"
+                aria-selected="false">
+                ERC721&nbsp;
+                <span className="badge badge-light">
+                  {this.state.cardIds.length > 0 ? this.state.cardIds.length : 0}
+                </span>
+              </a>
+            </li>
+          </ul>
+
+          <div className="tab-content">
+            <div className="tab-pane active" id="ETH" role="tabpanel" aria-labelledby="ETH-tab">
+              {viewEth}
+            </div>
+            <div className="tab-pane" id="ERC20" role="tabpanel" aria-labelledby="ERC20-tab">
+              {viewTokens}
+            </div>
+            <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
+              {viewCards}
+            </div>
+          </div>
         </div>
       </div>
     )

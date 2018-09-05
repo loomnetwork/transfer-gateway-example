@@ -89,7 +89,7 @@ export default class DAppChainGatewayManager {
       new BN(amount),
       new Address(
         this._client.chainId,
-        LocalAddress.fromHexString('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+        LocalAddress.fromHexString('0xf5cAD0DB6415a71a5BC67403c87B56b629b4DdaA')
       )
     )
   }

@@ -2,6 +2,7 @@ cards_gateway.code-workspace
 crypto_cards_address
 crypto_cards_dappchain_address
 crypto_cards_tx_hash
+game_token_tx_hash
 game_token_address
 gateway_address
 crypto_cards_transaction

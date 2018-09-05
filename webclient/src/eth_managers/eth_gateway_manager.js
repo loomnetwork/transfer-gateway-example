@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import BN from 'bn.js'
 
 export default class EthGatewayManager {
   static async createAsync() {
@@ -24,7 +25,6 @@ export default class EthGatewayManager {
   }
 
   async withdrawCardAsync(address, cardId, sig, contractAddress) {
-    console.log(address, cardId, sig, contractAddress)
     return await this._contract.methods
       .withdrawERC721(cardId, sig, contractAddress)
       .send({ from: address, gas: '189362' })
@@ -44,7 +44,6 @@ export default class EthGatewayManager {
 
   async depositEthOnGateway(from, value) {
     const to = this._contract.options.address
-    console.log('from, to, value', from, to, value)
     return await this._browserWeb3.eth.sendTransaction({
       from,
       to,
