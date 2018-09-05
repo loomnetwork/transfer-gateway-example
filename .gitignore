@@ -1,3 +1,4 @@
+*.sw*
 cards_gateway.code-workspace
 crypto_cards_address
 crypto_cards_dappchain_address
