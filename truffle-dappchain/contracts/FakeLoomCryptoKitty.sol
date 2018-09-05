@@ -1,4 +1,4 @@
-pragma solidity ^0.4.r24;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 
@@ -9,16 +9,16 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Receiver.sol";
 import "./ERC721DAppToken.sol";
 
 contract FakeLoomCryptoKitty is ERC721DAppToken, ERC721Token, ERC721Receiver{
-    address public gateway;
+    address public gatewayContract;
 
-  constructor(address _gateway) ERC721Token("FakeLoomCryptoKitty", "FLCK") public {
-    gateway = _gateway;
+  constructor(address _gatewayContract) ERC721Token("FakeLoomCryptoKitty", "FLCK") public {
+    gatewayContract = _gatewayContract;
   }
 
   // this is the ERC721DAppToken interface, required
   function mintToGateway(uint256 _uid) public {
-    require(msg.sender == gateway);
-    _mint(gateway, _uid);
+    require(msg.sender == gatewayContract);
+    _mint(gatewayContract, _uid);
   }
 
   // also may not need to impl this b/c it's ... in the online contract... from openzep?

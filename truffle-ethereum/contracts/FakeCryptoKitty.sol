@@ -11,7 +11,7 @@ contract FakeCryptoKitty is ERC721Token("FakeCryptoKitty", "FCK"), Ownable {
     }
 
       function depositToGateway(uint tokenId) public {
-        safeTransferFrom(msg.sender, gateway, tokenId);
+        safeTransferFrom(msg.sender, gatewayContract, tokenId);
       }
 
     // only useful for demo purposes, but let's mint some so they're visible in a UI

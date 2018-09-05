@@ -85,7 +85,7 @@ function start_and_deploy_truffle_ethereum {
     cd truffle-ethereum
     yarn ganache-cli:dev > /dev/null 2>&1
     sleep 5
-    yarn deploy > /dev/null 2>&1
+    yarn deploy #> /dev/null 2>&1
     cd ..
   else
     echo "Truffle Ethereum is deployed and running"
@@ -136,7 +136,7 @@ function deploy_truffle_dappchain {
   if [ $(check_file_exists webclient/webclient.pid) = 0 ]; then
     echo "Deploy Truffle DAppChain"
     cd truffle-dappchain
-    yarn deploy > /dev/null 2>&1 &
+    yarn deploy # > /dev/null 2>&1 &
     cd ..
     sleep 20
   else
@@ -148,8 +148,8 @@ function deploy_truffle_dappchain {
 function run_mapping {
   echo "Running mapping"
   cd transfer-gateway-scripts
-  node mapping_crypto_cards.js > /dev/null 2>&1
-  node mapping_game_token.js > /dev/null 2>&1
+  node mapping_crypto_cards.js# > /dev/null 2>&1
+  node mapping_game_token.js #> /dev/null 2>&1
   cd ..
 }
 
