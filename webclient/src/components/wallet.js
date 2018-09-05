@@ -12,13 +12,28 @@ export default class Wallet extends React.Component {
           <p className="card-text">{this.props.description}</p>
         </div>
         <div className="card-footer">
-          <button
-            disabled={this.props.disabled}
-            type="button"
-            className="btn btn-primary"
-            onClick={() => this.props.handleOnClick()}>
-            {this.props.action}
-          </button>
+          <div className="row">
+            <div className="col-sm">
+              <button
+                disabled={this.props.disabled}
+                type="button"
+                className="btn btn-primary"
+                onClick={() => this.props.handleOnClick()}>
+                {this.props.action}
+              </button>
+            </div>
+            {this.props.handleOnClick2 && (
+              <div className="col-sm">
+                <button
+                  disabled={this.props.disabled}
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => this.props.handleOnClick2()}>
+                  {this.props.action2}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
