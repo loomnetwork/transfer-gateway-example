@@ -17,6 +17,8 @@ import DAppChainGatewayManager from './dc_managers/dc_gateway_manager'
 import EthTokenManager from './eth_managers/eth_token_manager'
 import DAppChainTokenManager from './dc_managers/dc_token_manager'
 
+import DAppChainSimpleStakeManager from './dc_managers/dc_simple_stake_manager'
+
 import EthTokens from './components/eth_tokens'
 import DAppChainTokens from './components/dappchain_tokens'
 import GatewayTokens from './components/gateway_tokens'
@@ -41,6 +43,8 @@ import GatewayTokens from './components/gateway_tokens'
 
   const ethGatewayManager = await EthGatewayManager.createAsync()
   const dcGatewayManager = await DAppChainGatewayManager.createAsync()
+
+  const dcSimpleStakeManager = await DAppChainSimpleStakeManager.createAsync()
 
   clearTimeout(t)
 
@@ -91,6 +95,7 @@ import GatewayTokens from './components/gateway_tokens'
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
       dcGatewayManager={dcGatewayManager}
+      dcSimpleStakeManager={dcSimpleStakeManager}
     />
   )
 

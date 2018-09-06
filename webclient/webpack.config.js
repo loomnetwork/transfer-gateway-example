@@ -3,6 +3,7 @@ const cryptoCardsJSON = require('../truffle-ethereum/build/contracts/CryptoCards
 const dcCryptoCardsJSON = require('../truffle-dappchain/build/contracts/CryptoCardsDappChain.json')
 const gameTokenJSON = require('../truffle-ethereum/build/contracts/GameToken.json')
 const dcGameTokenJSON = require('../truffle-dappchain/build/contracts/GameTokenDappChain.json')
+const dcSimpleStakeJSON = require('../truffle-dappchain/build/contracts/SimpleStake.json')
 const gatewayJSON = require('../truffle-ethereum/build/contracts/Gateway.json')
 
 module.exports = {
@@ -31,6 +32,7 @@ module.exports = {
       DC_CRYPTO_CARDS_JSON: JSON.stringify(dcCryptoCardsJSON),
       GAME_TOKEN_JSON: JSON.stringify(gameTokenJSON),
       DC_GAME_TOKEN_JSON: JSON.stringify(dcGameTokenJSON),
+      DC_SIMPLE_STAKE: JSON.stringify(dcSimpleStakeJSON),
       GATEWAY_JSON: JSON.stringify(gatewayJSON)
     })
   ],

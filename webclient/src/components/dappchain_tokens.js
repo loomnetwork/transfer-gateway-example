@@ -13,6 +13,7 @@ export default class DAppChainTokens extends React.Component {
       cardIds: [],
       ethBalance: 0,
       balance: 0,
+      staked: 0,
       allowing: false
     }
   }
@@ -33,6 +34,7 @@ export default class DAppChainTokens extends React.Component {
     const balance = await this.props.dcTokenManager.getBalanceOfUserAsync(account)
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(ethAccount)
     const ethBalance = (await this.props.dcAccountManager.getEthCoinBalance()).toString()
+    const staked = await this.props.dcSimpleStakeManager.balanceOf(account)
 
     let cardIds = []
 
@@ -46,7 +48,8 @@ export default class DAppChainTokens extends React.Component {
       ethAccount,
       mapping,
       balance,
-      ethBalance
+      ethBalance,
+      staked
     })
   }
 
@@ -119,6 +122,36 @@ export default class DAppChainTokens extends React.Component {
     await this.updateUI()
   }
 
+  async stake(amount) {
+    this.setState({ allowing: true })
+
+    try {
+      await this.props.dcSimpleStakeManager.stake(this.state.account, amount)
+
+      alert('Staking DAppChain Eth')
+    } catch (err) {
+      console.log(err)
+    }
+
+    this.setState({ allowing: false })
+    await this.updateUI()
+  }
+
+  async unstake(amount) {
+    this.setState({ allowing: true })
+
+    try {
+      await this.props.dcSimpleStakeManager.unstake(this.state.account)
+
+      alert('Unstaking DAppChain Eth')
+    } catch (err) {
+      console.log(err)
+    }
+
+    this.setState({ allowing: false })
+    await this.updateUI()
+  }
+
   render() {
     const wallet = (
       <Wallet
@@ -134,7 +167,19 @@ export default class DAppChainTokens extends React.Component {
         title="Ether"
         balance={this.state.ethBalance}
         action="Allow Withdraw"
+        action2="Stake"
         handleOnClick={() => this.allowToWithdrawEth(this.state.ethBalance)}
+        handleOnClick2={() => this.stake(this.state.ethBalance)}
+        disabled={this.state.sending}
+      />
+    )
+
+    const ethStakedWallet = (
+      <Wallet
+        title="Staked Ether"
+        balance={this.state.staked}
+        action="Unstake"
+        handleOnClick={() => this.unstake(this.state.staked)}
         disabled={this.state.sending}
       />
     )
@@ -155,6 +200,7 @@ export default class DAppChainTokens extends React.Component {
     })
 
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
+    const viewStaked = this.state.staked > 0 ? ethStakedWallet : <p>No stake available</p>
     const viewTokens =
       this.state.balance > 0 ? wallet : <p>No balance deposited on DAppChain yet</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on DAppChain yet</p>
@@ -207,6 +253,19 @@ export default class DAppChainTokens extends React.Component {
                 </span>
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="ETHStaked-tab"
+                data-toggle="tab"
+                href="#ETHStaked"
+                role="tab"
+                aria-controls="ETHStaked"
+                aria-selected="false">
+                ETH Staked&nbsp;
+                <span className="badge badge-light">{this.state.staked > 0 ? 1 : 0}</span>
+              </a>
+            </li>
           </ul>
 
           <div className="tab-content">
@@ -218,6 +277,13 @@ export default class DAppChainTokens extends React.Component {
             </div>
             <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
               {viewCards}
+            </div>
+            <div
+              className="tab-pane"
+              id="ETHStaked"
+              role="tabpanel"
+              aria-labelledby="ETHStaked-tab">
+              {viewStaked}
             </div>
           </div>
         </div>
