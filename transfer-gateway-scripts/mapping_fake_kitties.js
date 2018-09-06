@@ -45,12 +45,17 @@ const chainId = 'default';
 const writeUrl = 'http://127.0.0.1:46658/rpc';
 const readUrl = 'http://127.0.0.1:46658/query';
 
+// ACCOUNTS & Web3
+const web3 = new Web3('http://localhost:8545');
+
+
 // console.log("fakeKittyEthAddress", fakeKittyEthAddress);
 // console.log("fakeKittyLoomAddress", fakeKittyLoomAddress);
 // console.log("fakeKittyEthTx", fakeKittyEthTx);
 
+// this might be more readable with thens & promises
 (async () => {
-    // set up keypair
+   // set up keypair
     let keypair = getKeyPair();
     const publicKey = keypair['public'];
     const privateKey = keypair['private'];
@@ -68,11 +73,39 @@ const readUrl = 'http://127.0.0.1:46658/query';
 
     console.log('transferGateway', transferGateway);
 
-    const ethContractAddress = new Address('eth', LocalAddress.fromHexString(fakeKittyEthAddress));
+    const foreignContract = new Address('eth', LocalAddress.fromHexString(fakeKittyEthAddress));
+    const localContract = new Address(client.chainId, LocalAddress.fromHexString(fakeKittyLoomAddress))
 
-    const loomContractAddress = new Address(client.chainId, LocalAddress.fromHexString(fakeKittyLoomAddress))
+    console.log("foreignContract", foreignContract);
+    console.log("localContract", localContract);
 
-    console.log("ethContractAddress", ethContractAddress);
-    console.log("loomContractAddress", loomContractAddress);
+    // 
+    const accounts = await web3.eth.getAccounts()
+    const owner = accounts[0]
+    const web3Signer = new Web3Signer(web3, owner);
 
+    // hashes
+    // what's all this slice(2) doing for us?
+    const contractsAddressHash = soliditySha3(
+        {type: 'address', value: foreignContract.local.toString().slice(2)},
+        {type: 'address', value: localContract.local.toString().slice(2)}
+    )
+
+    const foreignContractCreatorSig = await web3Signer.signAsync(contractsAddressHash);
+    const foreignContractCreatorTxHash = Buffer.from(fakeKittyEthTx.slice(2), 'hex')
+
+    console.log("contractsAddressHash", contractsAddressHash);
+    console.log("foreignContract.MarshalPB()", foreignContract.MarshalPB());
+    console.log("localContract.MarshalPB()", localContract.MarshalPB());
+
+    //// add the contract mapping, finally
+    //// the rest is set-up. and its at so many different levels of abstraction
+    /// this function apparently takes named params
+    await transferGateway.addContractMappingAsync({
+        foreignContract, 
+        localContract, 
+        foreignContractCreatorSig, 
+        foreignContractCreatorTxHash
+    })
+    //console.log("done");
 })()
