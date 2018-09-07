@@ -3,7 +3,6 @@ import Wallet from './wallet'
 import Card from './card'
 
 export default class EthTokens extends React.Component {
-    //console.log("props", props);
   constructor(props) {
     super(props)
 

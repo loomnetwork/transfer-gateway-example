@@ -4,6 +4,7 @@ const dcCryptoCardsJSON = require('../truffle-dappchain/build/contracts/CryptoCa
 const gameTokenJSON = require('../truffle-ethereum/build/contracts/GameToken.json')
 const dcGameTokenJSON = require('../truffle-dappchain/build/contracts/GameTokenDappChain.json')
 const gatewayJSON = require('../truffle-ethereum/build/contracts/Gateway.json')
+const fakeKittyJSON = require('../truffle-ethereum/build/contracts/FakeCryptoKitty.json');
 
 module.exports = {
   context: __dirname + '/src',
@@ -31,7 +32,8 @@ module.exports = {
       DC_CRYPTO_CARDS_JSON: JSON.stringify(dcCryptoCardsJSON),
       GAME_TOKEN_JSON: JSON.stringify(gameTokenJSON),
       DC_GAME_TOKEN_JSON: JSON.stringify(dcGameTokenJSON),
-      GATEWAY_JSON: JSON.stringify(gatewayJSON)
+      GATEWAY_JSON: JSON.stringify(gatewayJSON),
+        FAKE_CRYPTO_KITTY_JSON: JSON.stringify(fakeKittyJSON)
     })
   ],
   optimization: {
