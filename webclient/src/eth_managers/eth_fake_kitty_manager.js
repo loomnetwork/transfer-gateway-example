@@ -4,7 +4,6 @@ import FakeKittyList from '../fake_kitty_list';
 
 export default class EthFakeKittyManager {
     static async createAsync(){
-        console.log("hey, in EthFakeKittyManager createAsync");
         const browserWeb3 = new Web3(window.web3.currentProvider);
         const networkId = await browserWeb3.eth.net.getId()
         const contract = new browserWeb3.eth.Contract(

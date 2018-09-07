@@ -1,5 +1,6 @@
 import React from 'react'
 
+// the actual js for the card
 export default class Card extends React.Component {
   render() {
     return (

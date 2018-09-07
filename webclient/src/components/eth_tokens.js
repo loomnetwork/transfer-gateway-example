@@ -11,6 +11,7 @@ export default class EthTokens extends React.Component {
       mapping: null,
       sending: false,
       cardIds: [],
+      fakeKittyIds: [],
       balance: 0,
       ethBalance: 0
     }
@@ -27,12 +28,24 @@ export default class EthTokens extends React.Component {
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(account)
     const ethBalance = await this.props.ethAccountManager.getEthAccountBalance(account)
 
+      const fakeKittyBalance = await this.props.ethFakeKittyManager.getBalanceOfUserAsync(account);
+      // great, we have one!
+      console.log("fakeKittyBalance", fakeKittyBalance);
+
+
     let cardIds = []
+      let fakeKittyIds  = []
 
     if (cardsBalance > 0) {
       cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account, cardsBalance)
     }
 
+      console.log("fakeKittyIds before looping", fakeKittyIds)
+      if (fakeKittyBalance > 0){
+          fakeKittyIds = await this.props.ethFakeKittyManager.getFakeKittiesOfUserAsync(account, fakeKittyBalance);
+      }
+
+      console.log("fakeKittyIds after looping", fakeKittyIds)
     this.setState({ account, balance, mapping, cardIds, ethBalance })
   }
 
@@ -113,6 +126,7 @@ export default class EthTokens extends React.Component {
         />
       )
     })
+
 
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
     const viewTokens = this.state.balance > 0 ? tokenWallet : <p>No tokens available</p>

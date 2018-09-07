@@ -29,6 +29,7 @@ export default class EthCardManager {
     return await this._contract.methods.balanceOf(address).call({ from: address })
   }
 
+    // TODO walk through this more
   async getTokensCardsOfUserAsync(address, balance) {
     const total = await this._contract.methods.totalSupply().call()
     let ids = []
