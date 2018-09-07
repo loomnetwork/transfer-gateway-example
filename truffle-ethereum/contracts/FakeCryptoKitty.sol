@@ -16,8 +16,8 @@ contract FakeCryptoKitty is ERC721Token("FakeCryptoKitty", "FCK"), Ownable {
 
     // only useful for demo purposes, but let's mint some so they're visible in a UI
     function register(address user) onlyOwner external{
-        for(uint8 i= 0; i < 2; i++){
-            // give each user 2 fake cats
+        for(uint8 i= 0; i < 1; i++){
+            // give each user 1 fake cat
             mintFor(user);
         }
     }

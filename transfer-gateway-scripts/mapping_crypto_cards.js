@@ -53,9 +53,7 @@ const cryptoCardsTx = readFileSync('../crypto_cards_tx_hash', 'utf-8')
     // foreignContract = createEthAddress(cryptoCardsAddress)
     // localContract = createDappAddress(client, cryptoCardsDAppChainAddress)
   const foreignContract = new Address('eth', LocalAddress.fromHexString(cryptoCardsAddress))
-  const localContract = new Address(
-    client.chainId, LocalAddress.fromHexString(cryptoCardsDAppChainAddress)
-  )
+  const localContract = new Address( client.chainId, LocalAddress.fromHexString(cryptoCardsDAppChainAddress))
 
     console.log(": foreignContract is: ", foreignContract);
     console.log(": localContract is: ", localContract);

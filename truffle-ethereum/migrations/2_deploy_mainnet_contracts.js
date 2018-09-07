@@ -41,6 +41,7 @@ module.exports = (deployer, _network, accounts) => {
       // BUT this is where we mint the things to the person
     await gatewayInstance.toggleToken(cryptoCardsInstance.address, { from: validator })
     await cryptoCardsInstance.register(user)
+      console.log("the user getting stuff", user);
 
     await gatewayInstance.toggleToken(gameTokenInstance.address, { from: validator })
     await gameTokenInstance.transfer(user, 100)
