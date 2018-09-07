@@ -6,6 +6,8 @@ const Gateway = artifacts.require('Gateway') // where is this from? OK, the .sol
 const FakeCryptoKitty = artifacts.require('FakeCryptoKitty'); // not .sol?
 
 module.exports = (deployer, _network, accounts) => {
+
+    console.log("truffle eth deploying in _network", _network);
   const [_, user] = accounts
   const validator = accounts[9]  // random
 

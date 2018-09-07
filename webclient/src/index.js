@@ -12,6 +12,7 @@ import EthCardManager from './eth_managers/eth_card_manager'
 import DAppChainCardManager from './dc_managers/dc_card_manager'
 
 import EthFakeKittyManager from './eth_managers/eth_fake_kitty_manager'
+import DAppChainFakeKittyManager from './dc_managers/dc_fake_kitty_manager'
 
 import EthGatewayManager from './eth_managers/eth_gateway_manager'
 import DAppChainGatewayManager from './dc_managers/dc_gateway_manager'
@@ -40,6 +41,7 @@ import GatewayTokens from './components/gateway_tokens'
 
     // fake kitty stuff
     const ethFakeKittyManager = await EthFakeKittyManager.createAsync();
+    const dcFakeKittyManager = await DAppChainFakeKittyManager.createAsync()
     // end fake kitty stuff
 
   const ethTokenManager = await EthTokenManager.createAsync()
@@ -71,11 +73,16 @@ import GatewayTokens from './components/gateway_tokens'
   const BuildEthTokens = () => (
     <EthTokens
       ethGatewayManager={ethGatewayManager}
+
       ethAccountManager={ethAccountManager}
-      ethFakeKittyManager={ethFakeKittyManager}
       dcAccountManager={dcAccountManager}
+
+      ethFakeKittyManager={ethFakeKittyManager}
+      dcFakeKittyManager={dcFakeKittyManager}
+      
       ethCardManager={ethCardManager}
       dcCardManager={dcCardManager}
+
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
     />
@@ -88,6 +95,7 @@ import GatewayTokens from './components/gateway_tokens'
       ethCardManager={ethCardManager}
       dcCardManager={dcCardManager}
       ethFakeKittyManager={ethFakeKittyManager}
+      dcAccountManager={dcAccountManager}
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
       ethGatewayManager={ethGatewayManager}
@@ -101,6 +109,7 @@ import GatewayTokens from './components/gateway_tokens'
       dcAccountManager={dcAccountManager}
       ethCardManager={ethCardManager}
       ethFakeKittyManager={ethFakeKittyManager}
+      dcFakeKittyManager={dcFakeKittyManager}
       dcCardManager={dcCardManager}
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
