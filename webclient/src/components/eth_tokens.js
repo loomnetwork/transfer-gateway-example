@@ -27,8 +27,8 @@ export default class EthTokens extends React.Component {
     const cardsBalance = await this.props.ethCardManager.getBalanceOfUserAsync(account)
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(account)
     const ethBalance = await this.props.ethAccountManager.getEthAccountBalance(account)
+    const fakeKittyBalance = await this.props.ethFakeKittyManager.getBalanceOfUserAsync(account);
 
-      const fakeKittyBalance = await this.props.ethFakeKittyManager.getBalanceOfUserAsync(account);
       // great, we have one!
       console.log("fakeKittyBalance", fakeKittyBalance);
 
@@ -64,6 +64,7 @@ export default class EthTokens extends React.Component {
   }
 
   async sendToDAppChainCard(cardId) {
+      console.log("in sendToDAppChainCard with", cardId);
     this.setState({ sending: true })
     try {
       await this.props.ethCardManager.depositCardOnGateway(this.state.account, cardId)

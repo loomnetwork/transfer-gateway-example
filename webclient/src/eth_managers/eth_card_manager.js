@@ -49,6 +49,7 @@ export default class EthCardManager {
   }
 
   async depositCardOnGateway(address, cardId) {
+      console.log("depositCardOnGateway", cardId);
     return await this._contract.methods
       .depositToGateway(cardId)
       .send({ from: address, gas: '219362' })
