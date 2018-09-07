@@ -46,7 +46,7 @@ export default class EthTokens extends React.Component {
       }
 
       console.log("fakeKittyIds after looping", fakeKittyIds)
-    this.setState({ account, balance, mapping, cardIds, ethBalance })
+    this.setState({ account, balance, mapping, cardIds, fakeKittyIds, ethBalance })
   }
 
   async sendToDAppChainToken(amount) {
@@ -127,10 +127,30 @@ export default class EthTokens extends React.Component {
       )
     })
 
+      console.log("this.state.fakeKittyIds", this.state.fakeKittyIds);
+      //const fakeKitties = this.state.fakeKittyIds
+      //
+      const fakeKitties = this.state.fakeKittyIds.map((fkId,idx) => {
+          const kittyDef = this.props.ethFakeKittyManager.getFakeKittyWithId(fkId);
+
+          return(
+              <Card
+              title={`${kittyDef.title} (ERC721)`}
+              description={kittyDef.description}
+              key={idx}
+              action="Send to DAppChain"
+      //handleOnClick={() => this.sendToDAppChainCard(fkId)}
+              />
+          )
+
+      })
+
 
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
     const viewTokens = this.state.balance > 0 ? tokenWallet : <p>No tokens available</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on Ethereum Network yet</p>
+
+    const viewFakeKitties = fakeKitties.length > 0 ? fakeKitties : <p>No FakeCrytoKitties deposited on Ethereum Network yet</p>
 
     return !this.state.mapping ? (
       <p>Please sign your user first</p>
@@ -176,7 +196,7 @@ export default class EthTokens extends React.Component {
                 aria-selected="false">
                 ERC721&nbsp;
                 <span className="badge badge-light">
-                  {this.state.cardIds.length > 0 ? this.state.cardIds.length : 0}
+                  {(this.state.cardIds.length + this.state.fakeKittyIds.length > 0) ? (this.state.cardIds.length + this.state.fakeKittyIds.length) : 0}
                 </span>
               </a>
             </li>
@@ -191,6 +211,8 @@ export default class EthTokens extends React.Component {
             </div>
             <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
               {viewCards}
+      {viewFakeKitties}
+
             </div>
           </div>
         </div>
