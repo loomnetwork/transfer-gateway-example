@@ -57,6 +57,7 @@ import GatewayTokens from './components/gateway_tokens'
     <Home ethAccountManager={ethAccountManager} dcAccountManager={dcAccountManager} />
   )
 
+    // ok this is where we set default props for EthTokens
   const BuildEthTokens = () => (
     <EthTokens
       ethGatewayManager={ethGatewayManager}

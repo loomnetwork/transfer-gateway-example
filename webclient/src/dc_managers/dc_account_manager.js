@@ -77,6 +77,9 @@ export default class DAppChainAccountManager {
       console.log("new Address 'to'", to);
 
     const web3 = new Web3(window.web3.currentProvider)
+      // huh. how would you sign not using Web3Signer,
+      // ex using just code? Answers maybe here:
+      // https://ethereum.stackexchange.com/questions/44735/sign-data-with-private-key-inside-a-truffle-test-file
     const web3Signer = new Web3Signer(web3, ethAddress)
 
     return await this._addressMapper.addIdentityMappingAsync(from, to, web3Signer)
