@@ -76,6 +76,16 @@ export default class EthTokens extends React.Component {
     await this.updateUI()
   }
 
+    async sendToDAppChainFakeKitty(fkId){
+        this.setState({sending: true})
+        try{
+            await this.props.ethFakeKittyManager.depositFakeKittyOnGateway(this.state.account, fkId)
+            alert('once transferred you can see your kitty on the loom chain');
+        } catch (err){
+            console.log('Transaction failed or denied by user');
+        }
+    }
+
   async sendToDAppChainEth(amount) {
     this.setState({ sending: true })
     try {
@@ -139,7 +149,7 @@ export default class EthTokens extends React.Component {
               description={kittyDef.description}
               key={idx}
               action="Send to DAppChain"
-      //handleOnClick={() => this.sendToDAppChainCard(fkId)}
+              handleOnClick={() => this.sendToDAppChainFakeKitty(fkId)}
               />
           )
 
