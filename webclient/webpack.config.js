@@ -33,13 +33,10 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       CRYPTO_CARDS_JSON: JSON.stringify(cryptoCardsJSON),
-
       DC_CRYPTO_CARDS_JSON: JSON.stringify(dcCryptoCardsJSON),
       GAME_TOKEN_JSON: JSON.stringify(gameTokenJSON),
-
       DC_GAME_TOKEN_JSON: JSON.stringify(dcGameTokenJSON),
       GATEWAY_JSON: JSON.stringify(gatewayJSON),
-
       FAKE_CRYPTO_KITTY_JSON: JSON.stringify(fakeKittyJSON),
       DC_FAKE_CRYPTO_KITTY_JSON: JSON.stringify(dcFakeKittyJSON)
     })

@@ -12,8 +12,7 @@ export default class DAppChainTokens extends React.Component {
       account: '0x',
       ethAccount: '0x',
       cardIds: [],
-        fakeKittyIds: [],
-
+      fakeKittyIds: [],
       ethBalance: 0,
       balance: 0,
       allowing: false
@@ -33,11 +32,11 @@ export default class DAppChainTokens extends React.Component {
     const ethAccount = await this.props.ethAccountManager.getCurrentAccountAsync()
     const account = this.props.dcAccountManager.getCurrentAccount()
     const cardBalance = await this.props.dcCardManager.getBalanceOfUserAsync(account)
-      // TODO what is this?
-      //const fakeKittyBalance = await.this.props....getBalanceOfUserAsync(account)
     const balance = await this.props.dcTokenManager.getBalanceOfUserAsync(account)
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(ethAccount)
     const ethBalance = (await this.props.dcAccountManager.getEthCoinBalance()).toString()
+
+    console.log("dccardBalance", cardBalance);
 
     let cardIds = []
 
