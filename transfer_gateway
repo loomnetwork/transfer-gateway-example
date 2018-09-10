@@ -149,9 +149,9 @@ function run_mapping {
   echo "Running mapping"
   cd transfer-gateway-scripts
   echo "Running crypto_cards"
-  node mapping_crypto_cards.js# > /dev/null 2>&1
+  node mapping_crypto_cards.js # > /dev/null 2>&1
   echo "Running crypto_tokens"
-  node mapping_game_token.js #> /dev/null 2>&1
+  node mapping_game_token.js   #> /dev/null 2>&1
   echo "Running fake_kitties"
   node mapping_fake_kitties.js #> /dev/null 2>&1
   cd ..
