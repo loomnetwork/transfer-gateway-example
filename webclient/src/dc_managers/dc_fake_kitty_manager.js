@@ -111,6 +111,7 @@ export default class DAppChainFakeKittyManager {
     }
 
     async approveAsync(address, kittyId){
+        console.log("in approveAsync in dc_fake_kitty_manager, with kittyId", kittyId);
         // same notes as in the dc_card_manager
         const addr = this._web3.utils.toChecksumAddress('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
         const iban = this._web3.eth.Iban.toIban(addr)

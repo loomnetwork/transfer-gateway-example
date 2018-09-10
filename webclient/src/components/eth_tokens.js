@@ -78,6 +78,8 @@ export default class EthTokens extends React.Component {
   }
 
     async sendToDAppChainFakeKitty(fkId){
+        console.log("in sendToDAppChainFakeKitty", fkId);
+
         this.setState({sending: true})
         try{
             await this.props.ethFakeKittyManager.depositFakeKittyOnGateway(this.state.account, fkId)
@@ -157,6 +159,7 @@ export default class EthTokens extends React.Component {
       })
 
 
+      console.log("fakeKitties length", fakeKitties.length);
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
     const viewTokens = this.state.balance > 0 ? tokenWallet : <p>No tokens available</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on Ethereum Network yet</p>

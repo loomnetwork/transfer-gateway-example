@@ -13,6 +13,7 @@ export default class DAppChainTokens extends React.Component {
       ethAccount: '0x',
       cardIds: [],
       fakeKittyIds: [],
+      fakeKittyBalance: 0,
       ethBalance: 0,
       balance: 0,
       allowing: false
@@ -35,22 +36,34 @@ export default class DAppChainTokens extends React.Component {
     const balance = await this.props.dcTokenManager.getBalanceOfUserAsync(account)
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(ethAccount)
     const ethBalance = (await this.props.dcAccountManager.getEthCoinBalance()).toString()
+    const fakeKittyBalance = (await this.props.dcFakeKittyManager.getBalanceOfUserAsync(account));
 
+    console.log("this.props", this.props);
     console.log("dccardBalance", cardBalance);
+    console.log("fakeKittyBalance", fakeKittyBalance);
 
     let cardIds = []
+    let fakeKittyIds = []
 
     if (cardBalance > 0) {
       cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account, cardBalance)
     }
 
+      console.log('fakeKittyIds before fetching', fakeKittyIds);
+      if (fakeKittyBalance > 0) {
+          fakeKittyIds = await this.props.dcFakeKittyManager.getFakeKittiesOfUserAsync(account, fakeKittyBalance)
+      }
+      console.log('fakeKittyIds after fetching', fakeKittyIds);
+
     this.setState({
       account,
       cardIds,
+        fakeKittyIds,
       ethAccount,
       mapping,
       balance,
-      ethBalance
+      ethBalance,
+        fakeKittyBalance
     })
   }
 
@@ -164,10 +177,33 @@ export default class DAppChainTokens extends React.Component {
       )
     })
 
+      console.log("this.state.fakeKittyIds", this.state.fakeKittyIds);
+      const fakeKitties = this.state.fakeKittyIds.map((fkId,idx) => {
+          const kittyDef = this.props.dcFakeKittyManager.getFakeKittyWithId(fkId);
+          console.log("kittyDef", kittyDef);
+
+          return(
+              <Card
+              title={`${kittyDef.title} (ERC721)`}
+              description={kittyDef.description}
+              key={idx}
+              action="Allow Withdraw"
+              //handleOnClick={() => this.sendToDAppChainFakeKitty(fkId)}
+              />
+          )
+
+      })
+
+
+
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
     const viewTokens =
       this.state.balance > 0 ? wallet : <p>No balance deposited on DAppChain yet</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on DAppChain yet</p>
+
+          console.log("fakeKitties.length", fakeKitties.length);
+
+    const viewFakeKitties = fakeKitties.length > 0 ? fakeKitties : <p>No FakeCrytoKitties deposited on  DAppChain yet</p>
 
     return !this.state.mapping ? (
       <p>Please sign your user first</p>
@@ -228,6 +264,7 @@ export default class DAppChainTokens extends React.Component {
             </div>
             <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
               {viewCards}
+      {viewFakeKitties}
             </div>
           </div>
         </div>

@@ -31,6 +31,7 @@ export default class EthFakeKittyManager {
     }
 
     async getFakeKittiesOfUserAsync(address,balance){
+        console.log("getFakeKittiesOfUserAsync", balance);
         const total = await this._contract.methods.totalSupply().call()
         let ids = [];
         for(let i=0; i< total; i++){
@@ -48,6 +49,7 @@ export default class EthFakeKittyManager {
     }
 
     async depositFakeKittyOnGateway(address,kittyId){
+        console.log("in depositFakeKittyOnGateway", kittyId);
         return await this._contract.methods
         .depositToGateway(kittyId)
         .send({from:address, gas: '219362'})
