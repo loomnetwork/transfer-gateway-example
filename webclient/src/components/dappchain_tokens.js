@@ -115,10 +115,10 @@ export default class DAppChainTokens extends React.Component {
     // I think at the end of this, we've plunked the card
     // into the gateway contract.  I think.
   async allowToWithdrawCard(cardId) {
-      console.log("in allowToWithdrawCard with cardId", cardId);
+    console.log("in allowToWithdrawCard with cardId", cardId);
     this.setState({ allowing: true })
     await this.props.dcCardManager.approveAsync(this.state.account, cardId)
-      console.log("after approveAsync for cardId", cardId);
+    console.log("after approveAsync for cardId", cardId);
 
     try {
       await this.props.dcGatewayManager.withdrawCardAsync(
@@ -140,6 +140,11 @@ export default class DAppChainTokens extends React.Component {
     this.setState({ allowing: false })
 
     await this.updateUI()
+  }
+
+  async allowToWithdrawFakeKitty(fkId){
+      console.log("in allowToWithdrawFakeKitty, this is where I pick up on Wed", fkId);
+      //this.setState({allowing: true})
   }
 
   render() {
@@ -188,21 +193,16 @@ export default class DAppChainTokens extends React.Component {
               description={kittyDef.description}
               key={idx}
               action="Allow Withdraw"
-              //handleOnClick={() => this.sendToDAppChainFakeKitty(fkId)}
+              handleOnClick={() => this.allowToWithdrawFakeKitty(fkId)}
               />
           )
 
       })
 
-
-
+    console.log("fakeKitties.length", fakeKitties.length);
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
-    const viewTokens =
-      this.state.balance > 0 ? wallet : <p>No balance deposited on DAppChain yet</p>
+    const viewTokens = this.state.balance > 0 ? wallet : <p>No balance deposited on DAppChain yet</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on DAppChain yet</p>
-
-          console.log("fakeKitties.length", fakeKitties.length);
-
     const viewFakeKitties = fakeKitties.length > 0 ? fakeKitties : <p>No FakeCrytoKitties deposited on  DAppChain yet</p>
 
     return !this.state.mapping ? (
@@ -249,7 +249,7 @@ export default class DAppChainTokens extends React.Component {
                 aria-selected="false">
                 ERC721&nbsp;
                 <span className="badge badge-light">
-                  {this.state.cardIds.length > 0 ? this.state.cardIds.length : 0}
+                  {(this.state.cardIds.length  + this.state.fakeKittyIds.length) > 0 ? (this.state.cardIds.length + this.state.fakeKittyIds.length) : 0}
                 </span>
               </a>
             </li>
@@ -264,7 +264,7 @@ export default class DAppChainTokens extends React.Component {
             </div>
             <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
               {viewCards}
-      {viewFakeKitties}
+              {viewFakeKitties}
             </div>
           </div>
         </div>
