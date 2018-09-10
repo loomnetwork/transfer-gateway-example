@@ -73,16 +73,12 @@ import GatewayTokens from './components/gateway_tokens'
   const BuildEthTokens = () => (
     <EthTokens
       ethGatewayManager={ethGatewayManager}
-
       ethAccountManager={ethAccountManager}
       dcAccountManager={dcAccountManager}
-
       ethFakeKittyManager={ethFakeKittyManager}
       dcFakeKittyManager={dcFakeKittyManager}
-      
       ethCardManager={ethCardManager}
       dcCardManager={dcCardManager}
-
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
     />
@@ -123,7 +119,6 @@ import GatewayTokens from './components/gateway_tokens'
         <header>
           <BuildMain />
         </header>
-
         <main role="main" style={{ marginTop: 100 }}>
           <div className="container">
             <Route exact path="/" component={BuildHome} />
