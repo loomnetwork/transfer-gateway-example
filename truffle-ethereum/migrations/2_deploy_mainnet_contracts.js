@@ -35,7 +35,7 @@ module.exports = (deployer, _network, accounts) => {
     console.log(`FakeCryptoKitty transaction at hash: ${fakeCrytoKittyContract.transactionHash}`)
 
       // i don't understand the why here with toggleToken
-      //
+      // this is the code
         //function toggleToken(address _token) public onlyValidator {
             //allowedTokens[_token] = !allowedTokens[_token];
         //}
