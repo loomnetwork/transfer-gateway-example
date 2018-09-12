@@ -49,7 +49,7 @@ i.e. each ethereum contract is the name of the thing and its loom counterpart is
 * `dappchain`. Configuration code for the loom network.
 * `webclient`. The web UI that demonstrates the functionalities of this application. This is built in React and gives you pages to see and buttons to click that exercise all the code to transfer assets between networks. There's more than UI logic here: there is client-specific application logic that interfaces with the contracts.
 
-#### In short
+### In short
 Two applications (mirror images of each other), gateway code, client-logic, and all-important account and asset mapping logic. 
 
 ## Setting up
