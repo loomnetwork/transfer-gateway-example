@@ -10,8 +10,8 @@ export default class GatewayTokens extends React.Component {
       ethAccount: '0x',
       account: '0x',
       cardIds: [],
-        fakeKittyIds: [],
-        fakeKittyBalance: 0,
+      fakeKittyIds: [],
+      fakeKittyBalance: 0,
       balance: 0,
       ethBalance: 0,
       mapping: null,
@@ -37,9 +37,10 @@ export default class GatewayTokens extends React.Component {
 
     let ethBalance = 0
     let balance = 0
+    let fakeKittyBalance = 0
     let cardIds = []
-      let fakeKittyIds = []
-      console.log("in gateway_tokens with data", data);
+    let fakeKittyIds = []
+    console.log("in gateway_tokens with data", data);
     if (data) {
         // interesting // tokenKind is coming from loom
         // i bet it's 0 = eth; 1, erc20, 2, erc721
@@ -63,8 +64,10 @@ export default class GatewayTokens extends React.Component {
               // we need to be more specific 
               // ex. which one or do a check
               // on it's name
+              //
               // TODO write a mapper class with all the contract abis & addresses. 
               // but for now.... we know we have two kinds
+              // also TODO --- this looks like it just handles one at a time
               console.log("hey, we're with tokenKind 2");
               console.log("contractAddr", contractAddr);
               console.log("cards address", this.props.ethCardManager.getContractAddress())
@@ -81,7 +84,7 @@ export default class GatewayTokens extends React.Component {
       }
     }
 
-    this.setState({ account, mapping, balance, cardIds, ethBalance })
+    this.setState({ account, mapping, balance,fakeKittyBalance, cardIds,fakeKittyIds, ethBalance })
   }
 
   async withdrawFromGatewayToken(amount) {
@@ -151,6 +154,10 @@ export default class GatewayTokens extends React.Component {
     await this.updateUI()
   }
 
+    async withdrawFromGatewayFakeKitty(fkId){
+        console.log("in withdrawFromGatewayFakeKitty", fkId);
+    }
+
   render() {
     const wallet = (
       <Wallet
@@ -187,9 +194,29 @@ export default class GatewayTokens extends React.Component {
       )
     })
 
+
+  const fakeKitties = this.state.fakeKittyIds.map((fkId,idx) => {
+      const kittyDef = this.props.dcFakeKittyManager.getFakeKittyWithId(fkId);
+      console.log("kittyDef", kittyDef);
+
+      return(
+          <Card
+          title={`${kittyDef.title} (ERC721)`}
+          description={kittyDef.description}
+          key={idx}
+          action="Withdraw from Gateway"
+          handleOnClick={() => this.withdrawFromGatewayFakeKitty(fkId)}
+          disabled={this.state.sending}
+          />
+      )
+  })
+
+      console.log("fakeKitties.length", fakeKitties.length);
     const viewEth = this.state.ethBalance > 0 ? ethWallet : <p>No Ether available</p>
     const viewTokens = this.state.balance > 0 ? wallet : <p>No balance deposited on Gateway yet</p>
     const viewCards = cards.length > 0 ? cards : <p>No cards deposited on Gateway yet</p>
+    const viewFakeKitties = fakeKitties.length > 0 ? fakeKitties : <p> No Fake kitties on gateway yet </p>;
+      console.log("viewFakeKitties", viewFakeKitties);
 
     return !this.state.mapping ? (
       <p>Please sign your user first</p>
@@ -235,7 +262,7 @@ export default class GatewayTokens extends React.Component {
                 aria-selected="false">
                 ERC721&nbsp;
                 <span className="badge badge-light">
-                  {this.state.cardIds.length > 0 ? this.state.cardIds.length : 0}
+                  {(this.state.cardIds.length + this.state.fakeKittyIds.length) > 0 ? (this.state.cardIds.length + this.state.fakeKittyIds.length) : 0}
                 </span>
               </a>
             </li>
@@ -250,6 +277,7 @@ export default class GatewayTokens extends React.Component {
             </div>
             <div className="tab-pane" id="ERC721" role="tabpanel" aria-labelledby="ERC721-tab">
               {viewCards}
+              {viewFakeKitties}
             </div>
           </div>
         </div>

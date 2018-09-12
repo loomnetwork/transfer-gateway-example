@@ -39,10 +39,10 @@ import GatewayTokens from './components/gateway_tokens'
   const ethCardManager = await EthCardManager.createAsync()
   const dcCardManager = await DAppChainCardManager.createAsync()
 
-    // fake kitty stuff
-    const ethFakeKittyManager = await EthFakeKittyManager.createAsync();
-    const dcFakeKittyManager = await DAppChainFakeKittyManager.createAsync()
-    // end fake kitty stuff
+  // fake kitty stuff
+  const ethFakeKittyManager = await EthFakeKittyManager.createAsync();
+  const dcFakeKittyManager = await DAppChainFakeKittyManager.createAsync()
+  // end fake kitty stuff
 
   const ethTokenManager = await EthTokenManager.createAsync()
   const dcTokenManager = await DAppChainTokenManager.createAsync()
@@ -91,6 +91,7 @@ import GatewayTokens from './components/gateway_tokens'
       ethCardManager={ethCardManager}
       dcCardManager={dcCardManager}
       ethFakeKittyManager={ethFakeKittyManager}
+      dcFakeKittyManager={dcFakeKittyManager}
       dcAccountManager={dcAccountManager}
       ethTokenManager={ethTokenManager}
       dcTokenManager={dcTokenManager}
