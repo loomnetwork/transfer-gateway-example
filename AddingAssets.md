@@ -18,7 +18,7 @@ This is a reference implementation repo.  It's helpful in that it demonstrates h
 ## Vocabulary & Terminology
 * `loom network` will be referred to as `DappChain` 
 * `DappChain` means (more or less) the blockchain where you're playing your game / interacting with your application. The idea is that on the DappChain (the loom network) you can play to your heart's content and then move assets out (to the ethereum mainnet) or in (_from_ the ethereum mainnet).  
-
+* `mainnet` refers to your running ethereum network, not just literally the ethereum mainnet.
 ## Resources
 * Blog from loom on the [transfer-gateway functionalities](https://loomx.io/developers/docs/en/transfer-gateway.html)
 * [Reference implementation of transfer-gateway](https://github.com/loomnetwork/transfer-gateway-example)
@@ -28,12 +28,15 @@ This is a reference implementation repo.  It's helpful in that it demonstrates h
 Salient points. First, the two `truffle-*` directories: 
 These are what I think of as the application logic directories. They're more or less mirrors of each other, because each asset you can have on the mainnet, you can have it on the loom chain. Of course, each directory contains logic which blockchain it is running on. 
 * `truffle-ethereum` is a directory that runs an ethereum smart-contract app. Its akin to what your entire repo would be if you were just creating something like `CryptoKitties` on the ethereum blockchain. Think: Standalone ethereum app with some extra goodies.
-* `truffle-dappchain` is the "mirror version" of the contracts in `truffle-ethereum`. So for each blockchain asset (erc20, erc721, plain 'ol ether) that you have on the mainnet, you have a "mirror" version of that on the loom chain.  Think: parallel universe to the mainnet, with some _different_ extra goodies.
+* `truffle-dappchain` is the "mirror version" of the contracts in `truffle-ethereum`. So for each blockchain asset (erc20, erc721) that you have on the mainnet, you have a "mirror" version of that on the loom chain.  Think: parallel universe to the mainnet, with some _different_ extra goodies.
 
 The naming conventions are:
-|Eth network|Loom network|
-|CryptoCards.sol|CryptoCardsDappChain.sol|
-i.e. each ethereum contract is the name of the thing and its loom counterpart is suffixed with `DappChain`. To illustrate, `MySoul.sol` and `MySoulDappChain.sol` would allow me to transfer my soul across blockchains.
+| Eth Network  | Loom Network |
+| ------------- | ------------- |
+| CryptoCards.sol| CryptoCardsDappChain.sol |
+| FakeCryptoKitty.sol| FakeCryptoKittyDappChain.sol |
+
+i.e. each ethereum contract is the name of the thing and its loom counterpart is suffixed with `DappChain`. To illustrate, `MySoul.sol` and `MySoulDappChain.sol` would allow me to transfer my soul across blockchains. These naming conventions are not set in stone, but it's good to have some kind of naming convention and this is what they picked for this repo.
 
 ### So, what other contracts are in the application directories?
 
@@ -78,7 +81,7 @@ transfer-gateway-scripts
 ```
 directory. 
 
-The first thing, after including a bunch of `node` and `loom-js` packages is to read from those files we wrote during our migrations. This file then uses that information, plus the private key of the deployer, to build a loom client, a `transferGateway` object, other objects... all to eventually run this code, which creates the mapping:
+Let's look at `transfer-gateway-scripts/mapping_crypto_cards` as its a good example. The first thing it does, after including a bunch of `node` and `loom-js` packages is to read from those files we wrote during our migrations. This file then uses that information, plus the private key of the deployer, to build a loom client, a `transferGateway` object, other objects... all to eventually run this code, which creates the mapping:
 ```
   await transferGateway.addContractMappingAsync({
     foreignContract,
@@ -91,7 +94,7 @@ This code is leveraging your contract addresses and deployer keys to [run this c
 
 These mapping scripts implement [the logic described here](https://loomx.io/developers/docs/en/transfer-gateway.html#mapping-mainnet-contracts-to-dappchain-contracts).  
 
-I'll leave by saying *mapping is important*. And also, [that code I linked to above?](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L103-L107) Note that its arguments are keyed, so if you try renaming them (like I didfor "clarity"), the function won't work :)
+I'll leave by saying *mapping is important*. And also, [that code I linked to above?](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L103-L107) Note that its arguments are keyed, so if you try renaming them (like I did--for "clarity"), the function won't work :)
 
 ## Migrations
 Before we go to localhost:8080, let's talk about migrations. Read each of the migrations files in the `truffle-*` directories. Notice the following: 
@@ -207,7 +210,7 @@ await this.props.ethGatewayManager.withdrawCardAsync(
     this.props.ethCardManager.getContractAddress()
 )
 ```
-which wraps the `withdrawERC721` method on our very own `Gateway.sol` contract.
+which wraps the `withdrawERC721` method on our very own `Gateway.sol` contract. This method, as you can [see in our own codebase](https://github.com/loomnetwork/transfer-gateway-example/blob/master/truffle-ethereum/contracts/Gateway.sol#L69-L77), does some validation checks which I'm glossing over here, but you can _also_ see in [our own (forked) codebase](https://github.com/loomnetwork/transfer-gateway-example/blob/master/truffle-ethereum/contracts/ValidatorManagerContract.sol#L38-L48) and then wraps some basic ERC721 transfer logic.
 
 
 
