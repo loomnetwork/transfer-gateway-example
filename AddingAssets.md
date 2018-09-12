@@ -125,10 +125,11 @@ The `components` contains React components (views) that call methods that are de
 
 There's a `dappchain_tokens` view, a `gateway_tokens` view and an `eth_tokens` view: these determine what you see when you click on those tabs in the UI. So to track the application flow, you can start in those files.
 
-## Transferring assets.
-Let's transfer an asset from eth -> loom and back. 
+## Transferring assets 
+### Eth -> Loom
+Let's transfer an asset from eth -> loom and back, walking through the code calls.
 
-clicking the "send to DappChain button" calls
+So you're in your UI, clicking the "send to DappChain" button on a card calls
 ```
 sendToDAppChainCard(id)
 ```
@@ -136,15 +137,81 @@ which calls
 ```
 ethCardManager.depositCardOnGateway(account, id)
 ```
-which takes you to the `eth_card_manager` file where as you can see, `depositCardOnGateway` is just a thin wrapper around the `CryptoCards#depositCardOnGateway` method, which itself just calls `safeTransferFrom` which is part of the `ERC721` standard. So all this is just layers of indirection around transferring a token between contracts. Which, [as you can see here](https://loomx.io/developers/docs/en/transfer-gateway.html#overview) facilitates a transfer to the Gateway contract.
+which takes you to the `eth_card_manager` file where as you can see, 
+```
+depositCardOnGateway
+```
+ is just a thin wrapper around the 
+```
+CryptoCards#depositCardOnGateway method
+``` 
 
-And bingo, your UI will update because in `dappchain_tokens` the code starts by checking the `cardBalance`, then, if it's above 0, 
+which itself just calls 
+```
+safeTransferFrom
+``` 
+which is part of the `ERC721` standard. So all this is just layers of indirection around transferring a token between contracts. Which, [as you can see here](https://loomx.io/developers/docs/en/transfer-gateway.html#overview) facilitates a transfer to the Gateway contract.
+
+And bingo, your UI will update because in `dappchain_tokens` the code starts by checking the `cardBalance`, then, if it's above 0, fills out `cardIds` like so:
 
 ```
 cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account, cardBalance)
 
 ```
 And what is `getTokensCardsOfUserAsync`? Well, just some wrappers around contract methods like `totalSupply()` and `tokenOfOwnerByIndex`, which are just plain 'ol 721 methods our contract is inheriting from.
+
+### Loom -> Eth
+So let's bring it back. You're looking at the UI under `DappChain Account` and see your own card with an `Allow Withdraw` button.  Clicking this calls:
+
+```
+allowToWithdrawCard(cardId)
+```
+which calls
+```
+dcCardManager.approveAsync(account, cardId)
+```
+which does some trippy stuff with `iban` and checksum  but at the root of it calls
+```
+approve(addr,id)
+```
+on the CryptoCardsDappChain contract, which is a method from `ERC721` which sets withdraw approval.  What does ERC721 approval do? It says: the address I'm specifying here has permission to withdraw the tokenId I am specifying. Which address are we sending? We (the token owner) are giving the gateway contract approval to withdraw this token. If you look at [this diagram](https://loomx.io/developers/docs/en/transfer-gateway.html) you'll see this is what is happening in step #3. If you need a refresher on ERC721, [this is a good breakdown](https://medium.com/blockchannel/walking-through-the-erc721-full-implementation-72ad72735f3c).
+
+Right after `approveAsync` is called and completes, the gateway tries to withdraw it.
+```
+props.dcGatewayManager.withdrawCardAsync(cardId, dcCardManager.getContractAddress())
+```
+This method -- on the `dc_gateway_manager` calls through to [some `loom-js` code](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125-L131): 
+```
+transferGateway.withdrawERC721Async(BN(cardId), Address(chainId, contractAddress)
+```
+
+OK. So at this point (after clicking through some success alerts), the card will no longer be visible in the DApp portion of the UI, but it _will_ be visible in the `Ethereum Gateway` portion of the UI under the `ERC721` tab.  Now it has a big blue button that says... "Withdraw from Gateway".
+
+The logic for this functionality will be in... `components/gateway_tokens.js`... because.. the card is now in the gateway. Clicking the blue button calls
+```
+this.withdrawFromGatewayCard(cardId)
+
+```
+which in turn calls
+```
+this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
+```
+which calls out to [some loom code](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L149-L173). 
+
+When that completes, it returns a bunch of important info: namely the `tokenOwner` and the `oracleSignature`, which is then used to call
+```
+await this.props.ethGatewayManager.withdrawCardAsync(
+    tokenOwner,
+    cardId,
+    signature,
+    this.props.ethCardManager.getContractAddress()
+)
+```
+which wraps the `withdrawERC721` method on our very own `Gateway.sol` contract.
+
+
+
+
 
 
 
