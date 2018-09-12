@@ -30,6 +30,13 @@ export default class EthGatewayManager {
       .send({ from: address, gas: '189362' })
   }
 
+  async withdrawFakeKittyAsync(senderAddress, fkId, sig, contractAddress){
+      console.log("in withdrawFakeKittyAsync with contractAddress", contractAddress);
+    return await this._contract.methods
+    .withdrawERC721(fkId, sig, contractAddress)
+    .send({ from: senderAddress, gas: '389362'})
+  }
+
   async withdrawTokenAsync(address, amount, sig, contractAddress) {
     return await this._contract.methods
       .withdrawERC20(amount, sig, contractAddress)

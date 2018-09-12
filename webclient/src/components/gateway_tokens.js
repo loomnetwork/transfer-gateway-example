@@ -30,18 +30,17 @@ export default class GatewayTokens extends React.Component {
     const account = this.props.dcAccountManager.getCurrentAccount()
       // will need to pass more info in the withdrawalReceiptAsync to determine which KIND of 721 it is
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(account)
-      console.log("data", data);
-      console.log("data.tokenContract", data.tokenContract)
-      // ok this gives us the contract address and the chain id (ex "eth" or "loom" (default?))
-      console.log("data.tokenContract.toString()", data.tokenContract.toString())
+    console.log("in gateway_tokens with data", data);
 
     let ethBalance = 0
     let balance = 0
     let fakeKittyBalance = 0
     let cardIds = []
     let fakeKittyIds = []
-    console.log("in gateway_tokens with data", data);
+
     if (data) {
+      console.log("data.tokenContract", data.tokenContract)
+      console.log("data.tokenContract.toString()", data.tokenContract.toString())
         // interesting // tokenKind is coming from loom
         // i bet it's 0 = eth; 1, erc20, 2, erc721
         //
@@ -136,6 +135,8 @@ export default class GatewayTokens extends React.Component {
     const tokenOwner = data.tokenOwner.local.toString()
     const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature)
       console.log("data", data);
+      console.log("tokenOwner", tokenOwner);
+      console.log("signature", signature);
 
     try {
       await this.props.ethGatewayManager.withdrawCardAsync(
@@ -147,6 +148,7 @@ export default class GatewayTokens extends React.Component {
 
       alert('Card withdraw with success, check Owned Cards')
     } catch (err) {
+        console.log("error", err);
       console.error(err)
     }
 
@@ -154,9 +156,32 @@ export default class GatewayTokens extends React.Component {
     await this.updateUI()
   }
 
-    async withdrawFromGatewayFakeKitty(fkId){
-        console.log("in withdrawFromGatewayFakeKitty", fkId);
-    }
+  async withdrawFromGatewayFakeKitty(fkId){
+      console.log("in withdrawFromGatewayFakeKitty", fkId);
+      this.setState({withdrawing: true})
+      const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(this.state.account)
+      const tokenOwner = data.tokenOwner.local.toString()
+      const signature = CryptoUtils.bytesToHexAddr(data.oracleSignature);
+
+      console.log("data", data);
+      console.log("tokenOwner", tokenOwner);
+      console.log("signature", signature);
+
+      try{
+          await this.props.ethGatewayManager.withdrawFakeKittyAsync(
+              tokenOwner,
+              fkId,
+              signature,
+              this.props.ethFakeKittyManager.getContractAddress()
+          )
+          alert("You successfully withdrew your fake kitty, check owned 721s")
+      }catch(err){
+          console.log(err);
+      }
+
+      this.setState({withdrawing: true})
+      await this.updateUI();
+  }
 
   render() {
     const wallet = (
