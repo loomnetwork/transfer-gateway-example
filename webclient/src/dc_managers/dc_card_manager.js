@@ -42,6 +42,9 @@ export default class DAppChainCardManager {
       console.warn('Please verify if loom command is running')
     })
 
+      console.log('networkId', networkId);
+      console.log('DC_CRYPTO_CARDS_JSON', DC_CRYPTO_CARDS_JSON);
+      console.log("DC_CRYPTO_CARDS_JSON.networks", DC_CRYPTO_CARDS_JSON.networks[networkId]);
     const contract = new web3.eth.Contract(
       DC_CRYPTO_CARDS_JSON.abi,
       DC_CRYPTO_CARDS_JSON.networks[networkId].address,
