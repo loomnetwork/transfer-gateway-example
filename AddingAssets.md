@@ -31,6 +31,7 @@ These are what I think of as the application logic directories. They're more or 
 * `truffle-dappchain` is the "mirror version" of the contracts in `truffle-ethereum`. So for each blockchain asset (erc20, erc721) that you have on the mainnet, you have a "mirror" version of that on the loom chain.  Think: parallel universe to the mainnet, with some _different_ extra goodies.
 
 The naming conventions are:
+
 | Eth Network  | Loom Network |
 | ------------- | ------------- |
 | CryptoCards.sol| CryptoCardsDappChain.sol |
