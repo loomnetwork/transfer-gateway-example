@@ -246,8 +246,8 @@ start)
   fi
 
   start_and_deploy_truffle_ethereum
-  start_dappchain  dappchain is loom
-  deploy_truffle_dappchain  dappchain is loom
+  start_dappchain  #dappchain is loom
+  deploy_truffle_dappchain  #dappchain is loom
   start_webapp
   run_mapping
 
