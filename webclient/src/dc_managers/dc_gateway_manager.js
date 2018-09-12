@@ -58,16 +58,37 @@ export default class DAppChainGatewayManager {
     this._onTokenWithdrawal = fn
   }
 
+    // these withdraw methods i think need one more piece of info
+    // which is beyond what type of token (eth, 20, 721), what KIND of token (0x, CryptoKitty, FakeCrytoKitty), etc)
+    // who is the contractAddress
   async withdrawCardAsync(cardId, contractAddress) {
       console.log("in withdrawCardAsync with cardId", cardId, " and contractAddress", contractAddress);
       console.log("this._transferGateway", this._transferGateway);
+
       // note this next line is called from the loom library here
       // https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125
-    return await this._transferGateway.withdrawERC721Async(
+    let result = await this._transferGateway.withdrawERC721Async(
       new BN(cardId),
       new Address(this._client.chainId, LocalAddress.fromHexString(contractAddress))
     )
+
+      console.log("withdrawCardAsync: result from transferGateway.withdrawERC721Async", result);
+      return result;
   }
+
+    //https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125
+    async withdrawFakeKittyAsync(fkid, contractAddress){
+        console.log("in withdrawFakeKittyAsync with fkid", fkid, " and contract addr", contractAddress);
+        console.log("this._transferGateway", this._transferGateway);
+
+        // as above, this is calling a method in the loom-library
+        let result = await this._transferGateway.withdrawERC721Async(
+            new BN(fkid),
+            new Address(this._client.chainId, LocalAddress.fromHexString(contractAddress))
+        )
+      console.log("withdrawFakeKittyAsync: result from transferGateway.withdrawERC721Async", result);
+        return result;
+    }
 
   async withdrawTokenAsync(amount, contractAddress) {
     return await this._transferGateway.withdrawERC20Async(
@@ -77,8 +98,9 @@ export default class DAppChainGatewayManager {
   }
 
   async withdrawalReceiptAsync(address) {
+      // what is this address
       console.log("withdrawalReceiptAsync with address", address);
-      // who is the _transferGateway? it's gotta be another
+      // who is the _transferGateway? it's gotta be another loom class
     return await this._transferGateway.withdrawalReceiptAsync(
       new Address(this._client.chainId, LocalAddress.fromHexString(address))
     )

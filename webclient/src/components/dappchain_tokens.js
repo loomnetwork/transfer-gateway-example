@@ -128,9 +128,9 @@ export default class DAppChainTokens extends React.Component {
         console.log("after withdrawCardAsync with cardId", cardId);
 
       alert('Processing allowance')
-        alert("after the first alert");
     } catch (err) {
       if (err.message.indexOf('pending') > -1) {
+          // what this mean?
         alert('Pending withdraw exists, check Cards On Gateway')
       } else {
         console.error(err)
@@ -142,9 +142,25 @@ export default class DAppChainTokens extends React.Component {
     await this.updateUI()
   }
 
+    // this transfers the fakeKittyId to the gateway
+    // after which it can be withdrawn to the mainnet
   async allowToWithdrawFakeKitty(fkId){
       console.log("in allowToWithdrawFakeKitty, this is where I pick up on Wed", fkId);
-      //this.setState({allowing: true})
+      this.setState({allowing: true})
+      // this state.account => is the loom address of the token owner
+      // loom owner is saying: i give gateway permission to transfer this token.
+      console.log("this.props.dcFakeKittyManager", this.props.dcFakeKittyManager);
+      await this.props.dcFakeKittyManager.approveAsync(this.state.account, fkId);
+      console.log("after approveAsync for fakeKittyId", fkId);
+      console.log("in allowToWithdrawFakeKitty with dcFakeKittyManager.getContractAddress()", this.props.dcFakeKittyManager.getContractAddress());
+
+      try{
+          // note this is the dcGatewayManager
+          await this.props.dcGatewayManager.withdrawFakeKittyAsync(fkId, this.props.dcFakeKittyManager.getContractAddress())
+          console.log("after withdrawFakeKittyAsync with fakeKittyId", fkId);
+      } catch(err){
+          console.log("error occurred", err);
+      }
   }
 
   render() {

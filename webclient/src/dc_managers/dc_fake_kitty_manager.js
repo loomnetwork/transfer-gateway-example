@@ -74,6 +74,7 @@ export default class DAppChainFakeKittyManager {
     }
 
     getContractAddress(){
+        // assume this is the contract address of the fake kitties on loom
         return this._contract.options.address;
     }
 
@@ -110,14 +111,19 @@ export default class DAppChainFakeKittyManager {
         return ids;
     }
 
-    async approveAsync(address, kittyId){
-        console.log("in approveAsync in dc_fake_kitty_manager, with kittyId", kittyId);
+    async approveAsync(senderAddress, kittyId){
+        // saying the gateway contract has permission to transfer the kittyId
+        // still not clear who the senderAddress is: it is the loom address of the token owner
+        // the account that owns the token on loom is giving the gateway permission to transfer it
+        // which... approves a specific account for asset withdrawal
+        // In 721 speak, a global variable, tokenApprovals, maps a token index or id to an senderAddress that is approved to transfer it.
+        console.log("in approveAsync in dc_fake_kitty_manager, with kittyId", kittyId, "and senderAddress", senderAddress);
         // same notes as in the dc_card_manager
-        const addr = this._web3.utils.toChecksumAddress('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
-        const iban = this._web3.eth.Iban.toIban(addr)
+        const gatewayAddress = this._web3.utils.toChecksumAddress('0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3')
+        const iban = this._web3.eth.Iban.toIban(gatewayAddress)
 
-        return await this._contract.methods.approve(addr,kittyId).send({from: address})
-
+        // this wraps the 721 approve method
+        return await this._contract.methods.approve(gatewayAddress,kittyId).send({from: senderAddress})
     }
 
 }

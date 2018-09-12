@@ -10,6 +10,8 @@ export default class GatewayTokens extends React.Component {
       ethAccount: '0x',
       account: '0x',
       cardIds: [],
+        fakeKittyIds: [],
+        fakeKittyBalance: 0,
       balance: 0,
       ethBalance: 0,
       mapping: null,
@@ -22,16 +24,28 @@ export default class GatewayTokens extends React.Component {
   }
 
   async updateUI() {
+      console.log("in GatewayTokens updateUI with props", this.props);
     const ethAccount = await this.props.ethAccountManager.getCurrentAccountAsync()
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(ethAccount)
     const account = this.props.dcAccountManager.getCurrentAccount()
+      // will need to pass more info in the withdrawalReceiptAsync to determine which KIND of 721 it is
     const data = await this.props.dcGatewayManager.withdrawalReceiptAsync(account)
+      console.log("data", data);
+      console.log("data.tokenContract", data.tokenContract)
+      // ok this gives us the contract address and the chain id (ex "eth" or "loom" (default?))
+      console.log("data.tokenContract.toString()", data.tokenContract.toString())
 
     let ethBalance = 0
     let balance = 0
     let cardIds = []
+      let fakeKittyIds = []
+      console.log("in gateway_tokens with data", data);
     if (data) {
+        // interesting // tokenKind is coming from loom
+        // i bet it's 0 = eth; 1, erc20, 2, erc721
+        //
       switch (data.tokenKind) {
+
         case 0:
           ethBalance = +data.value.toString(10)
           break
@@ -39,7 +53,30 @@ export default class GatewayTokens extends React.Component {
           balance = +data.value.toString(10)
           break
         case 2:
-          cardIds = [data.value.toNumber()]
+              let tokenComponents = data.tokenContract.toString().split(":");
+              let chainId = tokenComponents[0];
+              let contractAddr = tokenComponents[1];
+              console.log("chainId", chainId, "contractAddr", contractAddr);
+              // how to check which one -- by name or type?
+              // i know how to do it hard-coded, but
+              // huh if this is erc721s
+              // we need to be more specific 
+              // ex. which one or do a check
+              // on it's name
+              // TODO write a mapper class with all the contract abis & addresses. 
+              // but for now.... we know we have two kinds
+              console.log("hey, we're with tokenKind 2");
+              console.log("contractAddr", contractAddr);
+              console.log("cards address", this.props.ethCardManager.getContractAddress())
+              console.log("kitties address", this.props.ethFakeKittyManager.getContractAddress())
+              if(contractAddr.toLowerCase() == this.props.ethCardManager.getContractAddress().toLowerCase()){
+                  console.log("i'm the eth cards contract");
+                  cardIds = [data.value.toNumber()]
+              }
+              if(contractAddr.toLowerCase() == this.props.ethFakeKittyManager.getContractAddress().toLowerCase()){
+                  console.log("Fake kitties yo!");
+                  fakeKittyIds = [data.value.toNumber()]
+              }
           break
       }
     }
