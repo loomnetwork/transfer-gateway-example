@@ -53,7 +53,7 @@ i.e. each ethereum contract is the name of the thing and its loom counterpart is
 Two applications (mirror images of each other), gateway code, client-logic, and all-important account and asset mapping logic. 
 
 ## Setting up
-There's a `transfer_gateway` script with a bunch of commands to get the app up and running. Read through this file & see what each one does.
+There's a `transfer_gateway` script with a bunch of commands to get the app up and running. Read through this file & see what each one does, but here are the cliff notes:
 * `./transfer_gateway cleanup` deletes all the `node_modules` 
 * `./transfer_gateway setup` installs everything in `package.json` using `yarn`. This is what you run after cleanup or on a fresh install.
 * `./transfer_gateway stop` stops all the running services
