@@ -78,11 +78,11 @@ In addition, this step has to be run _after_ the contracts are deployed to their
 
 Each asset that gets mapped has, in this repo, it's own javascript file that gets run by node. You can find these in the 
 ```
-transfer-gateway-scripts
+./transfer-gateway-scripts/
 ```
 directory. 
 
-Let's look at `transfer-gateway-scripts/mapping_crypto_cards` as its a good example. The first thing it does, after including a bunch of `node` and `loom-js` packages is to read from those files we wrote during our migrations. This file then uses that information, plus the private key of the deployer, to build a loom client, a `transferGateway` object, other objects... all to eventually run this code, which creates the mapping:
+Let's look at `transfer-gateway-scripts/mapping_crypto_cards.js` as its a good example. The first thing it does, after including a bunch of `node` and `loom-js` packages is to read from those files we wrote during our migrations. This file then uses that information, plus the private key of the deployer, to build a loom client, a `transferGateway` object, other objects... all to eventually run this code, which creates the mapping:
 ```
   await transferGateway.addContractMappingAsync({
     foreignContract,
@@ -95,14 +95,14 @@ This code is leveraging your contract addresses and deployer keys to [run this c
 
 These mapping scripts implement [the logic described here](https://loomx.io/developers/docs/en/transfer-gateway.html#mapping-mainnet-contracts-to-dappchain-contracts).  
 
-I'll leave by saying *mapping is important*. And also, [that code I linked to above?](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L103-L107) Note that its arguments are keyed, so if you try renaming them (like I did--for "clarity"), the function won't work :)
+I'll leave by saying *mapping is important*. And also, [that code I linked to above?](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L103-L107) Note that its arguments are keyed, so if you try renaming them (like I did&mdash;for "clarity"), the function won't work :)
 
 ## Migrations
 Before we go to localhost:8080, let's talk about migrations. Read each of the migrations files in the `truffle-*` directories. Notice the following: 
 
 ### Ethereum Migrations
-* The Gateway contract (`Gateway.sol` is deployed first). So that its address can be passed to the other contracts. Otherwise, there's no known gateway, and how do you transfer.
-* The "regular contracts" get deployed next, and they're assigned to instanced _because we need them later_.
+* The Ethereum Gateway contract (`Gateway.sol` is deployed first). So that its address can be passed to the other contracts. Otherwise, there's no known gateway, and how do you transfer.
+* The "regular contracts" get deployed next, and they're assigned to instance variables _because we need them later_.
 * There's something about `toggleToken` on the gateway that I do not yet understand enough to explain to you.
 * Then, b/c this is a demo app, we give some tokens to the user so there's something to do in the UI. You can see this happening in the `register` functions called on the contract instances.  Bonus points: figure out how these work.
 * Write out the data that we need later: addresses & tx hashes.
@@ -111,7 +111,7 @@ Before we go to localhost:8080, let's talk about migrations. Read each of the mi
 ### Loom Migrations
 * Right away you can see that this is a little different b/c we already have the gateway dappchain address because it is [literally included in the repo](https://github.com/loomnetwork/transfer-gateway-example/blob/master/gateway_dappchain_address). The other addresses are _not_ included in the repo, so this is something that when you're not using the reference implementation repo, you will need to get else-ways. 
 
-* So in this case, we read that address, deploy each of the loom contracts with that address (they also need to know the gateway!) and then writ_their addresses out for later use.  
+* So in this case, we read that address, deploy each of the loom contracts with that address (they also need to know the gateway!) and then write their addresses out for later use.  
 
 So by the end of migration, you have a bunch of important data files written out, also you've given your user some basic assets. 
 
@@ -133,19 +133,19 @@ There's a `dappchain_tokens` view, a `gateway_tokens` view and an `eth_tokens` v
 ### Eth -> Loom
 Let's transfer an asset from eth -> loom and back, walking through the code calls.
 
-So you're in your UI, clicking the "send to DappChain" button on a card calls
+So you're in your UI, clicking the "send to DappChain" button on a card defined in `eth_tokens.js` calls
 ```
-sendToDAppChainCard(id)
+this.sendToDAppChainCard(id)
 ```
-which calls
+which calls (defined in that same file, note the `this`)
 ```
-ethCardManager.depositCardOnGateway(account, id)
+this.props.ethCardManager.depositCardOnGateway(account, id)
 ```
-which takes you to the `eth_card_manager` file where as you can see, 
+which takes you to the `eth_card_manager.js` file where as you can see, 
 ```
 depositCardOnGateway
 ```
- is just a thin wrapper around the 
+ is defined, and is simply a thin wrapper around the 
 ```
 CryptoCards#depositCardOnGateway method
 ``` 
@@ -156,7 +156,7 @@ safeTransferFrom
 ``` 
 which is part of the `ERC721` standard. So all this is just layers of indirection around transferring a token between contracts. Which, [as you can see here](https://loomx.io/developers/docs/en/transfer-gateway.html#overview) facilitates a transfer to the Gateway contract.
 
-And bingo, your UI will update because in `dappchain_tokens` the code starts by checking the `cardBalance`, then, if it's above 0, fills out `cardIds` like so:
+And bingo, your UI will update because in `dappchain_tokens` the code starts by checking the `cardBalance`, then, if it's greater than 0, populates `cardIds` like so:
 
 ```
 cardIds = await this.props.dcCardManager.getTokensCardsOfUserAsync(account, cardBalance)
@@ -168,23 +168,27 @@ And what is `getTokensCardsOfUserAsync`? Well, just some wrappers around contrac
 So let's bring it back. You're looking at the UI under `DappChain Account` and see your own card with an `Allow Withdraw` button.  Clicking this calls:
 
 ```
-allowToWithdrawCard(cardId)
+this.allowToWithdrawCard(cardId)
 ```
-which calls
+in the `dappchain_tokens` file, which which calls
 ```
-dcCardManager.approveAsync(account, cardId)
+this.props.dcCardManager.approveAsync(account, cardId)
 ```
 which does some trippy stuff with `iban` and checksum  but at the root of it calls
 ```
 approve(addr,id)
 ```
-on the CryptoCardsDappChain contract, which is a method from `ERC721` which sets withdraw approval.  What does ERC721 approval do? It says: the address I'm specifying here has permission to withdraw the tokenId I am specifying. Which address are we sending? We (the token owner) are giving the gateway contract approval to withdraw this token. If you look at [this diagram](https://loomx.io/developers/docs/en/transfer-gateway.html) you'll see this is what is happening in step #3. If you need a refresher on ERC721, [this is a good breakdown](https://medium.com/blockchannel/walking-through-the-erc721-full-implementation-72ad72735f3c).
+on the CryptoCardsDappChain contract, which is a method from `ERC721` which sets withdraw approval.  
 
-Right after `approveAsync` is called and completes, the gateway tries to withdraw it.
+What does ERC721 approval do? It says: the address I'm specifying here has permission to withdraw the tokenId I am specifying. Which address are we sending? We (the token owner) are giving the gateway contract approval to withdraw this token. 
+
+If you look at [this diagram](https://loomx.io/developers/docs/en/transfer-gateway.html) you'll see this is what is happening in step #3. If you need a refresher on ERC721, [this is a good breakdown](https://medium.com/blockchannel/walking-through-the-erc721-full-implementation-72ad72735f3c).
+
+Right after `approveAsync` is called and completes, the gateway tries to withdraw the token:
 ```
-props.dcGatewayManager.withdrawCardAsync(cardId, dcCardManager.getContractAddress())
+this.props.dcGatewayManager.withdrawCardAsync(cardId, dcCardManager.getContractAddress())
 ```
-This method -- on the `dc_gateway_manager` calls through to [some `loom-js` code](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125-L131): 
+This method -- on the `dc_gateway_manager` file, calls through to [some `loom-js` code](https://github.com/loomnetwork/loom-js/blob/f0df59fc58e1a15f7bfeee96565d8d828e335796/src/contracts/transfer-gateway.ts#L125-L131): 
 ```
 transferGateway.withdrawERC721Async(BN(cardId), Address(chainId, contractAddress)
 ```
@@ -213,7 +217,11 @@ await this.props.ethGatewayManager.withdrawCardAsync(
 ```
 which wraps the `withdrawERC721` method on our very own `Gateway.sol` contract. This method, as you can [see in our own codebase](https://github.com/loomnetwork/transfer-gateway-example/blob/master/truffle-ethereum/contracts/Gateway.sol#L69-L77), does some validation checks which I'm glossing over here, but you can _also_ see in [our own (forked) codebase](https://github.com/loomnetwork/transfer-gateway-example/blob/master/truffle-ethereum/contracts/ValidatorManagerContract.sol#L38-L48) and then wraps some basic ERC721 transfer logic.
 
+### this.props
+If you're wondering about `this.props`, check out `webclient/index.js` where you'll see all of the components being initialized with the correct set of `dc_managers` and `eth_managers`.
 
+## Summary
+The goal of this doc is to give a path through the code base so you can follow the thread from reading, and then use it to dig more into the codebase.  I'll add to it and make it more clear, but for me there was a gap between the conceptual "what was happening" and the literal code paths and organization of _how it was happening_. 
 
 
 
