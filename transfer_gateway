@@ -85,7 +85,7 @@ function start_and_deploy_truffle_ethereum {
     cd truffle-ethereum
     yarn ganache-cli:dev > /dev/null 2>&1
     sleep 5
-    yarn deploy > /dev/null 2>&1
+    yarn deploy # > /dev/null 2>&1
     cd ..
   else
     echo "Truffle Ethereum is deployed and running"

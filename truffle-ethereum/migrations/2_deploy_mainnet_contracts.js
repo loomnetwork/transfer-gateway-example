@@ -13,6 +13,8 @@ module.exports = (deployer, _network, accounts) => {
 
   deployer.deploy(Gateway, [validator], 3, 4).then(async () => {
     const gatewayInstance = await Gateway.deployed()
+      let owner = await gatewayInstance.owner();
+      console.log("owner", owner);
 
     console.log(`Gateway deployed at address: ${gatewayInstance.address}`)
 
@@ -42,21 +44,22 @@ module.exports = (deployer, _network, accounts) => {
 
       // BUT this is where we mint the things to the person
     await gatewayInstance.toggleToken(cryptoCardsInstance.address, { from: validator })
+      console.log("user", user);
     await cryptoCardsInstance.register(user)
       console.log("the user getting stuff", user);
 
     await gatewayInstance.toggleToken(gameTokenInstance.address, { from: validator })
     await gameTokenInstance.transfer(user, 100)
 
-      await gatewayInstance.toggleToken(fakeCrytoKittyInstance.address, {from: validator}); // what is this
-      await fakeCrytoKittyInstance.register(user); 
+    await gatewayInstance.toggleToken(fakeCrytoKittyInstance.address, {from: validator}); // what is this
+    await fakeCrytoKittyInstance.register(user); 
 
     writeFileSync('../gateway_address', gatewayInstance.address)
     writeFileSync('../crypto_cards_address', cryptoCardsInstance.address)
     writeFileSync('../crypto_cards_tx_hash', cryptoCardsContract.transactionHash)
     writeFileSync('../game_token_address', gameTokenInstance.address)
     writeFileSync('../game_token_tx_hash', gameTokenContract.transactionHash)
-      writeFileSync('../fake_kitty_eth_address', fakeCrytoKittyInstance.address)
-      writeFileSync('../fake_kitty_tx_hash', fakeCrytoKittyContract.transactionHash)
+    writeFileSync('../fake_kitty_eth_address', fakeCrytoKittyInstance.address)
+    writeFileSync('../fake_kitty_tx_hash', fakeCrytoKittyContract.transactionHash)
   })
 }
