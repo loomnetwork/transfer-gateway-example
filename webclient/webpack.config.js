@@ -10,6 +10,8 @@ const gatewayJSON = require('../truffle-ethereum/build/contracts/Gateway.json')
 const fakeKittyJSON = require('../truffle-ethereum/build/contracts/FakeCryptoKitty.json');
 const dcFakeKittyJSON = require('../truffle-dappchain/build/contracts/FakeCryptoKittyDappChain.json')
 
+const NDCraftingJSON = require('../truffle-ethereum/build/contracts/NeonDistrictCrafting.json');
+
 module.exports = {
   context: __dirname + '/src',
   entry: ['regenerator-runtime/runtime', './index'],
@@ -38,7 +40,8 @@ module.exports = {
       DC_GAME_TOKEN_JSON: JSON.stringify(dcGameTokenJSON),
       GATEWAY_JSON: JSON.stringify(gatewayJSON),
       FAKE_CRYPTO_KITTY_JSON: JSON.stringify(fakeKittyJSON),
-      DC_FAKE_CRYPTO_KITTY_JSON: JSON.stringify(dcFakeKittyJSON)
+      DC_FAKE_CRYPTO_KITTY_JSON: JSON.stringify(dcFakeKittyJSON),
+      ND_CRAFTING_JSON: JSON.stringify(NDCraftingJSON)
     })
   ],
   optimization: {

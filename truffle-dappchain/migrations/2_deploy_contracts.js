@@ -3,6 +3,7 @@ const { writeFileSync, readFileSync } = require('fs')
 const CryptoCardsDappChain = artifacts.require('CryptoCardsDappChain')
 const GameTokenDappChain = artifacts.require('GameTokenDappChain')
 const FakeCryptoKittyDappChain = artifacts.require('FakeCryptoKittyDappChain');
+const NeonDistrictCraftingDappChain = artifacts.require('NeonDistrictCraftingDappChain');
 
 module.exports = (deployer, network, accounts) => {
     console.log("deploying to loom network", network);
