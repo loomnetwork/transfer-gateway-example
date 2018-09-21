@@ -154,6 +154,8 @@ function run_mapping {
   node mapping_game_token.js   > /dev/null 2>&1
   echo "Running fake_kitties"
   node mapping_fake_kitties.js > /dev/null 2>&1
+  echo "Running nd_crafting"
+  node mapping_nd_crafting.js # > /dev/null 2>&1
   cd ..
 }
 
