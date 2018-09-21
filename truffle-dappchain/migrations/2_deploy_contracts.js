@@ -29,5 +29,13 @@ module.exports = (deployer, network, accounts) => {
         console.log(`FakeCryptoKittyDappChain deployed at ${FakeCryptoKittyDappChainInstance.address}`);
         writeFileSync('../fake_kitty_loom_address', FakeCryptoKittyDappChainInstance.address);
     })
+
+    deployer.deploy(NeonDistrictCraftingDappChain).then(async() => {
+        const NeonDistrictCraftingDappChainInstance = await NeonDistrictCraftingDappChain.deployed();
+        console.log(`NeonDistrictCraftingDappChain deployed at ${NeonDistrictCraftingDappChainInstance.address}`);
+        let tx = await NeonDistrictCraftingDappChainInstance.setGateway(gatewayAddress);
+        console.log("gateway should be set", tx);
+        writeFileSync('../nd_dappchain_address', NeonDistrictCraftingDappChainInstance.address);
+    })
 }
 

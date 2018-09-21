@@ -36,6 +36,15 @@ contract NeonDistrictCraftingDappChain is ERC1155Spike, ERCAdaptable {
     mapping (uint256 => uint256) public craftedAssetClasss;      // whichAssetIdToCraftAttemptId
     mapping (uint256 => CraftAttempt) public craftAttempts;
 
+    // allow an owner to set a gateway in order
+    // to not change the signature of the constructor
+    // for now. Will call this directly in migrations
+    // TODO, ultimately could make this part of the constructor
+    // once we sort out what's working & what's not
+    function setGateway(address _gatewayContract) public onlyOwner {
+        gatewayContract = _gatewayContract;
+    }
+
     // TODO accept a blueprint (a fungible?)
     // @param _ids is list of input ids
     // @param _values the amt of each id
