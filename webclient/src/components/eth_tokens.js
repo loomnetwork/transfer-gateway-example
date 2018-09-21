@@ -141,8 +141,6 @@ export default class EthTokens extends React.Component {
     })
 
       console.log("this.state.fakeKittyIds", this.state.fakeKittyIds);
-      //const fakeKitties = this.state.fakeKittyIds
-      //
       const fakeKitties = this.state.fakeKittyIds.map((fkId,idx) => {
           const kittyDef = this.props.ethFakeKittyManager.getFakeKittyWithId(fkId);
 
