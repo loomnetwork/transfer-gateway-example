@@ -61,6 +61,8 @@ module.exports = (deployer, _network, accounts) => {
     await fakeCrytoKittyInstance.register(user); 
 
     await gatewayInstance.toggleToken(NDCraftingInstance.address, {from: validator});
+      // TODO mint some items to the user
+
 
     writeFileSync('../gateway_address', gatewayInstance.address)
     writeFileSync('../crypto_cards_address', cryptoCardsInstance.address)
