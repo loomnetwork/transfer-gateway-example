@@ -18,6 +18,9 @@ export default class EthFakeKittyManager {
         this._contract = contract;
     }
 
+    // note that this is also using a piece of client-side
+    // data to simulate what would data on an actual contract
+    // instance in a "real use case"
     getFakeKittyWithId(kittyId){
         return FakeKittyList[kittyId];
     }

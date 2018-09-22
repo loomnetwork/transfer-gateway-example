@@ -28,13 +28,14 @@ export default class EthTokens extends React.Component {
     const mapping = await this.props.dcAccountManager.getAddressMappingAsync(account)
     const ethBalance = await this.props.ethAccountManager.getEthAccountBalance(account)
     const fakeKittyBalance = await this.props.ethFakeKittyManager.getBalanceOfUserAsync(account);
+      // interesting. to start, NDCraftingBalance can get total items for a user but
+      // ultimately going to want to get the balance of each TYPE of token.
 
-      // great, we have one!
-      console.log("fakeKittyBalance", fakeKittyBalance);
-
+    // great, we have one!
+    console.log("fakeKittyBalance", fakeKittyBalance);
 
     let cardIds = []
-      let fakeKittyIds  = []
+    let fakeKittyIds  = []
 
     if (cardsBalance > 0) {
       cardIds = await this.props.ethCardManager.getTokensCardsOfUserAsync(account, cardsBalance)

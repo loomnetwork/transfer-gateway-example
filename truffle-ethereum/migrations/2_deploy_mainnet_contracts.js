@@ -83,11 +83,12 @@ module.exports = (deployer, _network, accounts) => {
             let whichNftId = response.args._whichNfi;
             // TBD if writing it out like this (and then reading it in as a BigNumber will work), 
             // will see!
-            writeFileSync('../example-nft-id', whichNftId);
+            writeFileSync('../example-nft-whichId', whichNftId);
         })
         // NOTE to self, do I have a typeCounter to typeId mapping in NDCrafting? It would help!
         // this is the specific id of the newly created asset:
         let nftTypeId1 = response.args._typeId;
+        writeFileSync('../example-nft-typeId', nftTypeId1);
         try{
             // now let's mint one of these to our user. This way we will be able to see it in the UI.
             // obv. once we build the code to do show it.

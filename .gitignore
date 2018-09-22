@@ -10,5 +10,6 @@ gateway_address
 crypto_cards_transaction
 loom_first_weapon*
 fake_kitty_*
+example-nft
 nd_*
-example-nft-id
+example-nft*
