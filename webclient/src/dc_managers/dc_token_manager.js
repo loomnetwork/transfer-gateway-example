@@ -32,7 +32,7 @@ export default class DAppChainTokenManager {
     const from = LocalAddress.fromPublicKey(publicKey).toString()
     const web3 = new Web3(new LoomProvider(client, privateKey))
 
-    const networkId = await web3.eth.net.getId()
+    const networkId = client.chainId
 
     client.on('error', msg => {
       console.error('Error on connect to client', msg)

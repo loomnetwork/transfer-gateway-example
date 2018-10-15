@@ -17,7 +17,7 @@ export default class DAppChainSimpleStakeManager {
     const loomProvider = new LoomProvider(client, privateKey)
 
     const browserWeb3 = new Web3(loomProvider)
-    const networkId = await browserWeb3.eth.net.getId()
+    const networkId = client.chainId
     const contract = new browserWeb3.eth.Contract(
       DC_SIMPLE_STAKE.abi,
       DC_SIMPLE_STAKE.networks[networkId].address

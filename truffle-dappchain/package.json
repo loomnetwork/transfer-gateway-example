@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "ganache-cli": "^6.1.6",
-    "loom-truffle-provider": "^0.5.0",
+    "loom-truffle-provider": "^0.8.0",
     "openzeppelin-solidity": "1.10.0",
     "truffle": "^4.1.13",
     "truffle-flattener": "^1.2.5",
