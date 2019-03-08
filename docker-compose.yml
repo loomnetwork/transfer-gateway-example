@@ -1,0 +1,27 @@
+version: '3'
+services:
+  loom:
+    build: ./dappchain
+    ports:
+     - "46657:46657"
+  ganache:
+    image: trufflesuite/ganache-cli
+    command: "-p 8545 --gasLimit 50000000 -e 100000 -m \"gravity top burden flip student usage spell purchase hundred improve check genre\""
+    ports:
+    - "8545:8545"
+  truffle-dappchain:
+    build: ./truffle-dappchain
+    depends_on:
+      - loom
+    expose:
+      - "8081"    
+    environment:
+      - NODE_ENV=development
+  truffle-ethereum:
+    build: ./truffle-ethereum
+    depends_on:
+      - ganache
+    expose:
+      - "8082"
+    environment:
+      - NODE_ENV=development      
