@@ -35,5 +35,12 @@ module.exports = (deployer, _network, accounts) => {
     writeFileSync('../crypto_cards_tx_hash', cryptoCardsContract.transactionHash)
     writeFileSync('../game_token_address', gameTokenInstance.address)
     writeFileSync('../game_token_tx_hash', gameTokenContract.transactionHash)
+
+    writeFileSync('/dappchain/gateway_address', gatewayInstance.address)
+    writeFileSync('/dappchain/crypto_cards_address', cryptoCardsInstance.address)
+    writeFileSync('/dappchain/crypto_cards_tx_hash', cryptoCardsContract.transactionHash)
+    writeFileSync('/dappchain/game_token_address', gameTokenInstance.address)
+    writeFileSync('/dappchain/game_token_tx_hash', gameTokenContract.transactionHash)    
+
   })
 }

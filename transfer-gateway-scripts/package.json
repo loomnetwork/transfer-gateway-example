@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "map": "node ./mapping_crypto_cards.js && node ./mapping_game_token.js"
+  },  
   "dependencies": {
     "web3": "^1.0.0-beta.35",
     "loom-js": "^1.27.1"
