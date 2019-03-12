@@ -19,7 +19,7 @@ WORKDIR /loom
 
 COPY ./* $HOME/loom/
 
-RUN loom init
+RUN loom init -f
 RUN cp genesis.example.json genesis.json
 
 ENTRYPOINT [ "loom", "run"]

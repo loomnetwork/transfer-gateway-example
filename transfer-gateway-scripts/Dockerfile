@@ -1,7 +1,6 @@
 FROM node:10
 
 RUN mkdir -p /home/node/app
-RUN chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
@@ -11,6 +10,7 @@ COPY ./yarn.lock $HOME/home/node/app/yarn.lock
 RUN yarn
 
 COPY . $HOME/home/node/app
+RUN chown -R node:node /home/node/app
 
 USER node
 
