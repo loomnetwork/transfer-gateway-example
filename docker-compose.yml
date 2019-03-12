@@ -23,19 +23,23 @@ services:
     build: ./truffle-ethereum
     depends_on:
       - ganache
+      - loom
     expose:
       - "8082"
     environment:
       - NODE_ENV=development
+      - IS_DOCKER=1
+      - GATEWAY_DAPPCHAIN_ADDRESS=0xC5d1847a03dA59407F27f8FE7981D240bff2dfD3
     volumes:
       - ./dappchain:/dappchain
   transfer-gateway-scripts:
     build: ./transfer-gateway-scripts
-    volumes:
-      - ./dappchain:/dappchain
     depends_on:
       - loom      
       - ganache
       - truffle-dappchain
-      - truffle-ethereum
-  
+      - truffle-ethereum    
+    volumes:
+      - ./dappchain:/dappchain
+    environment:
+      - IS_DOCKER=1

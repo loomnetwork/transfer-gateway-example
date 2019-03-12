@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs')
+const { readFileSync, watch, existsSync } = require('fs')
 const Web3 = require('web3')
 
 const {
@@ -7,11 +7,11 @@ const {
 } = require('loom-js')
 
 
-fs.watch('/dappchain', (eventType, filename) => {
+watch('/dappchain', (eventType, filename) => {
 
-  if(fs.existsSync('/dappchain/crypto_cards_address') &&
-     fs.existsSync('/dappchain/crypto_cards_dappchain_address') &&
-     fs.existsSync('/dappchain/crypto_cards_tx_hash')) {
+  if(existsSync('/dappchain/crypto_cards_address') &&
+      existsSync('/dappchain/crypto_cards_dappchain_address') &&
+      existsSync('/dappchain/crypto_cards_tx_hash')) {
     addMappingHandler()
   }
 

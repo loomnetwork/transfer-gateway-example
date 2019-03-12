@@ -6,5 +6,6 @@ module.exports = deployer => {
     const SimpleStakeInstance = await SimpleStake.deployed()
     console.log(`SimpleStake deployed at address: ${SimpleStakeInstance.address}`)
     writeFileSync('../simple_stake_address', SimpleStakeInstance.address)
+    writeFileSync('/dappchain/simple_stake_address', SimpleStakeInstance.address)
   })
 }
