@@ -4,8 +4,7 @@ const CryptoCardsDappChain = artifacts.require('CryptoCardsDappChain')
 const GameTokenDappChain = artifacts.require('GameTokenDappChain')
 
 module.exports = (deployer, network, accounts) => {
-
-  const gatewayAddress = process.env.IS_DOCKER ? process.env.GATEWAY_DAPPCHAIN_ADDRESS : readFileSync('/data/gateway_dappchain_address', 'utf-8') 
+  const gatewayAddress = process.env.IS_DOCKER ? process.env.GATEWAY_DAPPCHAIN_ADDRESS : readFileSync('../gateway_dappchain_address', 'utf-8') 
 
   deployer.deploy(CryptoCardsDappChain, gatewayAddress).then(async () => {
     const cryptoCardsDAppChainInstance = await CryptoCardsDappChain.deployed()
