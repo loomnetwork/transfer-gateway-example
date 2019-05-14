@@ -1,3 +1,7 @@
+# Deprecated Repository
+
+This repository is **deprecated and no longer maintained**. To get a high-level overview of how Transfer Gateway works, head over to the [Transfer Gateway Documentation Page](https://loomx.io/developers/docs/en/extdev-transfer-gateway.html). Next, make sure to check our [Transfer Gateway Testnet Tutorial](https://loomx.io/developers/docs/en/extdev-transfer-gateway.html) and this step-by-step [video walk-through](https://www.youtube.com/watch?v=e1dJTfDnPPE&t=161s).
+
 # Transfer Gateway Example
 
 This project is built using the [loom-js][] Transfer Gateway API, and demonstrates how to transfer
